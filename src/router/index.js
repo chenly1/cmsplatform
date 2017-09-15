@@ -7,16 +7,17 @@ import NotFound from '@/components/404.vue'
 import Form from '@/components/nav1/Form.vue'
 import Form2 from '@/components/nav1/Form2.vue'
 import ModelTable from '@/components/nav1/ModelTable.vue'
+import ue from '@/view/editor/editor.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-        path: '/404',
-        component: NotFound,
-        name: '',
-        hidden: true
+      path: '/404',
+      component: NotFound,
+      name: '',
+      hidden: true
     },
     {
         path: '/',
@@ -37,13 +38,14 @@ export default new Router({
         children: [
           { path: '/form', component: Form, name: 'form表单' },
           { path: '/form2', component: Form2, name: 'form验证' },
-          { path: '/modelTable', component: ModelTable, name: '模版消息' }
+          { path: '/modelTable', component: ModelTable, name: '模版消息' },
+          { path: '/editor', component: ue, name: 'editor', class: 'fa-plug' }
         ]
     },
     {
-        path: '*',
-        hidden: true,
-        redirect: { path: '/404' }
+      path: '*',
+      hidden: true,
+      redirect: { path: '/404' }
     }
   ]
-});
+})
