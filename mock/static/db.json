@@ -37,5 +37,28 @@
       "name": "你好2121",
       "tel": "15223810923"
     }
+  ],
+  "pageListData": [
+    {
+      "pid": "001",
+      "name": "会员消息通知",
+      "primaryIndustry": "医疗护理",
+      "secondaryIndustry": "保健与卫生",
+      "details": "您好，XXX，您已成功消费XXX元。"
+    },
+    {
+      "pid": "002",
+      "name": "预约成功通知",
+      "primaryIndustry": "医疗护理",
+      "secondaryIndustry": "保健与卫生",
+      "details": "您好，XXX，您已成功预约。"
+    },
+    {
+      "pid": "003",
+      "name": "健康指导提醒",
+      "primaryIndustry": "医疗护理",
+      "secondaryIndustry": "保健与卫生",
+      "details": "温馨提醒，宝宝3个月时需要体检。"
+    }
   ]
 }

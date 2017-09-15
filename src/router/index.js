@@ -6,6 +6,7 @@ import NotFound from '@/components/404.vue'
 
 import Form from '@/components/nav1/Form.vue'
 import Form2 from '@/components/nav1/Form2.vue'
+import ModelTable from '@/components/nav1/ModelTable.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,7 @@ export default new Router({
         name: '管理系统',
         iconCls: 'fa fa-th-large',
         leaf: true,//只有一个节点
+        redirect:'/hello',
         children: [
             { path: '/hello', component: Hello, name: '主页' }
         ]
@@ -34,7 +36,8 @@ export default new Router({
         iconCls: 'fa fa-subway',//图标样式class
         children: [
           { path: '/form', component: Form, name: 'form表单' },
-          { path: '/form2', component: Form2, name: 'form验证' }
+          { path: '/form2', component: Form2, name: 'form验证' },
+          { path: '/modelTable', component: ModelTable, name: '模版消息' }
         ]
     },
     {
