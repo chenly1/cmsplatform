@@ -10,7 +10,7 @@ module.exports = {
             },
               '/net': {
                 // 测试环境
-                target: 'http://localhost:2105/Content/Ueditor/',  // 接口域名
+                target: 'http://192.168.0.249:2105/Content/Ueditor/',  // 接口域名
                 changeOrigin: true  //是否跨域        
           }
     }
