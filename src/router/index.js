@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/views/Hello'
-import Home from '@/components/Home'
-import NotFound from '@/components/404.vue'
+import Home from '@/views/Home'
+import NotFound from '@/views/404.vue'
 
-import Form from '@/components/nav1/Form.vue'
-import Form2 from '@/components/nav1/Form2.vue'
-import ModelTable from '@/components/nav1/ModelTable.vue'
+import ModelTable from '@/views/nav1/ModelTable.vue'
+import Material from '@/views/nav1/Material.vue'
 import ue from '@/views/editor.vue'
 
 Vue.use(Router)
@@ -36,9 +35,8 @@ export default new Router({
         name: '导航一',
         iconCls: 'fa fa-subway',//图标样式class
         children: [
-          { path: '/form', component: Form, name: 'form表单' },
-          { path: '/form2', component: Form2, name: 'form验证' },
           { path: '/modelTable', component: ModelTable, name: '模版消息' },
+          { path: '/material', component: Material, name: '素材管理' },
           { path: '/editor', component: ue, name: 'editor', class: 'fa-plug' }
         ]
     },

@@ -48,7 +48,7 @@
 					<el-input v-model="addForm.name" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="详细内容" prop="details">
-					<el-input type="textarea" v-model="addForm.details" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+					<el-input type="textarea" v-model="addForm.details" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -64,7 +64,7 @@
 					<el-input v-model="editForm.name" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="详细内容" prop="details">
-					<el-input type="textarea" v-model="editForm.details" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+					<el-input type="textarea" v-model="editForm.details" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
