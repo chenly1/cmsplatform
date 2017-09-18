@@ -21,7 +21,7 @@
      */
     // window.UEDITOR_HOME_URL = "/vue2-management-platform/static/UE/"  // vue2-management-platform是为gh-pages添加，本地开发写"/static/UE/"足以
     window.UEDITOR_HOME_URL = "/static/UE/"
-  var URL = window.UEDITOR_HOME_URL || getUEBasePath();
+    var URL = window.UEDITOR_HOME_URL || getUEBasePath();
      /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
      */
@@ -31,7 +31,7 @@
         UEDITOR_HOME_URL: URL
 
         // 服务器统一请求接口路径
-        , serverUrl: URL + "php/controller.php"
+        , serverUrl: URL + "net/controller.ashx"
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
         , toolbars: [[
