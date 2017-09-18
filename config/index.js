@@ -2,7 +2,6 @@
 var path = require('path')
 
 var proxyConfig = require('./proxyConfig')
-debugger
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -25,7 +24,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8050,
+    port: 8051,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

@@ -10,10 +10,10 @@ import ElementUI from 'element-ui' // element-ui
 import 'element-ui/lib/theme-default/index.css' // element-ui
 import 'font-awesome/css/font-awesome.min.css' // Font Awesome icon图标库
 
-import '../static/ueditor/ueditor.config.js'
-import '../static/ueditor/ueditor.all.min.js'
-import '../static/ueditor/lang/zh-cn/zh-cn.js'
-import '../static/ueditor/ueditor.parse.min.js'
+import '../static/UE/ueditor.config.js'
+import '../static/UE/ueditor.all.min.js'
+import '../static/UE/lang/zh-cn/zh-cn.js'
+import '../static/UE/ueditor.parse.min.js'
 
 // import VueResource from 'vue-resource'
 // Vue.use(VueResource)

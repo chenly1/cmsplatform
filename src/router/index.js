@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Hello from '@/views/Hello'
 import Home from '@/components/Home'
 import NotFound from '@/components/404.vue'
 
 import Form from '@/components/nav1/Form.vue'
 import Form2 from '@/components/nav1/Form2.vue'
 import ModelTable from '@/components/nav1/ModelTable.vue'
-import ue from '@/view/editor/editor.vue'
+import ue from '@/views/editor.vue'
 
 Vue.use(Router)
 
