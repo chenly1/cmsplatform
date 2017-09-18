@@ -13,11 +13,8 @@ module.exports = {
       changeOrigin: true  //是否跨域        
     },
     '/Content/ueditor/net/':{
-      target:'http://192.168.0.249:2105/Content/ueditor/net/',
-      changeOrigin:true,
-      router: function(req) {
-        return 'http://192.168.0.249:2105/Content/ueditor/net/';
-    }
+      target:'http://192.168.0.249:2105/',
+      changeOrigin:true
     }
     
 
