@@ -60,5 +60,49 @@
       "secondaryIndustry": "保健与卫生",
       "details": "温馨提醒，宝宝3个月时需要体检。"
     }
+  ],
+  "materialData": [
+    {
+      "pid": "001",
+      "name": "会员通知",
+      "imgsrc": "https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png",
+      "updateDate": "2017-9-1"
+    },
+    {
+      "pid": "002",
+      "name": "预约通知",
+      "imgsrc": "",
+      "updateDate": "2017-9-2"
+    },
+    {
+      "pid": "003",
+      "name": "健康提醒",
+      "imgsrc": "/static/img/user.1a6e236.png",
+      "updateDate": "2017-9-3"
+    },
+    {
+      "pid": "004",
+      "name": "会员通知",
+      "imgsrc": "",
+      "updateDate": "2017-9-4"
+    },
+    {
+      "pid": "005",
+      "name": "预约通知",
+      "imgsrc": "/static/img/user.1a6e236.png",
+      "updateDate": "2017-9-5"
+    },
+    {
+      "pid": "006",
+      "name": "健康提醒",
+      "imgsrc": "/static/img/hamburger.50e4091.png",
+      "updateDate": "2017-9-6"
+    },
+    {
+      "pid": "007",
+      "name": "会员通知",
+      "imgsrc": "/static/img/user.1a6e236.png",
+      "updateDate": "2017-9-7"
+    }
   ]
 }

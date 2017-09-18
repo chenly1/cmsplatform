@@ -15,15 +15,18 @@
 			</el-form>
 		</el-col>
         <!--列表-->
-        <el-col :span="6" v-for="(o, index) in 7" :key="o" :offset="1" style="padding-top: 20px;">
+        <el-col :span="6" v-for="(o, index) in total" :key="o" :offset="1" style="padding-top: 20px;">
             <el-card :body-style="{ padding: '0px' }">
                 <div slot="header" class="clearfix">
-                    <span class="time" style="line-height: 36px;">更新于：{{ modifyDate }}</span>
+                    <span class="title" style="line-height: 36px;">{{ datas[o-1].name }}</span>
                 </div>
-                <img :src="imgsrc" style="width:100%;"/>
+                <div class="image">
+                    <img v-if="datas[o-1].imgsrc"  v-bind:src="datas[o-1].imgsrc"/>
+                    <img v-else :src="imgsrc"/>
+                </div>
                 <div style="padding: 14px;">
                     <div class="bottom clearfix">
-                        <span class="main">9月9日周六下午3：30主题：哮喘主持人：马静琪</span>
+                        <span class="updateTime">更新于：{{ datas[o-1].updateDate }}</span>
                         <br/>
                         <br/>
                         <el-dropdown style="float: right">
@@ -39,13 +42,56 @@
                 </div>
             </el-card>
         </el-col>
-
+        <!--底部工具条-->
+		<el-col :span="24" class="toolbar">
+			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+			</el-pagination>
+		</el-col>
 
 
 	</section>
 </template>
 
 <script>
+    import { getMaterialData } from '../../api/api'
+
+    export default {
+        data() {
+            return {
+                filters: {
+                    name: ''
+                },
+                total: 0, // 总数
+                page: 1, 
+                datas:[],
+                updateDate: new Date().format("yyyy-MM-dd hh:mm:ss"),
+                imgsrc: require('../../assets/xijing.jpg')
+            }
+        },
+        methods: {
+            // 获取table列表数据
+            getListData() {
+                let para = {
+                    page: this.page,
+                    name: this.filters.name
+                };
+                getMaterialData().then((res) => {
+                    this.total = res.data.body.length; // 数量
+                    this.datas = res.data.body; // 数据
+                    // debugger;
+                });
+            },
+            // 分页
+            handleCurrentChange(val) {
+                this.page = val;
+                this.getListData();
+            }
+        },
+        mounted() {
+            this.getListData();
+        }
+    }
+    
     Date.prototype.format = function (format) {
            var args = {
                "M+": this.getMonth() + 1,
@@ -65,30 +111,14 @@
            }
            return format;
        };
-
-
-export default {
-    data() {
-        return {
-            filters: {
-                name: ''
-            },
-            currentDate: new Date(),
-            modifyDate: new Date().format("yyyy-MM-dd hh:mm:ss"),
-            imgsrc: require('../../assets/hamburger.png')
-        }
-    }
-}
-
-
 </script>
 
 <style scoped>
-  .time {
-    font-size: 15px;
-    color: #999;
+  .title {
+    font-size: 18px;
+    color: #28333c;
   }
-  
+
   .bottom {
     margin-top: 13px;
     line-height: 12px;
@@ -102,6 +132,15 @@ export default {
   .image {
     width: 100%;
     display: block;
+    min-width: 100px;
+    height: 250px;
+    text-align: center;
+    background-color: #e8ecef;
+    border-top: 2px solid #e8ecef;
+    border-bottom: 2px solid #e8ecef;
+  }
+  .image img {
+    max-height: 250px; max-width: 100%;vertical-align:middle;
   }
 
   .clearfix:before,
@@ -114,7 +153,7 @@ export default {
       clear: both
   }
 
-  .main{
+  .updateTime{
     font-size: 13px;
     line-height: 15px;
     color: #999;

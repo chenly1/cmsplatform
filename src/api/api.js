@@ -11,7 +11,12 @@ export const getArticles =()=>{
 //     return axios.get(`${base}/pageListData`, { params: params }); 
 // };
 
-// 不带查询
+// 模版消息-不带查询
 export const getPageListData = () => { 
     return axios.get(`${base}/pageListData`, {  }); 
+};
+
+// 素材管理-不带查询
+export const getMaterialData = () => { 
+    return axios.get(`${base}/materialData`, {  }); 
 };
