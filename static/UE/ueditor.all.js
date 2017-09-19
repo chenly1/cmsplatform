@@ -27735,6 +27735,7 @@ UE.ui = baidu.editor.ui = {};
             title:editor.options.labelMap.cleardoc || editor.getLang("labelMap.cleardoc") || '',
             theme:editor.options.theme,
             onclick:function () {
+                debugger;
                 if (confirm(editor.getLang("confirmClear"))) {
                     editor.execCommand('cleardoc');
                 }

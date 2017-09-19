@@ -161,7 +161,7 @@
                             this.addLoading = true;
                             let para = Object.assign({}, this.addForm);
                             // addUser(para).then((res) => {
-                            //     this.addLoading = false;
+                                this.addLoading = false;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
@@ -170,7 +170,7 @@
                                 this.addFormVisible = false;
                                 this.getListData();
                             // });
-                            console.log('success');
+                            console.log('add success');
                             console.log(para);
                         });
                     }
@@ -189,7 +189,7 @@
                             this.editLoading = true;
                             let para = Object.assign({}, this.editForm);
                             // editUser(para).then((res) => {
-                            //     this.editLoading = false;
+                                this.editLoading = false;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
@@ -198,7 +198,7 @@
                                 this.editFormVisible = false;
                                 this.getListData();
                             // });
-                            console.log('success');
+                            console.log('edit success');
                             console.log(para);
                         });
                     }
@@ -213,7 +213,7 @@
                     debugger;
                     let para = { id: row.pid };
                     // removeUser(para).then((res) => {
-                    //     this.listLoading = false;
+                        this.listLoading = false;
                         this.$message({
                             message: '删除成功',
                             type: 'success'

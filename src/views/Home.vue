@@ -81,7 +81,7 @@
 				sysName:'CMS_Platform',
 				collapsed:false,
 				sysUserName: '系统管理员',
-				sysUserAvatar: require('../assets/user.png'),
+				sysUserAvatar: require('../assets/xijing.jpg'),
 				form: {
 					name: '',
 					region: '',
