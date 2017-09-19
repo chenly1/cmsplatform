@@ -12,10 +12,11 @@ module.exports = {
       target: 'http://192.168.0.249:2105/Content/Ueditor/net/controller.ashx',  // 接口域名
       changeOrigin: true  //是否跨域        
     },
-    '/Content/ueditor/net/':{
+    '../Content/ueditor/net/':{
       target:'http://192.168.0.249:2105/',
       changeOrigin:true
     }
+    
     
 
   }
