@@ -6,6 +6,7 @@ import NotFound from '@/views/404.vue'
 
 import ModelTable from '@/views/nav1/ModelTable.vue'
 import Material from '@/views/nav1/Material.vue'
+import Form from '@/views/Form.vue'
 import ue from '@/views/editor.vue'
 
 Vue.use(Router)
@@ -37,6 +38,7 @@ export default new Router({
       children: [
         { path: '/modelTable', component: ModelTable, name: '模版消息' },
         { path: '/material', component: Material, name: '素材管理' },
+        { path: '/form', component: Form, name: '表单' },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug' }
       ]
     },
