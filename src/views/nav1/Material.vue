@@ -35,7 +35,7 @@
                                 <i class="el-icon-caret-bottom el-icon--right"></i>
                             </el-button>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item @click.native="handleEdit()">编辑</el-dropdown-item>
+                                <el-dropdown-item @click.native="handleEdit(datas[o-1].pid,datas[o-1].name)">编辑</el-dropdown-item>
                                 <el-dropdown-item divided @click.native="handleDel()">删除</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -118,7 +118,7 @@ export default {
                 pid: '',
                 name: ''
             },
-            defaultMsg: '这里是UE测试',
+            defaultMsg: '',// ueditor默认文本
             config: {
                 initialFrameWidth: null,
                 initialFrameHeight: 350
@@ -178,6 +178,8 @@ export default {
                         });
                         // this.$refs['addForm'].resetFields(); // 重置form
                         this.addFormVisible = false;
+                        debugger;
+                        this.$refs.ue.clear(); // 调用子组件方法
                         this.getListData();
                         // });
                         console.log('add success');
@@ -188,9 +190,10 @@ export default {
             });
         },
         // 显示编辑界面
-        handleEdit: function() {
+        handleEdit: function(pid,name) {
             this.editFormVisible = true;
-            // this.editForm = Object.assign({}, row);
+            this.editForm.pid = pid;
+            this.editForm.name = name;
         },
         getUEContent() {
             debugger;
@@ -201,11 +204,6 @@ export default {
                 type: 'success'
             });
             console.log(content)
-        },
-        getUEContents() {
-            debugger;
-            let content = this.$refs.ue.getUEContent(); // 调用子组件方法
-            return content;
         },
         // 编辑
         editSubmit: function() {
@@ -221,9 +219,9 @@ export default {
                             message: '提交成功',
                             type: 'success'
                         });
+                        this.$refs.ue.clear(); // 调用子组件方法
                         // this.$refs['editForm'].resetFields(); // 重置form
                         this.editFormVisible = false;
-                        // this.$refs.ue.destroyed();
                         this.getListData();
                         // });
                         console.log('edit success');

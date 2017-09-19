@@ -36,7 +36,7 @@
         return this.editor.getContent()
       },
       clear(){
-
+        this.editor.setContent('')
       }
     },
     destroyed() {
