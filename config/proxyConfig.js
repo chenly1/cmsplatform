@@ -9,19 +9,15 @@ module.exports = {
       },
       logLevel:'debug' 
     },
-    '/static/UE/controller.jsp': {
-      target: 'http://192.168.0.249:9081/controller.jsp',  // 接口域名
+    '/controller': {
+      target: 'http://192.168.0.249:9081',  // 接口域名
       changeOrigin: true, //是否跨域  ,
-      pathRewrite: {
-        '^/static/UE/controller.jsp': ''   //需要rewrite重写的,
-      },
       logLevel:'debug' 
     },
     '/video': {
       target: 'http://192.168.0.249:9081',  // 接口域名
       changeOrigin: true, //是否跨域  , 
       logLevel:'debug'  
-
     }
   }
 }
