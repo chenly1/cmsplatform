@@ -5,18 +5,23 @@ module.exports = {
       target: 'http://127.0.0.1:3000',  // 接口域名
       changeOrigin: true,  //是否跨域
       pathRewrite: {
-        '^/apis': ''   //需要rewrite重写的,
-      }
+        '^/apis': '',   //需要rewrite重写的,
+      },
+      logLevel:'debug' 
     },
-    '/static/UE/net/controller.ashx': {
-      target: 'http://192.168.0.249:2105/Content/Ueditor/net/controller.ashx',  // 接口域名
-      changeOrigin: true  //是否跨域        
+    '/static/UE/controller.jsp': {
+      target: 'http://192.168.0.249:9081/controller.jsp',  // 接口域名
+      changeOrigin: true, //是否跨域  ,
+      pathRewrite: {
+        '^/static/UE/controller.jsp': ''   //需要rewrite重写的,
+      },
+      logLevel:'debug' 
     },
-    '/Content/ueditor/net/':{
-      target:'http://192.168.0.249:2105/',
-      changeOrigin:true
-    }
-    
+    '/video': {
+      target: 'http://192.168.0.249:9081',  // 接口域名
+      changeOrigin: true, //是否跨域  , 
+      logLevel:'debug'  
 
+    }
   }
 }
