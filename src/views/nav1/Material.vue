@@ -35,7 +35,7 @@
                                 <i class="el-icon-caret-bottom el-icon--right"></i>
                             </el-button>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item @click.native="handleEdit(datas[o-1].pid,datas[o-1].name)">编辑</el-dropdown-item>
+                                <el-dropdown-item @click.native="handleEdit(datas[o-1].pid,datas[o-1].name,datas[o-1].content)">编辑</el-dropdown-item>
                                 <el-dropdown-item divided @click.native="handleDel()">删除</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -80,7 +80,7 @@
                 <div class="info">UE编辑器示例<br>需要使用编辑器时，调用UE公共组件即可。可设置填充内容defaultMsg，配置信息config(宽度和高度等)，可调用组件中获取内容的方法。支持页面内多次调用。</div>
                 <button @click="getUEContent()">获取内容</button>
                 <div class="editor-container">
-                    <UE :defaultMsg=defaultMsg :config=config :id=ue1 ref="ue"></UE>
+                    <UE :defaultMsg=editdefaultMsg :config=editconfig :id=ueeditue ref="ue"></UE>
                 </div>
             </div>
             <div slot="footer" class="dialog-footer">
@@ -104,7 +104,7 @@ export default {
             total: 0, // 总数
             page: 1,
             datas: [],
-            updateDate: new Date().format("yyyy-MM-dd hh:mm:ss"),
+            // updateDate: new Date().format("yyyy-MM-dd hh:mm:ss"),
             imgsrc: require('../../assets/xijing.jpg'),
             addFormVisible: false,// 新增界面是否显示
             addLoading: false,
@@ -135,7 +135,13 @@ export default {
             editForm: {
                 pid: '',
                 name: ''
-            }
+            },
+            editdefaultMsg: '',// ueditor默认文本
+            editconfig: {
+                initialFrameWidth: null,
+                initialFrameHeight: 350
+            },
+            ueeditue: "ueeditue"
         }
     },
     methods: {
@@ -155,6 +161,16 @@ export default {
         handleCurrentChange(val) {
             this.page = val;
             this.getListData();
+        },
+        // 获取ue内容
+        getUEContent() {
+            let content = this.$refs.ue.getUEContent(); // 调用子组件方法
+            this.$notify({
+                title: '获取成功，可在控制台查看！',
+                message: content,
+                type: 'success'
+            });
+            console.log(content)
         },
         // 显示新增界面
         handleAdd: function() {
@@ -189,21 +205,24 @@ export default {
                 }
             });
         },
+        // 新增close按钮
+        // closeDialog(done){
+        // 　　this.$confirm('确认关闭？', '提示', {})
+        // 　　.then(_ => {
+        //         done();
+        //         this.$refs['addForm'].resetFields();
+        //         this.addFormVisible = false;
+        //     })
+        //     .catch(_ => { });
+        // },
         // 显示编辑界面
-        handleEdit: function(pid,name) {
+        handleEdit: function(pid, name, content) {
             this.editFormVisible = true;
             this.editForm.pid = pid;
             this.editForm.name = name;
-        },
-        getUEContent() {
             debugger;
-            let content = this.$refs.ue.getUEContent(); // 调用子组件方法
-            this.$notify({
-                title: '获取成功，可在控制台查看！',
-                message: content,
-                type: 'success'
-            });
-            console.log(content)
+            // this.$refs.ue.setUEContent(content); // 调用子组件方法
+            this.editdefaultMsg = content;
         },
         // 编辑
         editSubmit: function() {
@@ -256,25 +275,25 @@ export default {
     }
 }
 
-Date.prototype.format = function(format) {
-    var args = {
-        "M+": this.getMonth() + 1,
-        "d+": this.getDate(),
-        "h+": this.getHours(),
-        "m+": this.getMinutes(),
-        "s+": this.getSeconds(),
-        "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
-        "S": this.getMilliseconds()
-    };
-    if (/(y+)/.test(format))
-        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var i in args) {
-        var n = args[i];
-        if (new RegExp("(" + i + ")").test(format))
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length));
-    }
-    return format;
-};
+// Date.prototype.format = function(format) {
+//     var args = {
+//         "M+": this.getMonth() + 1,
+//         "d+": this.getDate(),
+//         "h+": this.getHours(),
+//         "m+": this.getMinutes(),
+//         "s+": this.getSeconds(),
+//         "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
+//         "S": this.getMilliseconds()
+//     };
+//     if (/(y+)/.test(format))
+//         format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+//     for (var i in args) {
+//         var n = args[i];
+//         if (new RegExp("(" + i + ")").test(format))
+//             format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length));
+//     }
+//     return format;
+// };
 </script>
 
 <style scoped>
