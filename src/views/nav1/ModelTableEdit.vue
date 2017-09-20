@@ -57,6 +57,7 @@ export default {
     },
     methods: {
         submitForm(formName) {
+            debugger;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
