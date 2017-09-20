@@ -149,9 +149,11 @@ export default {
         },
         // 显示新增界面
         handleAdd: function() {
-            this.addFormVisible = true;
-            this.addForm = {
-            };
+            // this.addFormVisible = true;
+            // this.addForm = {
+            // };
+            debugger;
+            this.$router.push({ path: '/modelTableEdit', query: {type:'add'} });
         },
         // 新增
         addSubmit: function() {
@@ -178,8 +180,10 @@ export default {
         },
         // 显示编辑界面
         handleEdit: function(index, row) {
-            this.editFormVisible = true;
-            this.editForm = Object.assign({}, row);
+            // this.editFormVisible = true;
+            // this.editForm = Object.assign({}, row);
+            debugger;
+            this.$router.push({ path: '/modelTableEdit', query: {type:'edit',name:row.name,other:row.details} });
         },
         // 编辑
         editSubmit: function() {

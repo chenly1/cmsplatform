@@ -5,6 +5,7 @@ import Home from '@/views/Home'
 import NotFound from '@/views/404.vue'
 
 import ModelTable from '@/views/nav1/ModelTable.vue'
+import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
 import Material from '@/views/nav1/Material.vue'
 import Form from '@/views/Form.vue'
 import ue from '@/views/editor.vue'
@@ -37,6 +38,7 @@ export default new Router({
       iconCls: 'fa fa-subway', // 图标样式class
       children: [
         { path: '/modelTable', component: ModelTable, name: '模版消息' },
+        { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑' },
         { path: '/material', component: Material, name: '素材管理' },
         { path: '/form', component: Form, name: '表单' },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug' }

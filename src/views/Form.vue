@@ -72,7 +72,7 @@
   	}
 </style>
 <script>
-  import UE from '../ue/ue.vue';
+  import UE from '../components/ue/ue.vue';
 	export default {
 		components: {UE},
 		data() {
