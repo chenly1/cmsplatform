@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/views/Hello'
 import Home from '@/views/Home'
@@ -9,8 +8,6 @@ import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
 import Material from '@/views/nav1/Material.vue'
 import Form from '@/views/Form.vue'
 import ue from '@/views/editor.vue'
-
-Vue.use(Router)
 
 export default new Router({
   routes: [
