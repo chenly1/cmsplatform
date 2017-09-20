@@ -20,26 +20,43 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="原创">
-          <el-switch on-color="#13ce66" off-color="#ff4949" v-model="form.original" :change="switchChange()"></el-switch>
+          <el-checkbox v-model="form.original"></el-checkbox>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="12">
         <el-form-item label="来源">
-          <el-input v-model="form.source" :disabled="true" class="input"></el-input>
+          <template v-if=" form.original === true ">
+            <el-input v-model="form.source" :disabled="true" class="input"></el-input>
+          </template>
+          <template v-else>
+            <el-input v-model="form.source" :disabled="false" class="input"></el-input>
+          </template>
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item label="原作者">
-          <el-input v-model="form.author" :disabled="true" class="input"></el-input>
+          <template v-if=" form.original === true ">
+            <el-input v-model="form.author" :disabled="true" class="input"></el-input>
+          </template>
+          <template v-else>
+            <el-input v-model="form.author" :disabled="false" class="input"></el-input>
+          </template>
         </el-form-item>
       </el-col>
     </el-row>
     <el-form-item label="来源地址">
-      <el-input v-model="form.sourceurl" :disabled="true" class="input">
-        <template slot="prepend">Http://</template>
-      </el-input>
+      <template v-if=" form.original === true ">
+        <el-input v-model="form.sourceUrl" :disabled="true" class="input">
+          <template slot="prepend"> Http://</template>
+        </el-input>
+      </template>
+      <template v-else>
+        <el-input v-model="form.sourceUrl" :disabled="false" class="input">
+          <template slot="prepend"> Http://</template>
+        </el-input>
+      </template>
     </el-form-item>
   </el-form>
 </template>
@@ -50,9 +67,8 @@
   border-radius: 0px;
 }
 
-.input .el-input__inner {
+.input {
   border: 0 none;
-  border-bottom: 1px solid #ccc;
   border-radius: 0px;
 }
 
@@ -80,35 +96,26 @@ export default {
         subtitle: '',
         editor: '',
         source: '',
-        sourceurl: '',
+        sourceUrl: '',
         original: true,
         author: '',
-        mainbody: ''
+        mainBody: ''
       }
     }
   },
   methods: {
-    switchChange: function() {
-      debugger;
-      if (this.form.original === false) {
-        const input = document.querySelector(".input .el-input__inner");
-        input.disabled = false;
-      }
-    },
-    onSubmit (url,ueContent) {
+    onSubmit(url, ueContent) {
       debugger;
       let content = ueContent;
-      this.form.mainbody = content;
+      this.form.mainBody = content;
       let para = Object.assign({}, this.form);
       Vue.http.post(url, para, { emulateJSON: true })
         .then(
         function(res) {
           debugger;
-           //请求成功的回调函数
+          //请求成功的回调函数
           //先结束loading效果
           loading.close();
-          //调用设置hot数据的方法,把请求成功的数据给hot数组
-          content.commit("setHot", res.body);
         }, function() { }
         );
     }
