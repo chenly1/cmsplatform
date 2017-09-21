@@ -15,17 +15,16 @@ import '../static/UE/ueditor.all.js'
 import '../static/UE/lang/zh-cn/zh-cn.js'
 import '../static/UE/ueditor.parse.min.js'
 
-// import VueResource from 'vue-resource'
-// Vue.use(VueResource)
+import VueResource from 'vue-resource'
+Vue.use(VueResource)
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   // template: '<App/>',
-  //components: { App }
+  // components: { App }
   render: h => h(App)
 }).$mount('#app')

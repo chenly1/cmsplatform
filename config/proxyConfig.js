@@ -19,5 +19,5 @@ module.exports = {
       changeOrigin: true, //是否跨域  , 
       logLevel:'debug'  
     }
-  }
+}
 }
