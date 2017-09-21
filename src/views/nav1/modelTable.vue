@@ -152,7 +152,6 @@ export default {
             // this.addFormVisible = true;
             // this.addForm = {
             // };
-            debugger;
             this.$router.push({ path: '/modelTableEdit', query: {type:'add'} });
         },
         // 新增
@@ -182,7 +181,6 @@ export default {
         handleEdit: function(index, row) {
             // this.editFormVisible = true;
             // this.editForm = Object.assign({}, row);
-            debugger;
             this.$router.push({ path: '/modelTableEdit', query: {type:'edit',name:row.name,other:row.details} });
         },
         // 编辑

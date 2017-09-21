@@ -37,7 +37,7 @@ export default {
                 name: this.$route.query.name || '',
                 way: [],
                 date: '',
-                other: this.$route.query.other ||'',
+                other: this.$route.query.other || '',
             },
             rules: {
                 name: [
@@ -67,7 +67,11 @@ export default {
                             message: "提交成功，请在控制台查看json!！",
                             type: 'success'
                         });
-                    })
+                    }).then(() => {
+                        this.$router.push('/modelTable');
+                    }).catch(() => {
+
+                    });
                 } else {
                     return false;
                 }
@@ -79,8 +83,7 @@ export default {
                     type: 'success'
                 });
             }).then(() => {
-                var _this = this;
-                _this.$router.push('/modelTable');
+                this.$router.push('/modelTable');
             }).catch(() => {
 
             });
