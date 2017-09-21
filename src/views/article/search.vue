@@ -14,6 +14,9 @@ export default {
       debugger;
       var form = this.$refs.search.getDataList('/manager/article');
     }
+  },
+  mounted() {
+        this.getDataList();
   }
 }
 
