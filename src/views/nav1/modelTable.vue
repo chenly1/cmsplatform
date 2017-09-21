@@ -141,11 +141,21 @@ export default {
                 title: this.filters.title
             };
             this.listLoading = true;
-            getPageListData().then((res) => {
-                this.total = res.data.body.length; // 数量
-                this.datas = res.data.body; // 数据
-                this.listLoading = false;
-            });
+            // getPageListData().then((res) => {
+            //     this.total = res.data.body.length; // 数量
+            //     this.datas = res.data.body; // 数据
+            // this.listLoading = false;
+            // });
+            debugger;
+            this.$http.get('/manager/article')
+                .then(function(response) {
+                    debugger;
+                    //this.$set('tableData', response.data);
+                    this.datas = response.data.data;
+                    this.total = response.data.data.length;
+                    this.listLoading = false;
+                });
+
         },
         // 分页
         handleCurrentChange(val) {

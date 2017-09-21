@@ -45,7 +45,9 @@
       "primaryIndustry": "医疗护理",
       "secondaryIndustry": "保健与卫生",
       "source": "您好，XXX，您已成功消费XXX元。",
-      "releaseTime": "2017-06-23"
+      "releaseTime": "2017-06-23",
+      "imgsrc": "http://219.234.5.196:9081/banner/zt29M2AjOVJ83Yjac4IQ5uzbn.jpg",
+      "sort":"1"
     },
     {
       "pid": "002",
@@ -53,7 +55,9 @@
       "primaryIndustry": "医疗护理",
       "secondaryIndustry": "保健与卫生",
       "source": "您好，XXX，您已成功预约。",
-      "releaseTime": ""
+      "releaseTime": "",
+      "imgsrc": "http://219.234.5.196:9081/banner/Hq2FK97deyYWLqkb09ws52Ibn.jpg",
+      "sort":"3"
     },
     {
       "pid": "003",
@@ -61,7 +65,9 @@
       "primaryIndustry": "医疗护理",
       "secondaryIndustry": "保健与卫生",
       "source": "温馨提醒，宝宝3个月时需要体检。",
-      "releaseTime": ""
+      "releaseTime": "",
+      "imgsrc": "http://219.234.5.196:9081/banner/p8Uq0FlB3I3XweolOT7siGRbn.png",
+      "sort":"2"
     }
   ],
   "materialData": [

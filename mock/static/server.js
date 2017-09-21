@@ -14,8 +14,8 @@ server.use(jsonServer.bodyParser);
 server.use(middlewares);
 
 server.use((req, res, next) => {
- res.header('X-Hello', 'World');
- next();
+	res.header('X-Hello', 'World');
+	next();
 })
 router.render = (req, res) => {
 	res.jsonp({
@@ -23,13 +23,13 @@ router.render = (req, res) => {
 		body: res.locals.data
 	})
 }
-server.use("/api",router);
+server.use("/api", router);
 
 server.use(router);
 server.listen({
 	host: ip,
 	port: port,
-}, function() {
+}, function () {
 	console.log(JSON.stringify(jsonServer));
 	console.log(`JSON Server is running in http://${ip}:${port}`);
 });

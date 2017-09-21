@@ -6,6 +6,7 @@ import NotFound from '@/views/404.vue'
 
 import ModelTable from '@/views/nav1/ModelTable.vue'
 import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
+import CarouselMap from '@/views/nav1/CarouselMap.vue'
 import Material from '@/views/nav1/Material.vue'
 import eduForm from '@/views/eduForm.vue'
 import articleList from '@/views/article/search.vue'
@@ -40,6 +41,7 @@ export default new Router({
       children: [
         { path: '/modelTable', component: ModelTable, name: '模版消息' },
         { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑' },
+        { path: '/carouselMap', component: CarouselMap, name: '轮播图管理' },
         { path: '/material', component: Material, name: '素材管理' },
         { path: '/article', component: articleList, name: '文章列表' },
         { path: '/eduForm', component: eduForm, name: '健康教育' },
