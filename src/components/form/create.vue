@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="12">
         <el-form-item label="标题" prop="title">
-          <el-input v-model="form.title" placeholder="（必填）" class="login-form-input" ></el-input>
+          <el-input v-model="form.title" placeholder="（必填）" class="login-form-input"></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">
@@ -15,19 +15,25 @@
     <el-row>
       <el-col :span="12">
         <el-form-item label="责任编辑" prop="editor">
-          <el-input v-model="form.editor" placeholder="（必填）" class="login-form-input" ></el-input>
+          <el-input v-model="form.editor" placeholder="（必填）" class="login-form-input"></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item label="原创">
-          <el-checkbox v-model="form.original"></el-checkbox>
+          <el-checkbox :checked="check" v-model="check"></el-checkbox>
+          <template v-if=" check === true ">
+            <el-input v-model="form.original" style="display:none" value=1></el-input>
+          </template>
+           <template v-else>
+            <el-input v-model="form.original" style="display:none" value=0></el-input>
+          </template>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="12">
         <el-form-item label="来源">
-          <template v-if=" form.original === true ">
+          <template v-if=" check === true ">
             <el-input v-model="form.source" :disabled="true" class="login-form-input"></el-input>
           </template>
           <template v-else>
@@ -37,7 +43,7 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="原作者">
-          <template v-if=" form.original === true ">
+          <template v-if=" check === true ">
             <el-input v-model="form.author" :disabled="true" class="login-form-input"></el-input>
           </template>
           <template v-else>
@@ -47,7 +53,7 @@
       </el-col>
     </el-row>
     <el-form-item label="来源地址">
-      <template v-if=" form.original === true ">
+      <template v-if=" check === true ">
         <el-input v-model="form.sourceUrl" :disabled="true" class="login-form-input">
           <template slot="prepend"> Http://</template>
         </el-input>
@@ -92,10 +98,12 @@ export default {
         editor: '',
         source: '',
         sourceUrl: '',
-        original: true,
+        original: 1,
         author: '',
-        mainBody: ''
+        mainBody: '',
+        purpose: ''
       },
+      check: true,
       rules: {
         title: [
           { required: true, message: '请输入模版标题', trigger: 'blur' }
@@ -107,7 +115,7 @@ export default {
     }
   },
   methods: {
-    onSubmit(url, ueContent) {
+    onSubmit(url, ueContent,purpose) {
       debugger;
       var _that = this;
       this.$refs['form'].validate((valid) => {
@@ -115,6 +123,7 @@ export default {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             let content = ueContent;
             this.form.mainBody = content;
+            this.form.purpose = purpose;
             let para = Object.assign({}, this.form);
             _that.$http.post(url, para)
               .then(function(res) {
