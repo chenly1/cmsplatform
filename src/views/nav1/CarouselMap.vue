@@ -20,14 +20,14 @@
             </el-table-column>
             <el-table-column prop="pid" label="ID" width="80" sortable>
             </el-table-column>
-            <el-table-column prop="title" label="主题" width="160" sortable>
+            <el-table-column prop="title" label="主题" width="130" sortable>
             </el-table-column>
             <el-table-column prop="imgsrc" label="略缩图" min-width="150" sortable>
                 <template scope="scope">
-                    <img :src="scope.row.imgsrc" width="" height="100px" alt="">
+                    <img :src="scope.row.imgsrc" style=" height:100px;padding-top:5px;" alt="">
                 </template>
             </el-table-column>
-            <el-table-column prop="sort" label="显示顺序" width="80" sortable>
+            <el-table-column prop="imgSort" label="显示顺序" width="120" sortable>
             </el-table-column>
             <el-table-column prop="releaseTime" label="发布时间" width="120" sortable>
             </el-table-column>
