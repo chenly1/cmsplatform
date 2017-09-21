@@ -88,6 +88,7 @@
 }
 </style>
 <script>
+import {submit} from '../../api/api'
 export default {
   name: 'create',
   data() {
@@ -126,7 +127,7 @@ export default {
             this.form.purpose = purpose;
             let para = Object.assign({}, this.form);
             debugger;
-            _that.$http.post(url, para)
+            submit(url,para)
               .then(function(res) {
                 debugger;
                 return true;

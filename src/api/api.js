@@ -20,3 +20,11 @@ export const getPageListData = () => {
 export const getMaterialData = () => { 
     return axios.get(`${base}/materialData`, {  }); 
 };
+
+export const submit = (url, params) => {
+    return axios.post(url, params)
+}
+
+export const getListData = (url) => {
+    return axios.get(url, {})
+}
