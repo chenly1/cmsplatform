@@ -22,6 +22,7 @@ export default {
   components: { create, UE },
   data() {
     return {
+      defaultMsg: '',
       config: {
         toolbars: [
           ['fullscreen', 'simpleupload', 'insertimage', 'insertvideo', 'source', 'undo', 'redo', 'bold']
@@ -36,7 +37,7 @@ export default {
     submit: function () {
       debugger;
       let content = this.$refs.ue.getUEContent(); // 调用子组件方法
-      var form = this.$refs.create.onSubmit('http://127.0.0.1', content);
+      var form = this.$refs.create.onSubmit('http://192.168.0.249:9082/manager/article', content);
     }
   }
 }
