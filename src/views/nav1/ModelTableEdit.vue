@@ -1,8 +1,8 @@
 <template>
     <section class="form-section">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="模版标题" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
+            <el-form-item label="模版标题" prop="title">
+                <el-input v-model="ruleForm.title"></el-input>
             </el-form-item>
             <el-form-item label="提醒方式">
                 <el-checkbox-group v-model="ruleForm.way">
@@ -19,8 +19,8 @@
                     </el-form-item>
                 </el-row>
             </el-form-item>
-            <el-form-item label="详细内容" prop="other">
-                <el-input type="textarea" v-model="ruleForm.other" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
+            <el-form-item label="详细内容" prop="source">
+                <el-input type="textarea" v-model="ruleForm.source" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -34,13 +34,13 @@ export default {
     data() {
         return {
             ruleForm: {
-                name: this.$route.query.name || '',
+                title: this.$route.query.title || '',
                 way: [],
                 date: '',
-                other: this.$route.query.other || '',
+                source: this.$route.query.source || '',
             },
             rules: {
-                name: [
+                title: [
                     { required: true, message: '请输入模版标题', trigger: 'blur' }
                 ],
                 // way: [
@@ -49,7 +49,7 @@ export default {
                 // date: [
                 //     { type: 'date', required: true, message: '请选择提醒时间', trigger: 'change' }
                 // ],
-                other: [
+                source: [
                     { required: true, message: '请填写详细内容', trigger: 'blur' }
                 ]
             }
