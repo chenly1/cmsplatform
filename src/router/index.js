@@ -8,6 +8,7 @@ import ModelTable from '@/views/nav1/ModelTable.vue'
 import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
 import Material from '@/views/nav1/Material.vue'
 import eduForm from '@/views/eduForm.vue'
+import articleList from '@/views/article/search.vue'
 import ue from '@/views/editor.vue'
 
 Vue.use(Router)
@@ -40,6 +41,7 @@ export default new Router({
         { path: '/modelTable', component: ModelTable, name: '模版消息' },
         { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑' },
         { path: '/material', component: Material, name: '素材管理' },
+        { path: '/article', component: articleList, name: '文章列表' },
         { path: '/eduForm', component: eduForm, name: '健康教育' },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug' }
       ]

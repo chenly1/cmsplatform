@@ -25,7 +25,7 @@
             <el-input v-model="form.original" style="display:none" value=1></el-input>
           </template>
            <template v-else>
-            <el-input v-model="form.original" style="display:none" value=0></el-input>
+            <el-input v-model="form.original" style="display:none" value=2></el-input>
           </template>
         </el-form-item>
       </el-col>
@@ -120,19 +120,17 @@ export default {
       var _that = this;
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.$confirm('确认提交吗？', '提示', {}).then(() => {
+          this.$confirm('确认提交吗？', '提示', {}).then(() => {         
             let content = ueContent;
             this.form.mainBody = content;
             this.form.purpose = purpose;
             let para = Object.assign({}, this.form);
+            debugger;
             _that.$http.post(url, para)
               .then(function(res) {
                 debugger;
-                //请求成功的回调函数
-                //先结束loading效果
-                loading.close();
-              }, function() { }
-              );
+                return true;
+              });
           });
         }
         else {
