@@ -4,7 +4,7 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="标题"></el-input>
+                    <el-input v-model="filters.title" placeholder="标题"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" v-on:click="getListData">查询</el-button>
@@ -16,20 +16,25 @@
         </el-col>
         <!--列表-->
         <el-table :data="datas" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-            <el-table-column type="selection" width="55">
+            <el-table-column type="selection" width="40">
             </el-table-column>
-            <el-table-column type="index" width="60">
+            <el-table-column type="index" width="40">
             </el-table-column>
-            <el-table-column prop="pid" label="模板ID" width="120" sortable>
+            <el-table-column prop="pid" label="ID" width="80" sortable>
             </el-table-column>
-            <el-table-column prop="name" label="标题" width="160" sortable>
+            <el-table-column prop="title" label="标题" width="160" sortable>
             </el-table-column>
-            <el-table-column prop="details" label="详细内容" min-width="180" sortable>
+            <el-table-column prop="source" label="详细内容" min-width="150" sortable>
             </el-table-column>
-            <el-table-column label="操作" width="150">
+            <el-table-column prop="releaseTime" label="发布时间" width="120" sortable>
+            </el-table-column>
+            <el-table-column label="操作" width="250">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                    <el-button type="info" size="small" @click="previewEvent(scope.$index, scope.row)">预览</el-button>
+                    <el-button v-if="!scope.row.releaseTime" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button v-if="!scope.row.releaseTime" type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                    <el-button v-if="!scope.row.releaseTime" type="success" size="small" @click="releaseEvent(scope.$index, scope.row)">发布</el-button>
+                    <el-button v-if="scope.row.releaseTime" type="warning" size="small" @click="withdrawalEvent(scope.$index, scope.row)">撤回</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -44,11 +49,11 @@
         <!--新增界面-->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-                <el-form-item label="标题" prop="name">
-                    <el-input v-model="addForm.name" auto-complete="off"></el-input>
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="addForm.title" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="详细内容" prop="details">
-                    <el-input type="textarea" v-model="addForm.details" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
+                <el-form-item label="详细内容" prop="source">
+                    <el-input type="textarea" v-model="addForm.source" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -60,11 +65,11 @@
         <!--编辑界面-->
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
             <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-                <el-form-item label="标题" prop="name">
-                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="editForm.title" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="详细内容" prop="details">
-                    <el-input type="textarea" v-model="editForm.details" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
+                <el-form-item label="详细内容" prop="source">
+                    <el-input type="textarea" v-model="editForm.source" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -83,7 +88,7 @@ export default {
     data() {
         return {
             filters: {
-                name: ''
+                title: ''
             },
             datas: [],
             total: 0, // 总数
@@ -94,35 +99,35 @@ export default {
             addFormVisible: false,// 新增界面是否显示
             addLoading: false,
             addFormRules: {
-                name: [
+                title: [
                     { required: true, message: '请输入标题', trigger: 'blur' }
                 ],
-                details: [
+                source: [
                     { required: true, message: '请输入内容', trigger: 'blur' }
                 ]
             },
             // 新增界面数据
             addForm: {
                 pid: '',
-                name: '',
-                details: ''
+                title: '',
+                source: ''
             },
 
             editFormVisible: false,// 编辑界面是否显示
             editLoading: false,
             editFormRules: {
-                name: [
+                title: [
                     { required: true, message: '请输入标题', trigger: 'blur' }
                 ],
-                details: [
+                source: [
                     { required: true, message: '请输入内容', trigger: 'blur' }
                 ]
             },
             // 编辑界面数据
             editForm: {
                 pid: '',
-                name: '',
-                details: ''
+                title: '',
+                source: ''
             }
 
 
@@ -133,7 +138,7 @@ export default {
         getListData() {
             let para = {
                 page: this.page,
-                name: this.filters.name
+                title: this.filters.title
             };
             this.listLoading = true;
             getPageListData().then((res) => {
@@ -152,7 +157,7 @@ export default {
             // this.addFormVisible = true;
             // this.addForm = {
             // };
-            this.$router.push({ path: '/modelTableEdit', query: {type:'add'} });
+            this.$router.push({ path: '/modelTableEdit', query: { type: 'add' } });
         },
         // 新增
         addSubmit: function() {
@@ -181,7 +186,7 @@ export default {
         handleEdit: function(index, row) {
             // this.editFormVisible = true;
             // this.editForm = Object.assign({}, row);
-            this.$router.push({ path: '/modelTableEdit', query: {type:'edit',name:row.name,other:row.details} });
+            this.$router.push({ path: '/modelTableEdit', query: { type: 'edit', title: row.title, source: row.source } });
         },
         // 编辑
         editSubmit: function() {
@@ -249,6 +254,53 @@ export default {
                 // });
             }).catch(() => {
 
+            });
+        },
+        // 发布
+        releaseEvent: function(index, row) {
+            this.$confirm('确认发布该记录吗?', '提示', {
+                type: 'warning'
+            }).then(() => {
+                this.listLoading = true;
+                debugger;
+                let para = { id: row.pid };
+                // removeUser(para).then((res) => {
+                this.listLoading = false;
+                this.$message({
+                    message: '发布成功',
+                    type: 'success'
+                });
+                this.getListData();
+                // });
+            }).catch(() => {
+
+            });
+        },
+        // 撤回
+        withdrawalEvent: function(index, row) {
+            this.$confirm('确认撤回该记录吗?', '提示', {
+                type: 'warning'
+            }).then(() => {
+                this.listLoading = true;
+                debugger;
+                let para = { id: row.pid };
+                // removeUser(para).then((res) => {
+                this.listLoading = false;
+                this.$message({
+                    message: '撤回成功',
+                    type: 'success'
+                });
+                this.getListData();
+                // });
+            }).catch(() => {
+
+            });
+        },
+        // 预览
+        previewEvent: function(index, row) {
+            this.$message({
+                message: '页面即将跳转',
+                type: 'info'
             });
         }
     },
