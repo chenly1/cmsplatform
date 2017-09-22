@@ -141,20 +141,17 @@ export default {
                 title: this.filters.title
             };
             this.listLoading = true;
-            // getPageListData().then((res) => {
-            //     this.total = res.data.body.length; // 数量
-            //     this.datas = res.data.body; // 数据
-            // this.listLoading = false;
+            getPageListData().then((res) => {
+                this.total = res.data.body.length; // 数量
+                this.datas = res.data.body; // 数据
+            this.listLoading = false;
+            });
+            // this.$http.get('/manager/article').then(function(response) {
+            //         //this.$set('tableData', response.data);
+            //         this.datas = response.data.data;
+            //         this.total = response.data.data.length;
+            //         this.listLoading = false;
             // });
-            debugger;
-            this.$http.get('/manager/article')
-                .then(function(response) {
-                    debugger;
-                    //this.$set('tableData', response.data);
-                    this.datas = response.data.data;
-                    this.total = response.data.data.length;
-                    this.listLoading = false;
-                });
 
         },
         // 分页
@@ -227,7 +224,6 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.listLoading = true;
-                debugger;
                 let para = { id: row.pid };
                 // removeUser(para).then((res) => {
                 this.listLoading = false;
@@ -247,7 +243,6 @@ export default {
         },
         // 批量删除
         batchRemove: function() {
-            debugger;
             var ids = this.sels.map(item => item.pid).toString();
             this.$confirm('确认删除选中记录吗？', '提示', {
                 type: 'warning'
@@ -272,7 +267,6 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.listLoading = true;
-                debugger;
                 let para = { id: row.pid };
                 // removeUser(para).then((res) => {
                 this.listLoading = false;
@@ -292,7 +286,6 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.listLoading = true;
-                debugger;
                 let para = { id: row.pid };
                 // removeUser(para).then((res) => {
                 this.listLoading = false;
