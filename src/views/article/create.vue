@@ -16,8 +16,8 @@
 }
 </style>
 <script>
-import UE from '../components/ue/ue.vue';
-import create from '../components/form/create.vue';
+import UE from '../../components/ue/ue.vue';
+import create from '../../components/form/create.vue';
 export default {
   components: { create, UE },
   data() {
@@ -34,10 +34,10 @@ export default {
     }
   },
   methods: {
-    submit: function () {
+    submit() {
       debugger;
       let content = this.$refs.ue.getUEContent(); // 调用子组件方法
-      var form = this.$refs.create.onSubmit('/manager/article', content,'edu');
+      var form = this.$refs.create.onSubmit('/manager/article', content, this.$route.params.purposeType);
     }
   }
 }

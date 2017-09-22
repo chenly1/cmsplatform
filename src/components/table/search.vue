@@ -2,7 +2,16 @@
   <div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column label="标题" width="180" prop="title"></el-table-column>
-      <el-table-column label="作者" width="180" prop="editor">
+
+      <el-table-column label="原创" width="180" prop="original">
+        <template scope="scope">
+          <template v-if="scope.row.original===1">
+            <span>是</span>
+          </template>
+          <template v-else>
+            <span>否</span>
+          </template>
+        </template>
       </el-table-column>
       <el-table-column label="发布时间" width="180" prop="releaseTime">
       </el-table-column>
@@ -53,7 +62,7 @@ export default {
     getDataList(url) {
       debugger;
       var _that = this;
-      this.url = url;      
+      this.url = url;
       url = url + '?num=' + this.pageNum + '&size=' + this.pageSize;
       getListData(url)
         .then(function(response) {
