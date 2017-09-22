@@ -1,23 +1,74 @@
 <template>
   <div>
-    <!-- <el-button type="primary" @click="getDataList">查询</el-button> -->
-    <search ref="search"></search> 
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column label="标题" width="180" prop="title"></el-table-column>
+      <el-table-column label="原创" width="180" prop="original">
+        <template scope="scope">
+            <span v-if="scope.row.original===1">是</span>
+            <span v-else>否</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="发布时间" width="180" prop="releaseTime">
+      </el-table-column>
+      <el-table-column label="操作">
+        <template scope="scope">
+          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="block">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum" :page-sizes="pageSizes" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
-
 <script>
-import search from '../../components/table/search.vue'
+import { getListData } from '../../api/api'
 export default {
-  components: { search },
-  methods: {
-    getDataList() {
-      debugger;
-      var form = this.$refs.search.getDataList('/manager/article');
+  data() {
+    return {
+      tableData: [],
+      total: 0,
+      pageSize: 10,
+      pageNum: 1,
+      pageSizes: [10, 20, 50, 100],
+      url: '/manager/article'
     }
   },
-  mounted() {
+
+
+  methods: {
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.getDataList();
+    },
+    handleCurrentChange(pageNum) {
+      this.pageNum = pageNum;
+      this.getDataList();
+    },
+    handleEdit(index, row) {
+      debugger;
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+
+    getDataList() {
+      debugger;
+      var _that = this;
+      var url = this.url + '?num=' + this.pageNum + '&size=' + this.pageSize;
+      getListData(url)
+        .then(function(response) {
+          debugger;
+          _that.total = response.data.total;
+          _that.tableData = response.data.data;
+        });
+    }
+  },
+  mounted(){
     this.getDataList();
   }
 }
-
 </script>
