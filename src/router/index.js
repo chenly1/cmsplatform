@@ -9,8 +9,9 @@ import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
 import CarouselMap from '@/views/nav1/CarouselMap.vue'
 import CarouselMapEdit from '@/views/nav1/CarouselMapEdit.vue'
 import Material from '@/views/nav1/Material.vue'
-import eduForm from '@/views/eduForm.vue'
-import articleList from '@/views/article/search.vue'
+import articleMangment from '@/views/article/mangement.vue'
+import articleCreate from '@/views/article/create.vue'
+import articleSearch from '@/views/article/search.vue'
 import ue from '@/views/editor.vue'
 
 Vue.use(Router)
@@ -45,8 +46,17 @@ export default new Router({
         { path: '/carouselMap', component: CarouselMap, name: '轮播图管理' },
         { path: '/carouselMapEdit', component: CarouselMapEdit, name: '轮播图管理_编辑' },
         { path: '/material', component: Material, name: '素材管理' },
-        { path: '/article', component: articleList, name: '文章列表' },
-        { path: '/eduForm', component: eduForm, name: '健康教育' },
+        {
+          path: '/article/mangement',
+          component: articleMangment,
+          name: '文章列表',
+          redirect: '/article/search',
+          children: [
+            { path: '/article/search', component: articleSearch, name: '文章列表' },
+            { path: '/article/create/:purposeType', component: articleCreate, name: '创建文章' }
+          ]
+        },
+        // { path: '/eduForm', component: eduForm, name: '健康教育' },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug' }
       ]
     },
