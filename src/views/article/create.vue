@@ -38,6 +38,7 @@ export default {
       debugger;
       let content = this.$refs.ue.getUEContent(); // 调用子组件方法
       var form = this.$refs.create.onSubmit('/manager/article', content, this.$route.params.purposeType);
+      this.$router.push('/article/search');
     }
   }
 }

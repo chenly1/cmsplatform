@@ -11,6 +11,7 @@ import Material from '@/views/nav1/Material.vue'
 import articleMangment from '@/views/article/mangement.vue'
 import articleCreate from '@/views/article/create.vue'
 import articleSearch from '@/views/article/search.vue'
+import articleEdit from '@/views/article/edit.vue'
 import ue from '@/views/editor.vue'
 
 Vue.use(Router)
@@ -51,7 +52,8 @@ export default new Router({
           redirect: '/article/search',
           children: [
             { path: '/article/search', component: articleSearch, name: '文章列表' },
-            { path: '/article/create/:purposeType', component: articleCreate, name: '创建文章' }
+            { path: '/article/create/:purposeType', component: articleCreate, name: '创建文章' },
+            { path: '/article/edit/:rowid', component: articleEdit, name: '编辑文章' }
           ]
         },
         // { path: '/eduForm', component: eduForm, name: '健康教育' },
