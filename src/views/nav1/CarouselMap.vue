@@ -82,19 +82,19 @@ export default {
                 pageSize: 10
             };
             this.listLoading = true;
-            getPageListData().then((res) => {
-                this.total = res.data.body.length; // 数量
-                this.datas = res.data.body; // 数据
-                this.listLoading = false;
-            });
-            // var _that = this;
-            // getListData('/manager/banner?num=' + this.pageNum + '&size=' + this.pageSize).then(function(response) {
-            //     debugger;
-            //     //this.$set('tableData', response.data);
-            //     _that.total = response.data.total;
-            //     _that.datas = response.data.data;
-            //     _that.listLoading = false;
+            // getPageListData().then((res) => {
+            //     this.total = res.data.body.length; // 数量
+            //     this.datas = res.data.body; // 数据
+            //     this.listLoading = false;
             // });
+            var _that = this;
+            getListData('/manager/banner?num=' + this.pageNum + '&size=' + this.pageSize).then(function(response) {
+                // debugger;
+                //this.$set('tableData', response.data);
+                _that.total = response.data.total;
+                _that.datas = response.data.data;
+                _that.listLoading = false;
+            });
 
         },
         // 分页
@@ -107,13 +107,26 @@ export default {
             // this.addFormVisible = true;
             // this.addForm = {
             // };
-            this.$router.push({ path: '/carouselMapEdit', query: { type: 'add' } });
+            var query = {
+                type: 'add'
+            };
+            this.$router.push({ path: '/carouselMapEdit', query: query });
         },
         // 编辑
         handleEdit: function(index, row) {
             // this.editFormVisible = true;
             // this.editForm = Object.assign({}, row);
-            this.$router.push({ path: '/carouselMapEdit', query: { type: 'edit', title: row.title } });
+            var query = {
+                type: 'add',
+                id: row.id,
+                title: row.title,
+                sort: row.sort,
+                link: row.link,
+                imageUrl: row.imageUrl,
+                logoff: row.logoff,
+                logoffText: row.logoffText
+            };
+            this.$router.push({ path: '/carouselMapEdit', query: query });
         },
         // 删除
         handleDel: function(index, row) {
