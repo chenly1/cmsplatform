@@ -4,10 +4,14 @@ import Hello from '@/views/Hello'
 import Home from '@/views/Home'
 import NotFound from '@/views/404.vue'
 
+//模版消息
 import ModelTable from '@/views/nav1/ModelTable.vue'
 import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
-import CarouselMap from '@/views/nav1/CarouselMap.vue'
-import CarouselMapEdit from '@/views/nav1/CarouselMapEdit.vue'
+//轮播图管理
+import CarouselMapSearch from '@/views/carouselMap/search.vue'
+import CarouselMapEdit from '@/views/carouselMap/edit.vue'
+import CarouselMapMangement from '@/views/carouselMap/mangement.vue'
+//文章素材
 import Material from '@/views/nav1/Material.vue'
 import articleMangment from '@/views/article/mangement.vue'
 import articleCreate from '@/views/article/create.vue'
@@ -42,11 +46,18 @@ export default new Router({
       name: '导航一',
       iconCls: 'fa fa-subway', // 图标样式class
       children: [
-        { path: '/modelTable', component: ModelTable, name: '模版消息' },
-        { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑' },
-        { path: '/carouselMap', component: CarouselMap, name: '轮播图管理' },
-        { path: '/carouselMapEdit', component: CarouselMapEdit, name: '轮播图管理_编辑' },
-        { path: '/material', component: Material, name: '素材管理' },
+        { path: '/modelTable',  component: ModelTable,  name: '模版消息',hidden: true},
+        { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑',hidden: true },
+        { path: '/carouselMap/mangement', 
+          component: CarouselMapMangement, 
+          redirect: '/carouselMap/search',
+          name: '轮播图管理',
+          children: [
+          { path: '/carouselMap/search', component: CarouselMapSearch, name: '轮播图管理' },
+          { path: '/carouselMap/edit', component: CarouselMapEdit, name: '轮播图管理_编辑' }
+          ]
+        },
+        { path: '/material', component: Material, name: '素材管理' ,hidden: true},
         {
           path: '/article/mangement',
           component: articleMangment,

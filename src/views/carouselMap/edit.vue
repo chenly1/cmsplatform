@@ -5,9 +5,9 @@
                 <el-input v-model="ruleForm.title"></el-input>
             </el-form-item>
             <el-form-item label="启用">
-                <el-checkbox v-model="ruleForm.original"></el-checkbox>
+                <el-checkbox v-model="ruleForm.logoff"></el-checkbox>
             </el-form-item>
-            <el-form-item label="上传图片" prop="fileList">
+            <el-form-item v-if="checkEvent()" label="上传图片" prop="fileList">
                 <el-upload class="upload-demo" ref="upload" action="/static/img" 
                 :before-upload="beforeAvatarUpload" :on-change="changeEvent" 
                 :on-preview="handlePreview" :on-remove="handleRemove" 
@@ -20,9 +20,9 @@
             <el-form-item label="显示顺序" prop="sort">
                 <el-input v-model.number="ruleForm.sort"></el-input>
             </el-form-item>
-            <el-form-item label="来源地址">
-                <el-input v-model="ruleForm.sourceUrl" :disabled="false" class="login-form-input">
-                    <template slot="prepend"> Http://</template>
+            <el-form-item label="来源地址" prop="link">
+                <el-input v-model="ruleForm.link"  class="login-form-input">
+                    <!-- <template slot="prepend"> Http://</template> -->
                 </el-input>
             </el-form-item>
             <el-form-item>
@@ -36,6 +36,7 @@
 export default {
     data() {
         var checkNum = (rule, value, callback) => {
+            // debugger;
             if (!value) {
                 return callback(new Error('请输入显示顺序'));
             }
@@ -46,6 +47,7 @@ export default {
             }
         };
         var checkImg = (rule, value, callback) => {
+            // debugger;
             if (value.length==0) {
                 return callback(new Error('请上传图片'));
             } else {
@@ -57,7 +59,8 @@ export default {
                 title: this.$route.query.title || '',
                 fileList: [],
                 sort: this.$route.query.sort || '',
-                link: this.$route.query.link || ''
+                link: this.$route.query.link || '',
+                logoff: this.$route.query.logoff==2||false
             },
             rules: {
                 title: [
@@ -73,6 +76,10 @@ export default {
         };
     },
     methods: {
+        checkEvent(){
+            let checkData = this.$route.query.type==='add';
+            return checkData;
+        },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -83,7 +90,7 @@ export default {
                             message: "提交成功，请在控制台查看json!！",
                             type: 'success'
                         });
-                        this.$router.push('/carouselMap');
+                        this.$router.push('/carouselMap/mangement');
                     }).catch(() => {
 
                     });
@@ -99,7 +106,7 @@ export default {
                     type: 'success'
                 });
             }).then(() => {
-                this.$router.push('/carouselMap');
+                this.$router.push('/carouselMap/mangement');
             }).catch(() => {
 
             });

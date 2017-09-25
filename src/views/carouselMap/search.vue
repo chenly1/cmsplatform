@@ -3,14 +3,14 @@
         <!--工具条-->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
+                <!-- <el-form-item>
+                        <el-input v-model="filters.title" placeholder="主题"></el-input>
+                    </el-form-item> -->
                 <el-form-item>
-                    <el-input v-model="filters.title" placeholder="主题"></el-input>
+                    <el-button type="success" v-on:click="getListData">刷新</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" v-on:click="getListData">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="handleAdd">新增</el-button>
+                    <el-button type="primary" @click="handleAdd()">新增</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -29,10 +29,8 @@
             </el-table-column>
             <el-table-column prop="logoff" label="状态" width="120" sortable>
                 <template scope="scope">
-                    <template>
-                        <span v-if="scope.row.logoff===2">已启用</span>
-                        <span v-else-if="scope.row.logoff===1">未启用</span>
-                    </template>
+                    <span v-if="scope.row.logoff===2">已启用</span>
+                    <span v-else-if="scope.row.logoff===1">未启用</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="200">
@@ -47,7 +45,7 @@
 
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
-            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" :total="total" style="float:right;">
+            <el-pagination layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange" :current-page="pageNum" :page-size="pageSize" :total="total" style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -62,7 +60,7 @@ export default {
     data() {
         return {
             filters: {
-                title: ''
+                //     title: ''
             },
             datas: [],
             total: 0,
@@ -110,14 +108,14 @@ export default {
             var query = {
                 type: 'add'
             };
-            this.$router.push({ path: '/carouselMapEdit', query: query });
+            this.$router.push({ path: '/carouselMap/edit', query: query });
         },
         // 编辑
         handleEdit: function(index, row) {
             // this.editFormVisible = true;
             // this.editForm = Object.assign({}, row);
             var query = {
-                type: 'add',
+                type: 'edit',
                 id: row.id,
                 title: row.title,
                 sort: row.sort,
@@ -126,7 +124,8 @@ export default {
                 logoff: row.logoff,
                 logoffText: row.logoffText
             };
-            this.$router.push({ path: '/carouselMapEdit', query: query });
+            debugger;
+            this.$router.push({ path: '/carouselMap/edit', query: query });
         },
         // 删除
         handleDel: function(index, row) {
@@ -149,7 +148,7 @@ export default {
         },
         // 启用
         releaseEvent: function(index, row) {
-            this.$confirm('确认发布该记录吗?', '提示', {
+            this.$confirm('确认启用该记录吗?', '提示', {
                 type: 'warning'
             }).then(() => {
                 this.listLoading = true;
@@ -157,7 +156,7 @@ export default {
                 // removeUser(para).then((res) => {
                 this.listLoading = false;
                 this.$message({
-                    message: '发布成功',
+                    message: '启用成功',
                     type: 'success'
                 });
                 this.getListData();

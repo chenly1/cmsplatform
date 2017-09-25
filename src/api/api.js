@@ -27,7 +27,6 @@ export const submit = (url, params) => {
 }
 
 export const getListData = (url) => {
-    debugger;
     return axios.get(url, {})
 }
 
