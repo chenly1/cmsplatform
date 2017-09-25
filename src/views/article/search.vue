@@ -4,8 +4,8 @@
       <el-table-column label="标题" width="180" prop="title"></el-table-column>
       <el-table-column label="原创" width="180" prop="original">
         <template scope="scope">
-            <span v-if="scope.row.original===1">是</span>
-            <span v-else>否</span>
+          <span v-if="scope.row.original===1">是</span>
+          <span v-else>否</span>
         </template>
       </el-table-column>
       <el-table-column label="发布时间" width="180" prop="releaseTime">
@@ -49,7 +49,7 @@ export default {
     },
     handleEdit(index, row) {
       debugger;
-      console.log(index, row);
+      this.$router.push({ path: '/article/edit/' + row.id });
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -64,10 +64,12 @@ export default {
           debugger;
           _that.total = response.data.total;
           _that.tableData = response.data.data;
+        }).catch(() => {
         });
+
     }
   },
-  mounted(){
+  mounted() {
     this.getDataList();
   }
 }

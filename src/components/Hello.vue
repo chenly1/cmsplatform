@@ -47,18 +47,19 @@
 import { getArticles } from '../api/api';
 export default {
   name: 'hello',
-  data () {
+  data() {
     return {
       msg: 'Welcome to Your Vue.js App',
       articles: []
     }
   },
-  mounted: function () {
+  mounted: function() {
     getArticles().then(response => {
       debugger;
       this.articles = response.data.body
       // this.articles = response.data["subjects"] 也可以
-    })
+    }).catch(() => {
+    });
   }
 }
 </script>

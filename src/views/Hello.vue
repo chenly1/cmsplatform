@@ -57,20 +57,21 @@ export default {
   mounted: function() {
 
 
-var view = {
-    title: "Joe",
-    calc: function() {
-      return 2 + 4;
+    var view = {
+      title: "Joe",
+      calc: function() {
+        return 2 + 4;
+      }
     }
-  }
-    var msg =  mustache.render("{{title}} spends {{calc}}", view)
+    var msg = mustache.render("{{title}} spends {{calc}}", view)
     console.log(msg);
     this.msg = msg;
 
     getArticles().then(response => {
       this.articles = response.data.body
       // this.articles = response.data["subjects"] 也可以
-    })
+    }).catch(() => {
+    });
   }
 }
 </script>
