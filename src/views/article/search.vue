@@ -1,7 +1,13 @@
 <template>
   <div>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column label="标题" width="180" prop="title"></el-table-column>
+    <el-table :data="tableData" v-loading="listLoading" border style="width: 100%">
+      <el-table-column label="标题" width="260" prop="title">
+        <template scope="scope">
+          <a href="http://www.baidu.com" target=_blank>
+            <span>{{scope.row.title}}</span>
+          </a>
+        </template>
+      </el-table-column>
       <el-table-column label="原创" width="180" prop="original">
         <template scope="scope">
           <span v-if="scope.row.original===1">是</span>
@@ -13,7 +19,8 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="small" >发布</el-button>
+          <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">撤销</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -33,12 +40,14 @@ export default {
       pageSize: 10,
       pageNum: 1,
       pageSizes: [10, 20, 50, 100],
+      listLoading: false,
       url: '/manager/article'
     }
   },
 
 
   methods: {
+
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.getDataList();
@@ -57,6 +66,7 @@ export default {
 
     getDataList() {
       debugger;
+      this.listLoading = true;
       var _that = this;
       var url = this.url + '?num=' + this.pageNum + '&size=' + this.pageSize;
       getListData(url)
@@ -64,6 +74,7 @@ export default {
           debugger;
           _that.total = response.data.total;
           _that.tableData = response.data.data;
+          _that.listLoading = false;
         }).catch(() => {
         });
 
