@@ -22,9 +22,15 @@ export const getMaterialData = () => {
 };
 
 export const submit = (url, params) => {
+    debugger;
     return axios.post(url, params)
 }
 
 export const getListData = (url) => {
+    debugger;
     return axios.get(url, {})
+}
+
+export const update = (url, params) => {
+    return axios.put(url, params)
 }

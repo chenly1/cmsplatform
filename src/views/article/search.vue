@@ -64,7 +64,9 @@ export default {
           debugger;
           _that.total = response.data.total;
           _that.tableData = response.data.data;
+        }).catch(() => {
         });
+
     }
   },
   mounted() {

@@ -24,7 +24,7 @@
           <template v-if=" check === true ">
             <el-input v-model="form.original" style="display:none" value=1></el-input>
           </template>
-           <template v-else>
+          <template v-else>
             <el-input v-model="form.original" style="display:none" value=2></el-input>
           </template>
         </el-form-item>
@@ -55,12 +55,10 @@
     <el-form-item label="来源地址">
       <template v-if=" check === true ">
         <el-input v-model="form.sourceUrl" :disabled="true" class="login-form-input">
-          <template slot="prepend"> Http://</template>
         </el-input>
       </template>
       <template v-else>
         <el-input v-model="form.sourceUrl" :disabled="false" class="login-form-input">
-          <template slot="prepend"> Http://</template>
         </el-input>
       </template>
     </el-form-item>
@@ -88,7 +86,7 @@
 }
 </style>
 <script>
-import {submit} from '../../api/api'
+import { submit } from '../../api/api'
 export default {
   name: 'create',
   data() {
@@ -116,22 +114,24 @@ export default {
     }
   },
   methods: {
-    onSubmit(url, ueContent,purpose) {
+    onSubmit(url, ueContent, purpose) {
       debugger;
       var _that = this;
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.$confirm('确认提交吗？', '提示', {}).then(() => {         
+          this.$confirm('确认提交吗？', '提示', {}).then(() => {
             let content = ueContent;
             this.form.mainBody = content;
             this.form.purpose = purpose;
             let para = Object.assign({}, this.form);
             debugger;
-            submit(url,para)
+            submit(url, para)
               .then(function(res) {
                 debugger;
                 return true;
+              }).catch(() => {
               });
+          }).catch(() => {
           });
         }
         else {

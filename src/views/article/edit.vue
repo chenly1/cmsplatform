@@ -56,12 +56,10 @@
       <el-form-item label="来源地址">
         <template v-if=" check === true ">
           <el-input v-model="form.sourceUrl" :disabled="true" class="login-form-input">
-            <template slot="prepend"> Http://</template>
           </el-input>
         </template>
         <template v-else>
           <el-input v-model="form.sourceUrl" :disabled="false" class="login-form-input">
-            <template slot="prepend"> Http://</template>
           </el-input>
         </template>
       </el-form-item>
@@ -71,6 +69,7 @@
         <UE :defaultMsg=defaultMsg :config=config :id=ue1 ref="ue"></UE>
       </div>
     </div>
+    <el-button type="primary" @click="onSubmit" class="button">提交</el-button>
   </div>
 </template>
 <style>
@@ -96,7 +95,7 @@
 </style>
 <script>
 import UE from '../../components/ue/ue.vue';
-import { submit, getListData } from '../../api/api'
+import { update, getListData } from '../../api/api'
 export default {
   name: 'edit',
   components: { UE },
@@ -151,24 +150,25 @@ export default {
             _that.check = true;
           }
           _that.defaultMsg = response.data.data.mainBody;
+        }).catch(() => {
         });
     },
-    onSubmit(url, ueContent, purpose) {
+    onSubmit() {
       debugger;
       var _that = this;
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            let content = ueContent;
-            this.form.mainBody = content;
-            this.form.purpose = purpose;
+            this.form.mainBody = this.$refs.ue.getUEContent();;
             let para = Object.assign({}, this.form);
             debugger;
-            submit(url, para)
+            update(_that.getDataUrl, para)
               .then(function(res) {
                 debugger;
-                return true;
+                _that.$router.push('/article/search');
+              }).catch(() => {
               });
+          }).catch(() => {
           });
         }
         else {
