@@ -3,9 +3,16 @@
     <el-table :data="tableData" v-loading="listLoading" border style="width: 100%">
       <el-table-column label="标题" width="260" prop="title">
         <template scope="scope">
-          <a href="http://www.baidu.com" target=_blank>
-            <span>{{scope.row.title}}</span>
-          </a>
+          <template v-if="scope.row.logoff===2">
+            <a :href="'/api/article/show/' +scope.row.id" target=_blank>
+              <span>{{scope.row.title}}</span>
+            </a>
+          </template>
+          <template v-else>
+            <a :href="'/manager/article/preview/' +scope.row.id" target=_blank>
+              <span>{{scope.row.title}}</span>
+            </a>
+          </template>
         </template>
       </el-table-column>
       <el-table-column label="原创" width="180" prop="original">
@@ -18,9 +25,9 @@
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="small" >发布</el-button>
-          <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">撤销</el-button>
+          <el-button v-if="scope.row.logoff===1" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.logoff===1" size="small">发布</el-button>
+          <el-button v-if="scope.row.logoff===2" size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">撤销</el-button>
         </template>
       </el-table-column>
     </el-table>
