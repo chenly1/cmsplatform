@@ -33,3 +33,7 @@ export const getListData = (url) => {
 export const update = (url, params) => {
     return axios.put(url, params)
 }
+
+export const stateUpdate = (url) => {
+    return axios.patch(url,{})
+}
