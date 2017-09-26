@@ -26,8 +26,8 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button v-if="scope.row.logoff===1" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button v-if="scope.row.logoff===1" size="small">发布</el-button>
-          <el-button v-if="scope.row.logoff===2" size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">撤销</el-button>
+          <el-button v-if="scope.row.logoff===1" size="small" @click="release(scope.$index, scope.row)">发布</el-button>
+          <el-button v-if="scope.row.logoff===2" size="small" type="danger" @click="unrelease(scope.$index, scope.row)">撤销</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,7 +70,24 @@ export default {
     handleDelete(index, row) {
       console.log(index, row);
     },
-
+release(index, row) {
+      var _that = this;
+      var url = this.url + '/release/' + row.id;
+      stateUpdate(url)
+        .then(function(response) {
+          _that.getDataList();
+        }).catch(() => {
+        });
+    },
+    unrelease(index, row) {
+      var _that = this;
+      var url = this.url + '/unrelease/' + row.id;
+      stateUpdate(url)
+        .then(function(response) {
+          _that.getDataList();
+        }).catch(() => {
+        });
+    },
     getDataList() {
       debugger;
       this.listLoading = true;

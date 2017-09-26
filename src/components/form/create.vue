@@ -18,7 +18,7 @@
           <el-input v-model="form.editor" placeholder="（必填）" class="login-form-input"></el-input>
         </el-form-item>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="3">
         <el-form-item label="原创">
           <el-checkbox :checked="check" v-model="check"></el-checkbox>
           <template v-if=" check === true ">
@@ -27,6 +27,14 @@
           <template v-else>
             <el-input v-model="form.original" style="display:none" value=2></el-input>
           </template>
+        </el-form-item>
+      </el-col>
+      <el-col :span="9">
+        <el-form-item label="用途">
+          <el-select v-model="form.purpose" placeholder="请选择">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-col>
     </el-row>
@@ -91,6 +99,13 @@ export default {
   name: 'create',
   data() {
     return {
+      options: [{
+        value: 'edu',
+        label: '健康教育'
+      }, {
+        value: 'news',
+        label: '新闻'
+      }],
       form: {
         title: '',
         subtitle: '',
@@ -100,7 +115,7 @@ export default {
         original: 1,
         author: '',
         mainBody: '',
-        purpose: ''
+        purpose: 'edu'
       },
       check: true,
       rules: {
@@ -122,7 +137,6 @@ export default {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             let content = ueContent;
             this.form.mainBody = content;
-            this.form.purpose = purpose;
             let para = Object.assign({}, this.form);
             debugger;
             submit(url, para)
