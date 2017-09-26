@@ -69,7 +69,10 @@
         <UE :defaultMsg=defaultMsg :config=config :id=ue1 ref="ue"></UE>
       </div>
     </div>
-    <el-button type="primary" @click="onSubmit" class="button">提交</el-button>
+    <el-button type="primary" @click="cancelClick" class="button">返回</el-button>
+    <el-button type="primary" @click="onSubmit" class="button">提交
+      <i class="el-icon-upload el-icon--right"></i>
+    </el-button>
   </div>
 </template>
 <style>
@@ -143,15 +146,29 @@ export default {
         .then(function(response) {
           debugger;
           _that.form = response.data.data;
+          _that.defaultMsg = response.data.data.mainBody;
           if (_that.form.original === 2) {
             _that.check = false;
           }
           if (_that.form.original === 1) {
             _that.check = true;
           }
-          _that.defaultMsg = response.data.data.mainBody;
+         
         }).catch(() => {
         });
+    },
+    // 退出事件
+    cancelClick() {
+      this.$confirm('确认退出编辑吗？', '提示', {}).then(() => {
+        this.$message({
+          message: "返回成功!",
+          type: 'success'
+        });
+      }).then(() => {
+        this.$router.push('/article/search');
+      }).catch(() => {
+
+      });
     },
     onSubmit() {
       debugger;
@@ -162,7 +179,8 @@ export default {
             this.form.mainBody = this.$refs.ue.getUEContent();;
             let para = Object.assign({}, this.form);
             debugger;
-            update(_that.getDataUrl, para)
+            let url = _that.getDataUrl + para.id;
+            update(url, para)
               .then(function(res) {
                 debugger;
                 _that.$router.push('/article/search');

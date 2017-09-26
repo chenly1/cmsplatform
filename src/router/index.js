@@ -65,7 +65,7 @@ export default new Router({
           redirect: '/article/search',
           children: [
             { path: '/article/search', component: articleSearch, name: '文章列表' },
-            { path: '/article/create/:purposeType', component: articleCreate, name: '创建文章' },
+            { path: '/article/create', component: articleCreate, name: '创建文章' },
             { path: '/article/edit/:rowid', component: articleEdit, name: '编辑文章' }
           ]
         },

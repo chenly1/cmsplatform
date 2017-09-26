@@ -1,5 +1,13 @@
 <template>
   <div>
+    <el-col :span="24" class="toolbar" style="padding-bottom: 10px;">
+      <el-select v-model="purpose" placeholder="用途">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button type="primary" icon="search" @click="getDataList()">查询</el-button>
+      <el-button type="primary" @click="createData()">新建</el-button>
+    </el-col>
     <el-table :data="tableData" v-loading="listLoading" border style="width: 100%">
       <el-table-column label="标题" width="260" prop="title">
         <template scope="scope">
@@ -25,7 +33,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button v-if="scope.row.logoff===1" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.logoff===1" size="small" @click="handleEdit(scope.$index, scope.row)" icon="edit">编辑</el-button>
           <el-button v-if="scope.row.logoff===1" size="small" @click="release(scope.$index, scope.row)">发布</el-button>
           <el-button v-if="scope.row.logoff===2" size="small" type="danger" @click="unrelease(scope.$index, scope.row)">撤销</el-button>
         </template>
@@ -38,23 +46,34 @@
   </div>
 </template>
 <script>
-import { getListData } from '../../api/api'
+import { getListData,stateUpdate } from '../../api/api'
 export default {
   data() {
     return {
+      options: [{
+        value: 'edu',
+        label: '健康教育'
+      }, {
+        value: 'news',
+        label: '新闻'
+      }],
       tableData: [],
       total: 0,
       pageSize: 10,
       pageNum: 1,
       pageSizes: [10, 20, 50, 100],
       listLoading: false,
-      url: '/manager/article'
+      url: '/manager/article',
+      purpose: 'edu'
     }
   },
 
 
   methods: {
-
+    createData() {
+      debugger;
+      this.$router.push({ path: '/article/create/' });
+    },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
       this.getDataList();
@@ -70,7 +89,7 @@ export default {
     handleDelete(index, row) {
       console.log(index, row);
     },
-release(index, row) {
+    release(index, row) {
       var _that = this;
       var url = this.url + '/release/' + row.id;
       stateUpdate(url)
@@ -92,7 +111,7 @@ release(index, row) {
       debugger;
       this.listLoading = true;
       var _that = this;
-      var url = this.url + '?num=' + this.pageNum + '&size=' + this.pageSize;
+      var url = this.url + '?num=' + this.pageNum + '&size=' + this.pageSize + '&purpose=' + this.purpose;
       getListData(url)
         .then(function(response) {
           debugger;
