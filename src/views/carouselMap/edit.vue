@@ -1,18 +1,14 @@
 <template>
     <section class="form-section">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form id="myForm" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="模版标题" prop="title">
                 <el-input v-model="ruleForm.title"></el-input>
             </el-form-item>
             <el-form-item label="启用">
-                <el-checkbox v-model="ruleForm.logoff"></el-checkbox>
+                <el-checkbox v-model="ruleForm.logoffCheck"></el-checkbox>
             </el-form-item>
             <el-form-item v-if="checkEvent()" label="上传图片" prop="fileList">
-                <el-upload class="upload-demo" ref="upload" action="/static/img" 
-                :before-upload="beforeAvatarUpload" :on-change="changeEvent" 
-                :on-preview="handlePreview" :on-remove="handleRemove" 
-                :file-list="ruleForm.fileList" :auto-upload="false" 
-                :multiple="false">
+                <el-upload class="upload-demo" ref="upload" action="/static/img" :before-upload="beforeAvatarUpload" :on-change="changeEvent" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="ruleForm.fileList" :auto-upload="false" :multiple="false">
                     <el-button slot="trigger" size="small" type="primary" @click="clearUploadedImage">选取文件</el-button>
                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
                 </el-upload>
@@ -21,7 +17,7 @@
                 <el-input v-model.number="ruleForm.sort"></el-input>
             </el-form-item>
             <el-form-item label="来源地址" prop="link">
-                <el-input v-model="ruleForm.link"  class="login-form-input">
+                <el-input v-model="ruleForm.link">
                     <!-- <template slot="prepend"> Http://</template> -->
                 </el-input>
             </el-form-item>
@@ -33,6 +29,7 @@
     </section>
 </template>
 <script>
+import { submit, update, getListData } from '../../api/api'
 export default {
     data() {
         var checkNum = (rule, value, callback) => {
@@ -48,49 +45,106 @@ export default {
         };
         var checkImg = (rule, value, callback) => {
             // debugger;
-            if (value.length==0) {
+            if (value.length == 0) {
                 return callback(new Error('请上传图片'));
             } else {
                 callback();
             }
         };
+        var checkLink = (rule, value, callback) => {
+            // debugger;
+            //下面的代码中应用了转义字符"\"输出一个字符"/"
+            var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+            var objExp = new RegExp(Expression);
+            if (objExp.test(value) == true || !value) {
+                callback();
+            } else {
+                return callback(new Error('请输入正确的地址'));
+            }
+        }
         return {
             ruleForm: {
-                title: this.$route.query.title || '',
+                title: '',
                 fileList: [],
-                sort: this.$route.query.sort || '',
-                link: this.$route.query.link || '',
-                logoff: this.$route.query.logoff==2||false
+                sort: '',
+                link: '',
+                logoffCheck: false
             },
             rules: {
                 title: [
                     { required: true, message: '请输入模版标题', trigger: 'blur' }
                 ],
                 sort: [
-                    { trigger: 'blur', required: true, validator: checkNum }
+                    { required: true, trigger: 'blur', validator: checkNum }
                 ],
                 fileList: [
                     { required: true, message: '请上传图片', trigger: 'blur', validator: checkImg }
+                ],
+                link: [
+                    { required: true, trigger: 'blur', validator: checkLink }
                 ]
             },
         };
     },
     methods: {
-        checkEvent(){
-            let checkData = this.$route.query.type==='add';
+        // 判断新增还是修改
+        checkEvent() {
+            let checkData = this.$route.query.type === 'add';
             return checkData;
         },
+        // 修改时获取数据放入form中
+        getData() {
+            if (this.$route.query.type === 'edit') {
+                var _that = this;
+                var url = '/manager/banner/' + this.$route.query.id;
+                getListData(url).then(function(response) {
+                    _that.ruleForm = response.data.data;
+                    if (response.data.data.logoff === 1) _that.ruleForm.logoffCheck = false;
+                    else if (response.data.data.logoff === 2) _that.ruleForm.logoffCheck = true;
+                }).catch(() => {
+                });
+            }
+        },
+        // 提交事件
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         let para = Object.assign({}, this.ruleForm);
-                        console.log(para);
-                        this.$message({
-                            message: "提交成功，请在控制台查看json!！",
-                            type: 'success'
-                        });
-                        this.$router.push('/carouselMap/mangement');
+                        var formData = new FormData();
+                        formData.append('id',para.id);
+                        formData.append('title',para.title);
+                        formData.append('link',para.link);
+                        formData.append('order',para.order);
+                        if (para.logoffCheck == true) formData.append('logoff',2);
+                        else formData.append('logoff',2);
+                        var _that = this;
+                        debugger;
+                        if (this.$route.query.type === 'add') {//新增
+                            debugger;
+                        } else {//修改
+                            debugger;
+                            var url = '/manager/banner';
+                            update(url, formData).then(function(response) {
+                                if (response.data.flag === true) {
+                                    // _that.listLoading = false;
+                                    _that.$message({
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                    _that.$router.push('/carouselMap/mangement');
+                                } else {
+                                    _that.$message({
+                                        showClose: true,
+                                        duration: 0,
+                                        message: '提交失败，' + response.data.message,
+                                        type: 'error'
+                                    });
+                                }
+                            }).catch(() => {
+
+                            });
+                        }
                     }).catch(() => {
 
                     });
@@ -98,7 +152,8 @@ export default {
                     return false;
                 }
             });
-        }, 
+        },
+        // 退出事件
         cancelClick() {
             this.$confirm('确认退出编辑吗？', '提示', {}).then(() => {
                 this.$message({
@@ -112,14 +167,14 @@ export default {
             });
         },
         handleRemove(file, fileList) {
-            this.ruleForm.fileList=[];
+            this.ruleForm.fileList = [];
         },
         handlePreview(file) {
             console.log(file);
         },
         changeEvent(file, fileList) {
-            var suffixName = file.name.split('.')[file.name.split('.').length-1];//取文件名
-            const isJPG = suffixName === 'jpeg' || suffixName === 'png'|| suffixName === 'jpg';
+            var suffixName = file.name.split('.')[file.name.split('.').length - 1];//取文件名
+            const isJPG = suffixName === 'jpeg' || suffixName === 'png' || suffixName === 'jpg';
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isJPG) {
                 this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
@@ -127,7 +182,7 @@ export default {
             if (!isLt2M) {
                 this.$message.error('上传图片大小不能超过 2MB!');
             }
-            if(isJPG && isLt2M){
+            if (isJPG && isLt2M) {
                 this.ruleForm.fileList.uid = file.uid;
                 this.ruleForm.fileList.name = file.name;
                 this.ruleForm.fileList.size = file.size;
@@ -153,8 +208,11 @@ export default {
         },
         clearUploadedImage() {
             this.$refs.upload.clearFiles();
-            this.ruleForm.fileList=[];
+            this.ruleForm.fileList = [];
         }
+    },
+    mounted() {
+        this.getData();
     }
 }
 </script>

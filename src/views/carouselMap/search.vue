@@ -4,8 +4,8 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <!-- <el-form-item>
-                        <el-input v-model="filters.title" placeholder="主题"></el-input>
-                    </el-form-item> -->
+                            <el-input v-model="filters.title" placeholder="主题"></el-input>
+                        </el-form-item> -->
                 <el-form-item>
                     <el-button type="success" v-on:click="getListData">刷新</el-button>
                 </el-form-item>
@@ -19,6 +19,11 @@
             <el-table-column type="index" width="60">
             </el-table-column>
             <el-table-column prop="title" label="主题" width="130" sortable>
+                <template scope="scope">
+                    <a :href="scope.row.link" target=_blank>
+                        <span>{{scope.row.title}}</span>
+                    </a>
+                </template>
             </el-table-column>
             <el-table-column prop="imageUrl" label="略缩图" min-width="150">
                 <template scope="scope">
@@ -54,7 +59,7 @@
 
 
 <script>
-import { getPageListData, getListData } from '../../api/api'
+import { getPageListData, getListData, stateUpdate } from '../../api/api'
 
 export default {
     data() {
@@ -86,6 +91,7 @@ export default {
             //     this.listLoading = false;
             // });
             var _that = this;
+            //查询
             getListData('/manager/banner?num=' + this.pageNum + '&size=' + this.pageSize).then(function(response) {
                 // debugger;
                 //this.$set('tableData', response.data);
@@ -116,15 +122,8 @@ export default {
             // this.editForm = Object.assign({}, row);
             var query = {
                 type: 'edit',
-                id: row.id,
-                title: row.title,
-                sort: row.sort,
-                link: row.link,
-                imageUrl: row.imageUrl,
-                logoff: row.logoff,
-                logoffText: row.logoffText
+                id: row.id
             };
-            debugger;
             this.$router.push({ path: '/carouselMap/edit', query: query });
         },
         // 删除
@@ -133,7 +132,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.listLoading = true;
-                let para = { id: row.pid };
+                let para = { id: row.id };
                 // removeUser(para).then((res) => {
                 this.listLoading = false;
                 this.$message({
@@ -151,16 +150,29 @@ export default {
             this.$confirm('确认启用该记录吗?', '提示', {
                 type: 'warning'
             }).then(() => {
-                this.listLoading = true;
-                let para = { id: row.pid };
-                // removeUser(para).then((res) => {
-                this.listLoading = false;
-                this.$message({
-                    message: '启用成功',
-                    type: 'success'
+                // this.listLoading = true;
+                let para = { id: row.id };
+                var _that = this;
+                var url = '/manager/banner/enable/' + row.id;
+                stateUpdate(url).then(function(response) {
+                    if (response.data.flag === true) {
+                        debugger;
+                        // _that.listLoading = false;
+                        _that.$message({
+                            message: '启用成功',
+                            type: 'success'
+                        });
+                        _that.getListData();
+                    }else{
+                        _that.$message({
+                            message: '启用失败',
+                            type: 'error'
+                        });
+                        _that.getListData();
+                    }
+                }).catch(() => {
+
                 });
-                this.getListData();
-                // });
             }).catch(() => {
 
             });
@@ -170,16 +182,22 @@ export default {
             this.$confirm('确认停用该记录吗?', '提示', {
                 type: 'warning'
             }).then(() => {
-                this.listLoading = true;
-                let para = { id: row.pid };
-                // removeUser(para).then((res) => {
-                this.listLoading = false;
-                this.$message({
-                    message: '停用成功',
-                    type: 'success'
+            //    this.listLoading = true;
+                let para = { id: row.id };
+                var _that = this;
+                var url = '/manager/banner/disable/' + row.id;
+                stateUpdate(url).then(function(response) {
+                    if (response.data.flag === true) {
+                        // _that.listLoading = false;
+                        _that.$message({
+                            message: '停用成功',
+                            type: 'success'
+                        });
+                        _that.getListData();
+                    }
+                }).catch(() => {
+                    
                 });
-                this.getListData();
-                // });
             }).catch(() => {
 
             });
