@@ -146,8 +146,8 @@ export default {
           debugger;
           _that.form = response.data.data;
           //_that.$refs.ue.setUEContent(response.data.data.mainBody);
-
           _that.defaultMsg = response.data.data.mainBody;
+          _that.$refs.ue.setUEContent(_that.defaultMsg );
           console.log(_that.defaultMsg);
           if (_that.form.original === 2) {
             _that.check = false;
