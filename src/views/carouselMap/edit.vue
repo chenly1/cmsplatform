@@ -47,7 +47,6 @@ export default {
             }
         };
         var checkImg = (rule, value, callback) => {
-            debugger;
             if (value.length == 0) {
                 return callback(new Error('请上传图片'));
             } else {
@@ -115,9 +114,7 @@ export default {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         let para = Object.assign({}, this.ruleForm);
                         var _that = this;
-                        debugger;
                         if (this.$route.query.type === 'add') {//新增
-                            debugger;
                             // formData.append('imageUrl',document.getElementById('imageFile').files[0]);
                             var formData = new FormData();
                             formData.append('id', para.id);
@@ -152,6 +149,7 @@ export default {
                             if (para.logoffCheck == true) para.logoff = 2;
                             else para.logoff = 1;
                             var url = '/manager/banner/' + para.id;
+                            debugger;
                             update(url, para).then(function(response) {
                                 if (response.data.flag === true) {
                                     // _that.listLoading = false;

@@ -21,7 +21,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="原创">
-            <el-checkbox :checked="check" v-model="check"></el-checkbox>
+            <el-checkbox :checked="changeOnOff" v-model="check" @change="changeOnOff"></el-checkbox>
             <template v-if=" check === true ">
               <el-input v-model="form.original" style="display:none" value=1></el-input>
             </template>
@@ -33,35 +33,19 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="来源">
-            <template v-if=" check === true ">
-              <el-input v-model="form.source" :disabled="true" class="login-form-input"></el-input>
-            </template>
-            <template v-else>
-              <el-input v-model="form.source" :disabled="false" class="login-form-input"></el-input>
-            </template>
+          <el-form-item label="来源" prop="source" :required="redStar">
+              <el-input v-model="form.source" :disabled="forbidden" class="login-form-input"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="原作者">
-            <template v-if=" check === true ">
-              <el-input v-model="form.author" :disabled="true" class="login-form-input"></el-input>
-            </template>
-            <template v-else>
-              <el-input v-model="form.author" :disabled="false" class="login-form-input"></el-input>
-            </template>
+          <el-form-item label="原作者" prop="author" :required="redStar">
+              <el-input v-model="form.author" :disabled="forbidden" class="login-form-input"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="来源地址">
-        <template v-if=" check === true ">
-          <el-input v-model="form.sourceUrl" :disabled="true" class="login-form-input">
+      <el-form-item label="来源地址" prop="sourceUrl" :required="redStar">
+          <el-input v-model="form.sourceUrl" :disabled="forbidden" class="login-form-input">
           </el-input>
-        </template>
-        <template v-else>
-          <el-input v-model="form.sourceUrl" :disabled="false" class="login-form-input">
-          </el-input>
-        </template>
       </el-form-item>
     </el-form>
     <div class="components-container">
@@ -104,6 +88,15 @@ export default {
   components: { UE },
   data() {
     return {
+      source: [
+        { required: true, message: '请输入来源', trigger: 'blur' }
+      ],
+      sourceUrl: [
+        { required: true, message: '请输入来源地址', trigger: 'blur' }
+      ],
+      author: [
+        { required: true, message: '请输入原作者', trigger: 'blur' }
+      ],
       defaultMsg: '',
       config: {
         toolbars: [
@@ -113,6 +106,8 @@ export default {
         initialFrameHeight: 350
       },
       ue1: "ue1",
+      redStar: false,
+      forbidden: true,
       form: {
         id: '',
         title: '',
@@ -143,11 +138,10 @@ export default {
       var url = this.getDataUrl + this.$route.params.rowid;
       getListData(url)
         .then(function(response) {
-          debugger;
           _that.form = response.data.data;
           //_that.$refs.ue.setUEContent(response.data.data.mainBody);
           _that.defaultMsg = response.data.data.mainBody;
-          _that.$refs.ue.setUEContent(_that.defaultMsg );
+          _that.$refs.ue.setUEContent(_that.defaultMsg);
           console.log(_that.defaultMsg);
           if (_that.form.original === 2) {
             _that.check = false;
@@ -161,22 +155,19 @@ export default {
     },
     // 退出事件
     cancelClick() {
-      
+
       this.$router.push('/article/search');
     },
     onSubmit() {
-      debugger;
       var _that = this;
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.form.mainBody = this.$refs.ue.getUEContent();
             let para = Object.assign({}, this.form);
-            debugger;
             let url = _that.getDataUrl + para.id;
             update(url, para)
               .then(function(res) {
-                debugger;
                 _that.$router.push('/article/search');
               }).catch(() => {
               });
@@ -187,6 +178,26 @@ export default {
           return false;
         }
       });
+    },
+    changeOnOff(val) {
+      debugger;
+      if (val.eventPhase === 2) {
+        // 开启重复提醒功能，给表单验证添加相应规则，并添加红色星号。
+        this.forbidden = false;
+        this.redStar = true;
+        this.$set(this.rules, "source", this.source);
+        this.$set(this.rules, "sourceUrl", this.sourceUrl);
+        this.$set(this.rules, "author", this.author);
+        this.$refs['form'].validate();
+      } else {
+        // 关闭重复提醒功能，将表单验证中的相应规则，替换为空，并移除红色星号。不能删除相关规则，否则无法重新验证了，残留表单验证信息。
+        this.forbidden = true;
+        this.redStar = false;
+        this.$set(this.rules, "source", [{}]);
+        this.$set(this.rules, "sourceUrl", [{}]);
+        this.$set(this.rules, "author", [{}]);
+        this.$refs['form'].validate();
+      }
     }
   }
   // ,
