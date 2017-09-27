@@ -41,22 +41,24 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="来源">
-            <template v-if=" check === true ">
+          <template v-if=" check === true ">
+            <el-form-item label="来源">
               <el-input v-model="form.source" :disabled="true" class="login-form-input"></el-input>
-            </template>
-            <template v-else>
-              <el-input v-model="form.source" :disabled="false" class="login-form-input"></el-input>
-            </template>
-          </el-form-item>
+            </el-form-item>
+          </template>
+          <template v-else>
+            <el-form-item label="来源" prop="source">
+              <el-input v-model="form.source" :disabled="false" placeholder="（必填）" class="login-form-input"></el-input>
+            </el-form-item>
+          </template>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="原作者">
+          <el-form-item label="原作者" prop="author">
             <template v-if=" check === true ">
               <el-input v-model="form.author" :disabled="true" class="login-form-input"></el-input>
             </template>
             <template v-else>
-              <el-input v-model="form.author" :disabled="false" class="login-form-input"></el-input>
+              <el-input v-model="form.author" :disabled="false" placeholder="（必填）" class="login-form-input"></el-input>
             </template>
           </el-form-item>
         </el-col>
@@ -122,6 +124,15 @@ export default {
         ],
         editor: [
           { required: true, message: '请输入责任编辑', trigger: 'blur' }
+        ],
+        source: [
+          { required: true, message: '请输入来源', trigger: 'blur' }
+        ],
+        author: [
+          { required: true, message: '请输入原作者', trigger: 'blur' }
+        ],
+        sourceUrl: [
+          { required: true, message: '请输入来源地址', trigger: 'blur' }
         ]
       },
       defaultMsg: '',
