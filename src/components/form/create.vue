@@ -129,7 +129,7 @@ export default {
     }
   },
   methods: {
-    onSubmit(url, ueContent, purpose) {
+    onSubmit(url, ueContent, purpose,path) {
       debugger;
       var _that = this;
       this.$refs['form'].validate((valid) => {
@@ -142,7 +142,7 @@ export default {
             submit(url, para)
               .then(function(res) {
                 debugger;
-                return true;
+                _that.$router.push(path);
               }).catch(() => {
               });
           }).catch(() => {

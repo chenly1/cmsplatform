@@ -45,7 +45,8 @@ export default {
       return this.editor.getContent()
     },
     setUEContent(msg){
-      this.editor.setContent(msg); // 确保UE加载完成后，放入内容。
+      debugger;
+      this.editor.setContent(msg) // 确保UE加载完成后，放入内容。
     },
     clear() {
       this.editor.setContent('')
