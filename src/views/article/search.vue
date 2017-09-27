@@ -71,7 +71,6 @@ export default {
 
   methods: {
     createData() {
-      debugger;
       this.$router.push({ path: '/article/create/' });
     },
     handleSizeChange(pageSize) {
@@ -83,7 +82,6 @@ export default {
       this.getDataList();
     },
     handleEdit(index, row) {
-      debugger;
       this.$router.push({ path: '/article/edit/' + row.id });
     },
     handleDelete(index, row) {
@@ -108,13 +106,11 @@ export default {
         });
     },
     getDataList() {
-      debugger;
       this.listLoading = true;
       var _that = this;
       var url = this.url + '?num=' + this.pageNum + '&size=' + this.pageSize + '&purpose=' + this.purpose;
       getListData(url)
         .then(function(response) {
-          debugger;
           _that.total = response.data.total;
           _that.tableData = response.data.data;
           _that.listLoading = false;

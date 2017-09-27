@@ -40,19 +40,9 @@ export default {
   methods: {
     // 退出事件
     cancelClick() {
-      this.$confirm('确认退出创建吗？', '提示', {}).then(() => {
-        this.$message({
-          message: "返回成功!",
-          type: 'success'
-        });
-      }).then(() => {
-        this.$router.push('/article/search');
-      }).catch(() => {
-
-      });
+       this.$router.push('/article/search');
     },
     submit() {
-      debugger;
       let content = this.$refs.ue.getUEContent(); // 调用子组件方法
       var form = this.$refs.create.onSubmit('/manager/article', content, this.$route.params.purposeType);
       this.$router.push('/article/search');

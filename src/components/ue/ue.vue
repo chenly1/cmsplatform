@@ -6,7 +6,7 @@
 <script>
 export default {
   name: 'UE',
-  data () {
+  data() {
     return {
       editor: null
     }
@@ -23,12 +23,18 @@ export default {
     },
   },
   mounted() {
+    debugger;
     const _this = this;
+    UE.delEditor(this.id);
     this.editor = UE.getEditor(this.id, this.config); // 初始化UE
+   
     this.editor.addListener("ready", function() {
+      debugger;
+       _this.$emit("aaa");
       _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
 
     });
+     
   },
   methods: {
     getUEContent() { // 获取内容方法
@@ -40,7 +46,7 @@ export default {
     }
   },
   destroyed() {
-    this.editor.destroy();
+    this.editor.destroy()
   }
 }
 </script>

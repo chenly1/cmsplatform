@@ -66,7 +66,7 @@
     </el-form>
     <div class="components-container">
       <div class="editor-container">
-        <UE :defaultMsg=defaultMsg :config=config :id=ue1 ref="ue"></UE>
+        <UE :defaultMsg=defaultMsg :config=config :id=ue1 ref="ue" v-on:aaa="getData"></UE>
       </div>
     </div>
     <el-button type="primary" @click="cancelClick" class="button">返回</el-button>
@@ -139,36 +139,30 @@ export default {
   },
   methods: {
     getData() {
-      debugger;
       var _that = this;
       var url = this.getDataUrl + this.$route.params.rowid;
       getListData(url)
         .then(function(response) {
           debugger;
           _that.form = response.data.data;
+          //_that.$refs.ue.setUEContent(response.data.data.mainBody);
+
           _that.defaultMsg = response.data.data.mainBody;
+          console.log(_that.defaultMsg);
           if (_that.form.original === 2) {
             _that.check = false;
           }
           if (_that.form.original === 1) {
             _that.check = true;
           }
-         
+
         }).catch(() => {
         });
     },
     // 退出事件
     cancelClick() {
-      this.$confirm('确认退出编辑吗？', '提示', {}).then(() => {
-        this.$message({
-          message: "返回成功!",
-          type: 'success'
-        });
-      }).then(() => {
-        this.$router.push('/article/search');
-      }).catch(() => {
-
-      });
+      
+      this.$router.push('/article/search');
     },
     onSubmit() {
       debugger;
@@ -176,7 +170,7 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            this.form.mainBody = this.$refs.ue.getUEContent();;
+            this.form.mainBody = this.$refs.ue.getUEContent();
             let para = Object.assign({}, this.form);
             debugger;
             let url = _that.getDataUrl + para.id;
