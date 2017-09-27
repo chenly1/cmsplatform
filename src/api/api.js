@@ -22,7 +22,6 @@ export const getMaterialData = () => {
 };
 
 export const submit = (url, params) => {
-    debugger;
     return axios.post(url, params)
 }
 

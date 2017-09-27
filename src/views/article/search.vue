@@ -1,15 +1,17 @@
 <template>
-  <div>
+  <section>
     <el-col :span="24" class="toolbar" style="padding-bottom: 10px;">
       <el-select v-model="purpose" placeholder="用途">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
       <el-button type="primary" icon="search" @click="getDataList()">查询</el-button>
-      <el-button type="primary" @click="createData()">新建</el-button>
+      <el-button type="primary" icon="plus" @click="createData()">新建</el-button>
     </el-col>
-    <el-table :data="tableData" v-loading="listLoading" border style="width: 100%">
-      <el-table-column label="标题" width="260" prop="title">
+    <el-table :data="tableData" v-loading="listLoading" style="width: 100%">
+      <el-table-column type="index" width="60">
+      </el-table-column>
+      <el-table-column label="标题" min-width="260" prop="title" sortable>
         <template scope="scope">
           <template v-if="scope.row.logoff===2">
             <a :href="'/api/article/show/' +scope.row.id" target=_blank>
@@ -23,30 +25,33 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column label="原创" width="180" prop="original">
+      <el-table-column label="原创" width="130" prop="original" sortable>
         <template scope="scope">
           <span v-if="scope.row.original===1">是</span>
           <span v-else>否</span>
         </template>
       </el-table-column>
-      <el-table-column label="发布时间" width="180" prop="releaseTime">
+      <el-table-column label="发布时间" width="150" prop="releaseTime" sortable>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="200">
         <template scope="scope">
-          <el-button v-if="scope.row.logoff===1" size="small" @click="handleEdit(scope.$index, scope.row)" icon="edit">编辑</el-button>
-          <el-button v-if="scope.row.logoff===1" size="small" @click="release(scope.$index, scope.row)">发布</el-button>
-          <el-button v-if="scope.row.logoff===2" size="small" type="danger" @click="unrelease(scope.$index, scope.row)">撤销</el-button>
+          <el-button v-if="scope.row.logoff===1" size="small" icon="edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.logoff===1" size="small" icon="check" type="success" @click="release(scope.$index, scope.row)">发布</el-button>
+          <el-button v-if="scope.row.logoff===2" size="small" type="danger" icon="close" @click="unrelease(scope.$index, scope.row)">撤销</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div class="block">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum" :page-sizes="pageSizes" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>
-  </div>
+    <!--底部工具条-->
+    <el-col :span="24" class="toolbar">
+      <div class="block">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum" :page-sizes="pageSizes" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total" style="float:right;">
+        </el-pagination>
+      </div>
+    </el-col>
+  </section>
 </template>
 <script>
-import { getListData,stateUpdate } from '../../api/api'
+import { getListData, stateUpdate } from '../../api/api'
 export default {
   data() {
     return {
@@ -124,3 +129,24 @@ export default {
   }
 }
 </script>
+
+
+<style scoped>
+a:link {
+  font-size: 14px;
+  color: #399999;
+  text-decoration: none;
+}
+
+a:visited {
+  font-size: 14px;
+  color: #399999;
+  text-decoration: none;
+}
+
+a:hover {
+  font-size: 14px;
+  color: #71c6ef;
+  text-decoration: underline;
+}
+</style>

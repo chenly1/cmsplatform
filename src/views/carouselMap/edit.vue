@@ -8,7 +8,9 @@
                 <el-checkbox v-model="ruleForm.logoffCheck"></el-checkbox>
             </el-form-item>
             <el-form-item v-if="checkEvent()" label="上传图片" prop="fileList">
-                <el-upload class="upload-demo" ref="upload" action="/static/img" :before-upload="beforeAvatarUpload" :on-change="changeEvent" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="ruleForm.fileList" :auto-upload="false" :multiple="false">
+                <!-- <input type="file" name="file" id="imageFile" class="element" accept="image/*">
+                            </input> -->
+                <el-upload class="upload-demo" ref="upload" action="/static/img" :on-change="changeEvent" :on-preview="handlePreview" :on-remove="handleRemove" list-type="picture" :file-list="ruleForm.fileList" :auto-upload="false" :multiple="false">
                     <el-button slot="trigger" size="small" type="primary" @click="clearUploadedImage">选取文件</el-button>
                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
                 </el-upload>
@@ -33,18 +35,19 @@ import { submit, update, getListData } from '../../api/api'
 export default {
     data() {
         var checkNum = (rule, value, callback) => {
-            // debugger;
-            if (!value) {
+            if (value === '') {
                 return callback(new Error('请输入显示顺序'));
             }
             if (!Number.isInteger(value)) {
-                callback(new Error('请输入数字'));
+                callback(new Error('请输入数字1-99'));
+            } else if (value < 1 || value > 99) {
+                callback(new Error('请输入数字1-99'));
             } else {
                 callback();
             }
         };
         var checkImg = (rule, value, callback) => {
-            // debugger;
+            debugger;
             if (value.length == 0) {
                 return callback(new Error('请上传图片'));
             } else {
@@ -56,7 +59,7 @@ export default {
             //下面的代码中应用了转义字符"\"输出一个字符"/"
             var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
             var objExp = new RegExp(Expression);
-            if (objExp.test(value) == true || !value) {
+            if (objExp.test(value) == true) {
                 callback();
             } else {
                 return callback(new Error('请输入正确的地址'));
@@ -78,7 +81,7 @@ export default {
                     { required: true, trigger: 'blur', validator: checkNum }
                 ],
                 fileList: [
-                    { required: true, message: '请上传图片', trigger: 'blur', validator: checkImg }
+                    { required: true, trigger: 'blur', validator: checkImg }
                 ],
                 link: [
                     { required: true, trigger: 'blur', validator: checkLink }
@@ -111,21 +114,45 @@ export default {
                 if (valid) {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         let para = Object.assign({}, this.ruleForm);
-                        var formData = new FormData();
-                        formData.append('id',para.id);
-                        formData.append('title',para.title);
-                        formData.append('link',para.link);
-                        formData.append('order',para.order);
-                        if (para.logoffCheck == true) formData.append('logoff',2);
-                        else formData.append('logoff',2);
                         var _that = this;
                         debugger;
                         if (this.$route.query.type === 'add') {//新增
                             debugger;
-                        } else {//修改
-                            debugger;
+                            // formData.append('imageUrl',document.getElementById('imageFile').files[0]);
+                            var formData = new FormData();
+                            formData.append('id', para.id);
+                            formData.append('title', para.title);
+                            formData.append('link', para.link);
+                            formData.append('sort', para.sort);
+                            formData.append('file', para.fileList.raw);
+                            if (para.logoffCheck == true) formData.append('logoff', 2);
+                            else formData.append('logoff', 1);
                             var url = '/manager/banner';
-                            update(url, formData).then(function(response) {
+                            debugger;
+                            submit(url, formData).then(function(response) {
+                                if (response.data.flag === true) {
+                                    // _that.listLoading = false;
+                                    _that.$message({
+                                        message: '提交成功',
+                                        type: 'success'
+                                    });
+                                    _that.$router.push('/carouselMap/mangement');
+                                } else {
+                                    _that.$message({
+                                        showClose: true,
+                                        duration: 0,
+                                        message: '提交失败，' + response.data.message,
+                                        type: 'error'
+                                    });
+                                }
+                            }).catch(() => {
+
+                            });
+                        } else {//修改
+                            if (para.logoffCheck == true) para.logoff = 2;
+                            else para.logoff = 1;
+                            var url = '/manager/banner/' + para.id;
+                            update(url, para).then(function(response) {
                                 if (response.data.flag === true) {
                                     // _that.listLoading = false;
                                     _that.$message({
@@ -177,10 +204,20 @@ export default {
             const isJPG = suffixName === 'jpeg' || suffixName === 'png' || suffixName === 'jpg';
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isJPG) {
-                this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
+                this.$message({
+                    showClose: true,
+                    duration: 0,
+                    message: '上传图片只能是 JPG 或 PNG 格式!',
+                    type: 'error'
+                });
             }
             if (!isLt2M) {
-                this.$message.error('上传图片大小不能超过 2MB!');
+                this.$message({
+                    showClose: true,
+                    duration: 0,
+                    message: '上传图片大小不能超过 2MB!',
+                    type: 'error'
+                });
             }
             if (isJPG && isLt2M) {
                 this.ruleForm.fileList.uid = file.uid;
@@ -191,18 +228,6 @@ export default {
                 this.ruleForm.fileList.raw = file.raw;
                 this.ruleForm.fileList.status = file.status;
                 this.ruleForm.fileList.length = 1;
-            }
-            return isJPG && isLt2M;
-        },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-            const isLt2M = file.size / 1024 / 1024 < 2;
-
-            if (!isJPG) {
-                this.$message.error('上传图片只能是 JPG 或 PNG 格式!');
-            }
-            if (!isLt2M) {
-                this.$message.error('上传图片大小不能超过 2MB!');
             }
             return isJPG && isLt2M;
         },

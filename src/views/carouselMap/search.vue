@@ -7,10 +7,10 @@
                             <el-input v-model="filters.title" placeholder="主题"></el-input>
                         </el-form-item> -->
                 <el-form-item>
-                    <el-button type="success" v-on:click="getListData">刷新</el-button>
+                    <el-button type="primary" v-on:click="getListData" icon="search">刷新</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="handleAdd()">新增</el-button>
+                    <el-button type="primary" @click="handleAdd()" icon="plus">新增</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -40,10 +40,10 @@
             </el-table-column>
             <el-table-column label="操作" width="200">
                 <template scope="scope">
-                    <el-button v-if="scope.row.logoff===1" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button v-if="scope.row.logoff===1" type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                    <el-button v-if="scope.row.logoff===1" type="success" size="small" @click="releaseEvent(scope.$index, scope.row)">启用</el-button>
-                    <el-button v-if="scope.row.logoff!==1" type="warning" size="small" @click="withdrawalEvent(scope.$index, scope.row)">停用</el-button>
+                    <el-button v-if="scope.row.logoff===1" size="small" icon="edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <!-- <el-button v-if="scope.row.logoff===1" type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button> -->
+                    <el-button v-if="scope.row.logoff===1" type="success" size="small" icon="check" @click="releaseEvent(scope.$index, scope.row)">启用</el-button>
+                    <el-button v-if="scope.row.logoff!==1" type="danger" size="small" icon="close" @click="withdrawalEvent(scope.$index, scope.row)">停用</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -156,7 +156,6 @@ export default {
                 var url = '/manager/banner/enable/' + row.id;
                 stateUpdate(url).then(function(response) {
                     if (response.data.flag === true) {
-                        debugger;
                         // _that.listLoading = false;
                         _that.$message({
                             message: '启用成功',
@@ -212,4 +211,19 @@ export default {
 
 <style scoped>
 
+a:link {   
+font-size: 15px;   
+color: #000000;   
+text-decoration: none;   
+}   
+a:visited {   
+font-size: 15px;   
+color: #399999;   
+text-decoration: none;   
+}   
+a:hover {   
+font-size: 15px;   
+color: #71c6ef;   
+text-decoration: underline;   
+} 
 </style>
