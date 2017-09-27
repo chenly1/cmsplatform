@@ -27,10 +27,10 @@ export default {
     const _this = this;
     UE.delEditor(this.id);
     this.editor = UE.getEditor(this.id, this.config); // 初始化UE
-   
+    _this.$emit("aaa");
     this.editor.addListener("ready", function() {
       debugger;
-       _this.$emit("aaa");
+      
       _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
 
     });
