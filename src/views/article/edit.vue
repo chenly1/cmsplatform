@@ -220,7 +220,6 @@ export default {
   },
   methods: {
     getData() {
-      debugger;
       var _that = this;
       if (this.$route.params.rowid == 0) {
         _that.form.original = 1;
@@ -250,32 +249,69 @@ export default {
       this.$router.push('/article/search');
     },
     onSubmit() {
+      debugger;
       var _that = this;
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            debugger;
-            _that.form.mainBody = _that.$refs.ue.getUEContent();
-            let para = Object.assign({}, _that.form);
-            if (_that.$route.params.rowid == 0) {
-              submit(_that.getDataUrl, para)
-                .then(function(res) {
-                  debugger;
-                  _that.$router.push('/article/search');
-                }).catch(() => {
-                });
-            }
-            else {
-              let url = _that.getDataUrl + para.id;
-              update(url, para)
-                .then(function(res) {
-                  _that.$router.push('/article/search');
+          debugger;
+          if (_that.$refs.ue.getUEContent() == "") {
+            _that.$refs.ue.getUEfocus();
+            _that.$message({
+              message: '文章内容不能为空！',
+              type: 'warning'
+            });
+            return false;
+          } else {
+            this.$confirm('确认提交吗？', '提示', {}).then(() => {
+              _that.form.mainBody = _that.$refs.ue.getUEContent();
+              let para = Object.assign({}, _that.form);
+              if (_that.$route.params.rowid == 0) {
+                submit(_that.getDataUrl, para)
+                  .then(function(res) {
+                    debugger;
+                    if (res.data.flag === true) {
+                      _that.$message({
+                        message: '提交成功',
+                        type: 'success'
+                      });
+                      _that.$router.push('/article/search');
+                    } else {
+                      _that.$message({
+                        showClose: true,
+                        duration: 0,
+                        message: '提交失败，' + response.data.message,
+                        type: 'error'
+                      });
+                    }
 
-                }).catch(() => {
-                });
-            }
-          }).catch(() => {
-          });
+                  }).catch(() => {
+                  });
+              }
+              else {
+                let url = _that.getDataUrl + para.id;
+                update(url, para)
+                  .then(function(res) {
+                    if (res.data.flag === true) {
+                      _that.$message({
+                        message: '提交成功',
+                        type: 'success'
+                      });
+                      _that.$router.push('/article/search');
+                    } else {
+                      _that.$message({
+                        showClose: true,
+                        duration: 0,
+                        message: '提交失败，' + response.data.message,
+                        type: 'error'
+                      });
+                    }
+
+                  }).catch(() => {
+                  });
+              }
+            }).catch(() => {
+            });
+          }
         }
         else {
           return false;

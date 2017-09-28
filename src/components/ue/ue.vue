@@ -28,7 +28,7 @@ export default {
     this.editor = UE.getEditor(this.id, this.config); // 初始化UE
     this.editor.addListener("ready", function() {
       _this.$emit("aaa");
-     // _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
+      // _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
     });
   },
   methods: {
@@ -36,8 +36,11 @@ export default {
       //_this.editor.execCommand( 'cleardoc' );
       return this.editor.getContent()
     },
-    setUEContent(msg){
+    setUEContent(msg) {
       this.editor.setContent(msg) // 确保UE加载完成后，放入内容。
+    },
+    getUEfocus() {
+      this.editor.focus();
     },
     clear() {
       this.editor.setContent('')
