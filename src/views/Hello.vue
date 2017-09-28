@@ -8,8 +8,8 @@
     </el-col>
     <el-col :span="12" class="number" style="">
       <div class="text" style="">
-        <span>注册人数</span>
-          <i class="fa fa-angle-right"></i>
+        <el-button type="text" @click="userManagement">注册人数
+          <i class="fa fa-angle-right"></i></el-button >
         <p>240</p>
       </div>
     </el-col>
@@ -19,8 +19,7 @@
           <i class="fa fa-angle-right"></i>
         <p>70</p>
       </div>
-    </el-col>
-    
+    </el-col>   
   </section>
   
 </template>
@@ -34,7 +33,7 @@ export default {
   },
   methods: {
     userManagement(){
-      // this.$router.push({ path: '/carouselMap/search'});
+       this.$router.push({ path: '/carouselMap/mangement'});
     }
   }
 }
