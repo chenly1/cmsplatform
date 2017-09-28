@@ -4,8 +4,15 @@
             {
                 "type": "node",
                 "request": "launch",
-                "name": "Launch Program",
+                "name": "run",
                 "program": "${workspaceRoot}\\build\\dev-server.js"
+            },
+            {
+
+                "type": "node",
+                "request": "launch",
+                "name": "mock",
+                "program": "${workspaceRoot}\\mock\\static\\server.js"
             }
         ]
     }
