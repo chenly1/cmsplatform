@@ -68,7 +68,7 @@ export default new Router({
             { path: '/article/edit/:rowid', component: articleEdit, name: '文章管理_编辑' }
           ]
         },
-        { path: '/editor', component: ue, name: 'editor', class: 'fa-plug' }
+        { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true}
       ]
     },
     {
