@@ -8,11 +8,11 @@ import router from './router' // 路由
 
 import ElementUI from 'element-ui' // element-ui
 // import 'element-ui/lib/theme-default/index.css' // element-ui
-import '../static/element-theme/index.css' // element-theme-#82c341
+import './assets/theme/element-theme/index.css' // element-theme-#82c341
 import 'font-awesome/css/font-awesome.min.css' // Font Awesome icon图标库
 
 import '../static/UE/ueditor.config.js'
-import '../static/UE/ueditor.all.js'
+import '../static/UE/ueditor.all.min.js'
 import '../static/UE/lang/zh-cn/zh-cn.js'
 import '../static/UE/ueditor.parse.min.js'
 
