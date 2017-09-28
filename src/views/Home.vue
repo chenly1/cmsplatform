@@ -146,7 +146,7 @@ export default {
 	.header {
 		height: 60px;
 		line-height: 60px;
-		background: #82C341;
+		background: #42d885;
 		color: #fff;
 		.userinfo {
 			text-align: right;
