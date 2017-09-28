@@ -111,7 +111,7 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                    this.$confirm('确认提交吗？', '提示', {type: 'warning'}).then(() => {
                         let para = Object.assign({}, this.ruleForm);
                         var _that = this;
                         if (this.$route.query.type === 'add') {//新增
@@ -130,16 +130,16 @@ export default {
                                 if (response.data.flag === true) {
                                     // _that.listLoading = false;
                                     _that.$message({
-                                        message: '提交成功',
-                                        type: 'success'
+                                        message: '提交成功'
+                                        // type: 'success'
                                     });
                                     _that.$router.push('/carouselMap/mangement');
                                 } else {
                                     _that.$message({
                                         showClose: true,
                                         duration: 0,
-                                        message: '提交失败，' + response.data.message,
-                                        type: 'error'
+                                        message: '提交失败，' + response.data.message
+                                        // type: 'error'
                                     });
                                 }
                             }).catch(() => {
@@ -155,7 +155,7 @@ export default {
                                     // _that.listLoading = false;
                                     _that.$message({
                                         message: '提交成功',
-                                        type: 'success'
+                                        // type: 'success'
                                     });
                                     _that.$router.push('/carouselMap/mangement');
                                 } else {
@@ -180,12 +180,13 @@ export default {
         },
         // 退出事件
         cancelClick() {
-            this.$confirm('确认退出编辑吗？', '提示', {}).then(() => {
-                this.$message({
-                    message: "返回成功!",
-                    type: 'success'
-                });
+            this.$confirm('确认退出编辑吗？', '提示', {
+                type: 'warning'
             }).then(() => {
+                this.$message({
+                    message: "返回成功!"
+                    // type: 'success'
+                });
                 this.$router.push('/carouselMap/mangement');
             }).catch(() => {
 

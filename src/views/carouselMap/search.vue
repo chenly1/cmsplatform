@@ -7,7 +7,7 @@
                             <el-input v-model="filters.title" placeholder="主题"></el-input>
                         </el-form-item> -->
                 <el-form-item>
-                    <el-button type="primary" v-on:click="getListData" icon="search">刷新</el-button>
+                    <el-button v-on:click="getListData" icon="search">刷新</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleAdd()" icon="plus">新增</el-button>
@@ -41,7 +41,6 @@
             <el-table-column label="操作" width="200">
                 <template scope="scope">
                     <el-button v-if="scope.row.logoff===1" size="small" icon="edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <!-- <el-button v-if="scope.row.logoff===1" type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button> -->
                     <el-button v-if="scope.row.logoff===1" type="success" size="small" icon="check" @click="releaseEvent(scope.$index, scope.row)">启用</el-button>
                     <el-button v-if="scope.row.logoff!==1" type="danger" size="small" icon="close" @click="withdrawalEvent(scope.$index, scope.row)">停用</el-button>
                 </template>
@@ -126,25 +125,6 @@ export default {
             };
             this.$router.push({ path: '/carouselMap/edit', query: query });
         },
-        // 删除
-        handleDel: function(index, row) {
-            this.$confirm('确认删除该记录吗?', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.listLoading = true;
-                let para = { id: row.id };
-                // removeUser(para).then((res) => {
-                this.listLoading = false;
-                this.$message({
-                    message: '删除成功',
-                    type: 'success'
-                });
-                this.getListData();
-                // });
-            }).catch(() => {
-
-            });
-        },
         // 启用
         releaseEvent: function(index, row) {
             this.$confirm('确认启用该记录吗?', '提示', {
@@ -158,13 +138,13 @@ export default {
                     if (response.data.flag === true) {
                         // _that.listLoading = false;
                         _that.$message({
-                            message: '启用成功',
-                            type: 'success'
+                            message: '启用成功'
+                            // type: 'success'
                         });
                         _that.getListData();
                     }else{
                         _that.$message({
-                            message: '启用失败',
+                            message: '启用失败，' + response.data.message,
                             type: 'error'
                         });
                         _that.getListData();
@@ -189,8 +169,14 @@ export default {
                     if (response.data.flag === true) {
                         // _that.listLoading = false;
                         _that.$message({
-                            message: '停用成功',
-                            type: 'success'
+                            message: '停用成功'
+                            // type: 'success'
+                        });
+                        _that.getListData();
+                    }else{
+                        _that.$message({
+                            message: '停用失败，' + response.data.message,
+                            type: 'error'
                         });
                         _that.getListData();
                     }

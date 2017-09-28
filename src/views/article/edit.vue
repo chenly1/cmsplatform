@@ -246,7 +246,17 @@ export default {
     },
     // 退出事件
     cancelClick() {
-      this.$router.push('/article/search');
+      this.$confirm('确认退出编辑吗？', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          message: "返回成功!"
+          // type: 'success'
+        });
+        this.$router.push('/article/search');
+      }).catch(() => {
+
+      });
     },
     onSubmit() {
       debugger;
@@ -262,7 +272,7 @@ export default {
             });
             return false;
           } else {
-            this.$confirm('确认提交吗？', '提示', {}).then(() => {
+            this.$confirm('确认提交吗？', '提示', { type: 'warning' }).then(() => {
               _that.form.mainBody = _that.$refs.ue.getUEContent();
               let para = Object.assign({}, _that.form);
               if (_that.$route.params.rowid == 0) {
@@ -272,7 +282,7 @@ export default {
                     if (res.data.flag === true) {
                       _that.$message({
                         message: '提交成功',
-                        type: 'success'
+                        // type: 'success'
                       });
                       _that.$router.push('/article/search');
                     } else {
@@ -294,7 +304,7 @@ export default {
                     if (res.data.flag === true) {
                       _that.$message({
                         message: '提交成功',
-                        type: 'success'
+                        // type: 'success'
                       });
                       _that.$router.push('/article/search');
                     } else {

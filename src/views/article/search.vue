@@ -5,7 +5,7 @@
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
-      <el-button type="primary" icon="search" @click="getDataList()">查询</el-button>
+      <el-button icon="search" @click="getDataList()">查询</el-button>
       <el-button type="primary" icon="plus" @click="createData()">新建</el-button>
     </el-col>
     <el-table :data="tableData" v-loading="listLoading" style="width: 100%">
@@ -94,22 +94,59 @@ export default {
       console.log(index, row);
     },
     release(index, row) {
-      var _that = this;
-      var url = this.url + '/release/' + row.id;
-      stateUpdate(url)
-        .then(function(response) {
-          _that.getDataList();
-        }).catch(() => {
-        });
+      this.$confirm('确认发布该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var _that = this;
+        var url = this.url + '/release/' + row.id;
+        stateUpdate(url)
+          .then(function(response) {
+            if (response.data.flag === true) {
+            // _that.listLoading = false;
+            _that.$message({
+              message: '发布成功'
+              // type: 'success'
+            });
+            _that.getDataList();
+          } else {
+            _that.$message({
+              message: '发布失败，' + response.data.message,
+              type: 'error'
+            });
+            _that.getDataList();
+          }
+          }).catch(() => {
+          });
+      }).catch(() => {
+
+      });
     },
     unrelease(index, row) {
-      var _that = this;
-      var url = this.url + '/unrelease/' + row.id;
-      stateUpdate(url)
-        .then(function(response) {
-          _that.getDataList();
+      this.$confirm('确认撤销该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var _that = this;
+        var url = this.url + '/unrelease/' + row.id;
+        stateUpdate(url).then(function(response) {
+          if (response.data.flag === true) {
+            // _that.listLoading = false;
+            _that.$message({
+              message: '撤销成功'
+              // type: 'success'
+            });
+            _that.getDataList();
+          } else {
+            _that.$message({
+              message: '撤销失败，' + response.data.message,
+              type: 'error'
+            });
+            _that.getDataList();
+          }
         }).catch(() => {
         });
+      }).catch(() => {
+
+      });
     },
     getDataList() {
       this.listLoading = true;

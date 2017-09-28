@@ -42,7 +42,7 @@ export default new Router({
     {
       path: '/',
       component: Home,
-      name: '导航一',
+      name: '内容管理',
       iconCls: 'fa fa-subway', // 图标样式class
       children: [
         { path: '/modelTable', component: ModelTable, name: '模版消息', hidden: true },
