@@ -76,7 +76,7 @@ export default {
 
   methods: {
     createData() {
-      this.$router.push({ path: '/article/create/' });
+      this.$router.push({ path: '/article/edit/0' });
     },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
@@ -87,6 +87,7 @@ export default {
       this.getDataList();
     },
     handleEdit(index, row) {
+      debugger;
       this.$router.push({ path: '/article/edit/' + row.id });
     },
     handleDelete(index, row) {
