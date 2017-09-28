@@ -26,16 +26,10 @@ export default {
     const _this = this;
     UE.delEditor(this.id);
     this.editor = UE.getEditor(this.id, this.config); // 初始化UE
-    //_this.$emit("aaa");
     this.editor.addListener("ready", function() {
       _this.$emit("aaa");
      // _this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
     });
-    // this.editor.ready(function(editor) {
-    //   debugger;
-    //    _this.$emit("aaa");
-    //   //_this.editor.setContent(_this.defaultMsg); // 确保UE加载完成后，放入内容。
-    // });
   },
   methods: {
     getUEContent() { // 获取内容方法
@@ -43,7 +37,6 @@ export default {
       return this.editor.getContent()
     },
     setUEContent(msg){
-      debugger;
       this.editor.setContent(msg) // 确保UE加载完成后，放入内容。
     },
     clear() {

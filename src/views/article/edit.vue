@@ -19,10 +19,17 @@
             <el-input v-model="form.editor" placeholder="（必填）" class="login-form-input"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="3">
           <el-form-item label="原创">
             <el-checkbox v-model="check" @change="changeOnOff"></el-checkbox>
-
+          </el-form-item>
+        </el-col>
+        <el-col :span="9">
+          <el-form-item label="用途">
+            <el-select v-model="form.purpose" placeholder="请选择" :disabled="disabled">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -61,15 +68,6 @@
   border-radius: 0px;
 }
 
-.info {
-  border-radius: 10px;
-  line-height: 20px;
-  padding: 10px;
-  margin: 10px;
-  margin-bottom: 10px;
-  background-color: #ffffff;
-}
-
 .button {
   margin: 10px;
   float: right;
@@ -77,7 +75,7 @@
 </style>
 <script>
 import UE from '../../components/ue/ue.vue';
-import { update, getListData } from '../../api/api'
+import { update, getListData, submit } from '../../api/api'
 export default {
   name: 'edit',
   components: { UE },
@@ -91,7 +89,13 @@ export default {
 
     };
     return {
-
+      options: [{
+        value: 'edu',
+        label: '健康教育'
+      }, {
+        value: 'news',
+        label: '新闻'
+      }],
       defaultMsg: '',
       config: {
         toolbars: [
@@ -180,6 +184,7 @@ export default {
       ue1: "ue1",
       redStar: false,
       forbidden: true,
+      disabled: false,
       form: {
         id: '',
         title: '',
@@ -190,11 +195,10 @@ export default {
         original: '',
         author: '',
         mainBody: '',
-        purpose: ''
+        purpose: 'edu'
       },
       getDataUrl: '/manager/article/',
       check: '',
-
       rules: {
         title: [
           { required: true, message: '请输入模版标题', trigger: 'blur' }
@@ -210,17 +214,22 @@ export default {
         ],
         author: [
           { message: '请输入原作者', trigger: 'blur', validator: isCheck }
-        ],
+        ]
       }
     }
   },
   methods: {
     getData() {
+      debugger;
       var _that = this;
-      var url = this.getDataUrl + this.$route.params.rowid;
-      getListData(url)
-        .then(function(response) {
-
+      if (this.$route.params.rowid == 0) {
+        _that.form.original = 1;
+        _that.disabled = false;
+        _that.check = true;
+      } else {
+        _that.disabled = true;
+        var url = this.getDataUrl + this.$route.params.rowid;
+        getListData(url).then(function(response) {
           _that.form = response.data.data;
           _that.defaultMsg = response.data.data.mainBody;
           _that.$refs.ue.setUEContent(_that.defaultMsg);
@@ -234,10 +243,10 @@ export default {
           _that.changeOnOff();
         }).catch(() => {
         });
+      }
     },
     // 退出事件
     cancelClick() {
-
       this.$router.push('/article/search');
     },
     onSubmit() {
@@ -248,13 +257,23 @@ export default {
             debugger;
             _that.form.mainBody = _that.$refs.ue.getUEContent();
             let para = Object.assign({}, _that.form);
-            let url = _that.getDataUrl + para.id;
-            update(url, para)
-              .then(function(res) {
-                debugger;
-                _that.$router.push('/article/search');
-              }).catch(() => {
-              });
+            if (_that.$route.params.rowid == 0) {
+              submit(_that.getDataUrl, para)
+                .then(function(res) {
+                  debugger;
+                  _that.$router.push('/article/search');
+                }).catch(() => {
+                });
+            }
+            else {
+              let url = _that.getDataUrl + para.id;
+              update(url, para)
+                .then(function(res) {
+                  _that.$router.push('/article/search');
+
+                }).catch(() => {
+                });
+            }
           }).catch(() => {
           });
         }
@@ -264,7 +283,6 @@ export default {
       });
     },
     changeOnOff() {
-      debugger;
       if (this.check === false) {
         // 开启重复提醒功能，给表单验证添加相应规则，并添加红色星号。
         this.forbidden = false;
@@ -278,10 +296,5 @@ export default {
       }
     }
   }
-
-  // ,
-  // mounted() {
-  //   this.getData();
-  // }
 }
 </script>
