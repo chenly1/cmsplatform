@@ -1,99 +1,76 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank">Forum</a>
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank">Community Chat</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank">Twitter</a>
-      </li>
-      <br>
-      <li>
-        <a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a href="http://router.vuejs.org/" target="_blank">vue-router</a>
-      </li>
-      <li>
-        <a href="http://vuex.vuejs.org/" target="_blank">vuex</a>
-      </li>
-      <li>
-        <a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a>
-      </li>
-      <li>
-        <a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a>
-      </li>
-    </ul>
-    <ul>
-      <li v-for="article in articles">
-        {{article.name}}
-      </li>
-    </ul>
-  </div>
+  <section>
+    <!--工具条-->
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+      <div id="title">
+        <span>帐号整体情况</span>
+      </div>
+    </el-col>
+    <el-col :span="12" class="number" style="">
+      <div class="text" style="">
+        <span>注册人数</span>
+          <i class="fa fa-angle-right"></i>
+        <p>240</p>
+      </div>
+    </el-col>
+    <el-col :span="12" class="number" style="">
+      <div class="text" style="">
+        <span>绑定人数</span>
+          <i class="fa fa-angle-right"></i>
+        <p>70</p>
+      </div>
+    </el-col>
+    
+  </section>
+  
 </template>
 
 <script>
-import { getArticles } from '../api/api';
-import mustache from 'mustache';
+
 export default {
-  name: 'hello',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      articles: []
     }
   },
-  mounted: function() {
-
-
-    var view = {
-      title: "Joe",
-      calc: function() {
-        return 2 + 4;
-      }
+  methods: {
+    userManagement(){
+      // this.$router.push({ path: '/carouselMap/search'});
     }
-    var msg = mustache.render("{{title}} spends {{calc}}", view)
-    console.log(msg);
-    this.msg = msg;
-
-    getArticles().then(response => {
-      this.articles = response.data.body
-      // this.articles = response.data["subjects"] 也可以
-    }).catch(() => {
-    });
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1,
-h2 {
-  font-weight: normal;
+#title {
+  height: 50px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+#title span {
+  font-size: 20px;
+  line-height: 35px;
+  padding-left: 20px;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+.number {
+  text-align: center;
+  border: 0px solid red;
+  height: 300px;
 }
 
-a {
-  color: #42b983;
+.number .text {
+  padding-top: 10px;
+}
+
+.number span {
+  color: #888888;
+}
+
+.number i {
+  margin-left: 10px;
+}
+
+.number p {
+  font-size: 80px;
 }
 </style>

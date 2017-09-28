@@ -23,16 +23,10 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/404',
-      component: NotFound,
-      name: '',
-      hidden: true
-    },
-    {
       path: '/',
       component: Home,
       name: '管理系统',
-      iconCls: 'fa fa-th-large',
+      iconCls: 'fa fa-home',
       leaf: true, // 只有一个节点
       redirect: '/hello',
       children: [
@@ -43,7 +37,7 @@ export default new Router({
       path: '/',
       component: Home,
       name: '内容管理',
-      iconCls: 'fa fa-subway', // 图标样式class
+      iconCls: 'fa fa-th-large', // 图标样式class
       children: [
         { path: '/modelTable', component: ModelTable, name: '模版消息', hidden: true },
         { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑', hidden: true },
@@ -70,6 +64,12 @@ export default new Router({
         },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true}
       ]
+    },
+    {
+      path: '/404',
+      component: NotFound,
+      name: '',
+      hidden: true
     },
     {
       path: '*',
