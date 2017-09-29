@@ -174,9 +174,9 @@ export default {
             'autotypeset', //自动排版
             'touppercase', //字母大写
             'tolowercase', //字母小写
-            'background', //背景
             'template', //模板
-            'inserttable' //插入表格
+            'inserttable', //插入表格
+            'preview' //预览
           ]],
         initialFrameWidth: null,
         initialFrameHeight: 350
