@@ -8,33 +8,49 @@
     </el-col>
     <el-col :span="12" class="number" style="">
       <div class="text" style="">
-        <el-button type="text" @click="userManagement">注册人数
-          <i class="fa fa-angle-right"></i></el-button >
-        <p>240</p>
+        <span>注册人数</span>
+        <i class="fa fa-angle-right"></i>
+        <!-- <el-button type="text" @click="userManagement">注册人数
+          <i class="fa fa-angle-right"></i>
+        </el-button> -->
+        <p>{{accountCount}}</p>
       </div>
     </el-col>
     <el-col :span="12" class="number" style="">
       <div class="text" style="">
-        <span>绑定人数</span>
-          <i class="fa fa-angle-right"></i>
-        <p>70</p>
+        <span>绑定儿童数</span>
+        <i class="fa fa-angle-right"></i>
+        <p>{{memeberCount}}</p>
       </div>
-    </el-col>   
+    </el-col>
   </section>
-  
 </template>
 
 <script>
-
+import { getListData } from '../api/api'
 export default {
   data() {
     return {
+      memeberCount: '',
+      accountCount: ''
     }
   },
   methods: {
-    userManagement(){
-       this.$router.push({ path: '/carouselMap/mangement'});
+    userManagement() {
+      this.$router.push({ path: '/carouselMap/mangement' });
+    },
+    getData() {
+      var _that = this;
+      var url = '/manager/dashboard/account';
+      getListData(url).then(function(response) {
+        _that.memeberCount = response.data.data.memeberCount;
+        _that.accountCount = response.data.data.accountCount;
+      }).catch(() => {
+      });
     }
+  },
+  mounted() {
+    this.getData();
   }
 }
 </script>
