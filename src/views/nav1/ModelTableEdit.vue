@@ -6,10 +6,10 @@
             </el-form-item>
             <el-form-item label="提醒方式">
                 <el-checkbox-group v-model="ruleForm.way">
-                    <el-checkbox label="短信"></el-checkbox>
-                    <el-checkbox label="电话"></el-checkbox>
-                    <el-checkbox label="邮件"></el-checkbox>
-                    <el-checkbox label="微信"></el-checkbox>
+                    <el-checkbox label="短信" @change="handleCheckedChange"></el-checkbox>
+                    <el-checkbox label="电话" @change="handleCheckedChange"></el-checkbox>
+                    <el-checkbox label="邮件" @change="handleCheckedChange"></el-checkbox>
+                    <el-checkbox label="微信" @change="handleCheckedChange"></el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
             <el-form-item label="提醒时间">
@@ -20,7 +20,7 @@
                 </el-row>
             </el-form-item>
             <el-form-item label="详细内容" prop="source">
-                <el-input type="textarea" v-model="ruleForm.source" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
+                <el-input type="textarea" name="source"  v-model="ruleForm.source" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -37,7 +37,7 @@ export default {
                 title: this.$route.query.title || '',
                 way: [],
                 date: '',
-                source: this.$route.query.source || '',
+                source: '',
             },
             rules: {
                 title: [
@@ -56,6 +56,17 @@ export default {
         };
     },
     methods: {
+        handleCheckedChange(event) {          
+            var _that = this;
+            var source = _that.ruleForm.source;
+            if (event.target.checked) {
+                source += event.target.value;
+            }
+            else {
+                source = source.replace(event.target.value, '');
+            }
+            _that.ruleForm.source = source;
+        },
         submitForm(formName) {
             debugger;
             this.$refs[formName].validate((valid) => {

@@ -30,11 +30,11 @@
             </el-table-column>
             <el-table-column label="操作" width="250">
                 <template scope="scope">
-                    <el-button type="info" size="small" @click="previewEvent(scope.$index, scope.row)">预览</el-button>
-                    <el-button v-if="!scope.row.releaseTime" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button type="info" size="small" @click="previewEvent(scope.$index, scope.row)">详细</el-button>
+                    <!-- <el-button v-if="!scope.row.releaseTime" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button v-if="!scope.row.releaseTime" type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                     <el-button v-if="!scope.row.releaseTime" type="success" size="small" @click="releaseEvent(scope.$index, scope.row)">发布</el-button>
-                    <el-button v-if="scope.row.releaseTime" type="warning" size="small" @click="withdrawalEvent(scope.$index, scope.row)">撤回</el-button>
+                    <el-button v-if="scope.row.releaseTime" type="warning" size="small" @click="withdrawalEvent(scope.$index, scope.row)">撤回</el-button> -->
                 </template>
             </el-table-column>
         </el-table>
