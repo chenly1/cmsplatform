@@ -23,6 +23,14 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+//server exit
+app.get('/exit', function (req, res) {
+  var uri = 'http://localhost:' + port
+  console.log('> Stop at ' + uri + '\n')
+  res.send('> Stop at ' + uri + '\n');
+  process.exit(0);
+})
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
