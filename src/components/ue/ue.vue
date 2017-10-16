@@ -34,7 +34,10 @@ export default {
   methods: {
     getUEContent() { // 获取内容方法
       //_this.editor.execCommand( 'cleardoc' );
-      return this.editor.getContent()
+      debugger;
+      var content = this.editor.getContent();
+      //var contentArr = content.split("</viedo>");
+      return content;
     },
     setUEContent(msg) {
       this.editor.setContent(msg) // 确保UE加载完成后，放入内容。

@@ -231,7 +231,20 @@ export default {
         getListData(url).then(function(response) {
           _that.form = response.data.data;
           _that.defaultMsg = response.data.data.mainBody;
-          _that.$refs.ue.setUEContent(_that.defaultMsg);
+          let msg = _that.defaultMsg;
+          var div = document.createElement("div");
+          if (typeof msg == "string") {
+            div.innerHTML = msg;
+          }
+          var msgArr = div.getElementsByTagName("video");
+          var pstr = div.innerHTML;
+          var len = msgArr.length;
+          for (var j = 0; j < len; j++) {
+            var imgStr = '<img width="420" height="280" _url="' + msgArr[j].currentSrc + '" class="edui-upload-video  vjs-default-skin" src="/static/UE/themes/default/images/spacer.gif" style="background:url(/static/UE/themes/default/images/videologo.gif) no-repeat center center; border:1px solid gray;">';
+            var s = pstr.substring(pstr.indexOf("<video"), pstr.indexOf("</video>") + 8);
+            pstr = pstr.replace(s, imgStr);
+          }
+          _that.$refs.ue.setUEContent(pstr);
           console.log(_that.defaultMsg);
           if (_that.form.original === 2) {
             _that.check = false;
