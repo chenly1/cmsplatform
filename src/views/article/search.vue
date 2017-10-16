@@ -33,11 +33,12 @@
       </el-table-column>
       <el-table-column label="发布时间" width="150" prop="releaseTime" sortable>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" width="400">
         <template scope="scope">
           <el-button v-if="scope.row.logoff===1" size="small" icon="edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button v-if="scope.row.logoff===1" size="small" icon="check" type="success" @click="release(scope.$index, scope.row)">发布</el-button>
-          <el-button v-if="scope.row.logoff===2" size="small" type="danger" icon="close" @click="unrelease(scope.$index, scope.row)">撤销</el-button>
+          <el-button v-if="scope.row.logoff===1" size="small" icon="delete" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button v-if="scope.row.logoff===2" size="small" icon="circle-cross" type="warning" @click="unrelease(scope.$index, scope.row)">撤销</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -51,7 +52,7 @@
   </section>
 </template>
 <script>
-import { getListData, stateUpdate } from '../../api/api'
+import { getListData, stateUpdate,deleteData } from '../../api/api'
 export default {
   data() {
     return {
@@ -87,11 +88,38 @@ export default {
       this.getDataList();
     },
     handleEdit(index, row) {
-      debugger;
+     
       this.$router.push({ path: '/article/edit/' + row.id });
     },
     handleDelete(index, row) {
-      console.log(index, row);
+       debugger;
+      this.$confirm('确认删除该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var _that = this;
+        var url = this.url +'/' + row.id;
+        deleteData(url,row)
+          .then(function(response) {
+            debugger;
+            if (response.data.flag === true) {
+            // _that.listLoading = false;
+            _that.$message({
+              message: '删除成功'
+              // type: 'success'
+            });
+            _that.getDataList();
+          } else {
+            _that.$message({
+              message: '删除失败，' + response.data.message,
+              type: 'error'
+            });
+            _that.getDataList();
+          }
+          }).catch(() => {
+          });
+      }).catch(() => {
+
+      });
     },
     release(index, row) {
       this.$confirm('确认发布该记录吗?', '提示', {

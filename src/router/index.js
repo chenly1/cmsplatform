@@ -39,8 +39,8 @@ export default new Router({
       name: '内容管理',
       iconCls: 'fa fa-th-large', // 图标样式class
       children: [
-        { path: '/modelTable', component: ModelTable, name: '模版消息'},
-        { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑'},
+        { path: '/modelTable', component: ModelTable, name: '模版消息', hidden: true},
+        { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑', hidden: true},
         {
           path: '/carouselMap/mangement',
           component: CarouselMapMangement,

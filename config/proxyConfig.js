@@ -9,11 +9,11 @@ module.exports = {
       },
       logLevel:'debug' 
     },
-    '/manager/ueditor/controller': {
-      target: 'http://192.168.0.249:9082',  // 接口域名
-      changeOrigin: true, //是否跨域  ,
-      logLevel:'debug' 
-    },
+    // '/manager/ueditor/controller': {
+    //   target: 'http://192.168.0.249:9082',  // 接口域名
+    //   changeOrigin: true, //是否跨域  ,
+    //   logLevel:'debug' 
+    // },
     '/video': {
       target: 'http://192.168.0.249:9082',  // 接口域名
       changeOrigin: true, //是否跨域  , 
@@ -29,20 +29,25 @@ module.exports = {
       changeOrigin: true, //是否跨域  , 
       logLevel:'debug'  
     },
-    '/manager/article/preview/':{
-      target: 'http://192.168.0.249:9082',  // 接口域名
-      changeOrigin: true, //是否跨域  , 
-      logLevel:'debug'  
-    },
-    '/manager/banner/':{
-      target: 'http://192.168.0.249:9082',  // 接口域名
-      changeOrigin: true, //是否跨域  , 
-      logLevel:'debug'  
-    },
-    '/manager/dashboard/account':{
-      target: 'http://192.168.0.249:9082',  // 接口域名
-      changeOrigin: true, //是否跨域  , 
-      logLevel:'debug'  
-    }
+    // '/manager/article/preview/':{
+    //   target: 'http://192.168.0.249:9082',  // 接口域名
+    //   changeOrigin: true, //是否跨域  , 
+    //   logLevel:'debug'  
+    // },
+    // '/manager/article/':{
+    //   target: 'http://192.168.0.249:9082',  // 接口域名
+    //   changeOrigin: true, //是否跨域  , 
+    //   logLevel:'debug'  
+    // },
+     '/manager/banner/':{
+       target: 'http://192.168.0.249:9082',  // 接口域名
+       changeOrigin: true, //是否跨域  , 
+       logLevel:'debug'  
+     },
+     '/manager/dashboard/account':{
+       target: 'http://192.168.0.249:9082',  // 接口域名
+       changeOrigin: true, //是否跨域  , 
+       logLevel:'debug'  
+     }
 }
 }

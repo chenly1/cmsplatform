@@ -14,12 +14,12 @@ export const getArticles =()=>{
 // 模版消息-不带查询
 export const getPageListData = () => { 
     return axios.get(`${base}/pageListData`, {  }); 
-};
+}
 
 // 素材管理-不带查询
 export const getMaterialData = () => { 
     return axios.get(`${base}/materialData`, {  }); 
-};
+}
 
 export const submit = (url, params) => {
     return axios.post(url, params)
@@ -36,3 +36,8 @@ export const update = (url, params) => {
 export const stateUpdate = (url) => {
     return axios.patch(url,{})
 }
+
+export const deleteData = (url) => {
+    return axios.delete(url)
+}
+
