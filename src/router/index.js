@@ -63,9 +63,9 @@ export default new Router({
             { path: '/article/edit/:rowid', component: articleEdit, name: '文章管理_编辑' },
           ]
         },
-        {
-          path: '/article/videoUpload', component: videoUpload, name: '视频上传' 
-        },
+        // {
+        //   path: '/article/videoUpload', component: videoUpload, name: '视频上传' 
+        // },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true}
       ]
     },
