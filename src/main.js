@@ -16,6 +16,11 @@ import '../static/UE/ueditor.all.js'
 import '../static/UE/lang/zh-cn/zh-cn.js'
 import '../static/UE/ueditor.parse.min.js'
 
+import '../static/CryptoJS/rollups/sha1.js'
+import '../static/CryptoJS/components/sha1-min.js'
+import '../static/CryptoJS/components/lib-typedarrays-min.js'
+
+
 // import VueResource from 'vue-resource'
 // Vue.use(VueResource)
 Vue.use(ElementUI)

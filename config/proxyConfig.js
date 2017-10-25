@@ -20,7 +20,7 @@ module.exports = {
       logLevel:'debug'  
     },
     '/manager': {
-      target: 'http://192.168.0.249:9082',  // 接口域名
+      target: 'http://192.168.0.249:9081',  // 接口域名
       changeOrigin: true, //是否跨域  , 
       logLevel:'debug'  
     },

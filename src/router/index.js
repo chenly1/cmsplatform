@@ -17,6 +17,7 @@ import articleMangment from '@/views/article/mangement.vue'
 import articleSearch from '@/views/article/search.vue'
 import articleEdit from '@/views/article/edit.vue'
 import ue from '@/views/editor.vue'
+import videoUpload from '@/components/videoUpload/videoUpload.vue'
 
 Vue.use(Router)
 
@@ -59,8 +60,11 @@ export default new Router({
           redirect: '/article/search',
           children: [
             { path: '/article/search', component: articleSearch, name: '文章管理' },
-            { path: '/article/edit/:rowid', component: articleEdit, name: '文章管理_编辑' }
+            { path: '/article/edit/:rowid', component: articleEdit, name: '文章管理_编辑' },
           ]
+        },
+        {
+          path: '/article/videoUpload', component: videoUpload, name: '视频上传' 
         },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true}
       ]

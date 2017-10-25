@@ -41,3 +41,20 @@ export const deleteData = (url) => {
     return axios.delete(url)
 }
 
+export const videoInit = (params)=>{
+    return axios.post(`/manager/video/init`,params)
+}
+
+export const videoUpload = (params)=>{
+    var instance = axios.create({
+        headers: {'Content-Type': 'multipart/form-data'}
+      });
+    return instance.post(`/manager/video/upload`,params)
+}
+
+
+export const videoFinish = (params)=>{
+    return axios.post(`/manager/video/finish`,params)
+}
+
+
