@@ -39,6 +39,8 @@
           <el-button v-if="scope.row.logoff===1" size="small" icon="check" type="success" @click="release(scope.$index, scope.row)">发布</el-button>
           <el-button v-if="scope.row.logoff===1" size="small" icon="delete" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           <el-button v-if="scope.row.logoff===2" size="small" icon="circle-cross" type="warning" @click="unrelease(scope.$index, scope.row)">撤销</el-button>
+          <el-button v-if="scope.row.top === 2" size="small" icon="caret-top" @click="top(scope.$index, scope.row)">置顶</el-button>
+          <el-button v-if="scope.row.top === 1" size="small" icon="circle-cross" type="info" @click="canceltop(scope.$index, scope.row)">取消置顶</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -172,6 +174,62 @@ export default {
           }
         }).catch(() => {
         });
+      }).catch(() => {
+
+      });
+    },
+    top(index, row) {
+      this.$confirm('确认置顶该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var _that = this;
+        var url = this.url + '/top/' + row.id;
+        stateUpdate(url)
+          .then(function(response) {
+            if (response.data.flag === true) {
+            // _that.listLoading = false;
+            _that.$message({
+              message: '置顶成功'
+              // type: 'success'
+            });
+            _that.getDataList();
+          } else {
+            _that.$message({
+              message: '置顶失败，' + response.data.message,
+              type: 'error'
+            });
+            _that.getDataList();
+          }
+          }).catch(() => {
+          });
+      }).catch(() => {
+
+      });
+    },
+    canceltop(index, row) {
+      this.$confirm('确认取消置顶记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        var _that = this;
+        var url = this.url + '/canceltop/' + row.id;
+        stateUpdate(url)
+          .then(function(response) {
+            if (response.data.flag === true) {
+            // _that.listLoading = false;
+            _that.$message({
+              message: '取消成功'
+              // type: 'success'
+            });
+            _that.getDataList();
+          } else {
+            _that.$message({
+              message: '取消失败，' + response.data.message,
+              type: 'error'
+            });
+            _that.getDataList();
+          }
+          }).catch(() => {
+          });
       }).catch(() => {
 
       });
