@@ -54,32 +54,34 @@
   </section>
 </template>
 <script>
-import { getListData, stateUpdate,deleteData } from '../../api/api'
+import { getListData, stateUpdate, deleteData } from "../../api/api";
 export default {
   data() {
     return {
-      options: [{
-        value: 'edu',
-        label: '健康教育'
-      }, {
-        value: 'news',
-        label: '新闻'
-      }],
+      options: [
+        {
+          value: "edu",
+          label: "健康教育"
+        },
+        {
+          value: "news",
+          label: "新闻"
+        }
+      ],
       tableData: [],
       total: 0,
       pageSize: 10,
       pageNum: 1,
       pageSizes: [10, 20, 50, 100],
       listLoading: false,
-      url: '/manager/article',
-      purpose: 'edu'
-    }
+      url: "/manager/article",
+      purpose: "edu"
+    };
   },
-
 
   methods: {
     createData() {
-      this.$router.push({ path: '/article/edit/0' });
+      this.$router.push({ path: "/article/edit/0" });
     },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
@@ -90,168 +92,174 @@ export default {
       this.getDataList();
     },
     handleEdit(index, row) {
-     
-      this.$router.push({ path: '/article/edit/' + row.id });
+      this.$router.push({ path: "/article/edit/" + row.id });
     },
     handleDelete(index, row) {
-       debugger;
-      this.$confirm('确认删除该记录吗?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        var _that = this;
-        var url = this.url +'/' + row.id;
-        deleteData(url,row)
-          .then(function(response) {
-            debugger;
-            if (response.data.flag === true) {
-            // _that.listLoading = false;
-            _that.$message({
-              message: '删除成功'
-              // type: 'success'
-            });
-            _that.getDataList();
-          } else {
-            _that.$message({
-              message: '删除失败，' + response.data.message,
-              type: 'error'
-            });
-            _that.getDataList();
-          }
-          }).catch(() => {
-          });
-      }).catch(() => {
-
-      });
+      debugger;
+      this.$confirm("确认删除该记录吗?", "提示", {
+        type: "warning"
+      })
+        .then(() => {
+          var _that = this;
+          var url = this.url + "/" + row.id;
+          deleteData(url, row)
+            .then(function(response) {
+              debugger;
+              if (response.data.flag === true) {
+                // _that.listLoading = false;
+                _that.$message({
+                  message: "删除成功"
+                  // type: 'success'
+                });
+                _that.getDataList();
+              } else {
+                _that.$message({
+                  message: "删除失败，" + response.data.message,
+                  type: "error"
+                });
+                _that.getDataList();
+              }
+            })
+            .catch(() => {});
+        })
+        .catch(() => {});
     },
     release(index, row) {
-      this.$confirm('确认发布该记录吗?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        var _that = this;
-        var url = this.url + '/release/' + row.id;
-        stateUpdate(url)
-          .then(function(response) {
-            if (response.data.flag === true) {
-            // _that.listLoading = false;
-            _that.$message({
-              message: '发布成功'
-              // type: 'success'
-            });
-            _that.getDataList();
-          } else {
-            _that.$message({
-              message: '发布失败，' + response.data.message,
-              type: 'error'
-            });
-            _that.getDataList();
-          }
-          }).catch(() => {
-          });
-      }).catch(() => {
-
-      });
+      this.$confirm("确认发布该记录吗?", "提示", {
+        type: "warning"
+      })
+        .then(() => {
+          var _that = this;
+          var url = this.url + "/release/" + row.id;
+          stateUpdate(url)
+            .then(function(response) {
+              if (response.data.flag === true) {
+                // _that.listLoading = false;
+                _that.$message({
+                  message: "发布成功"
+                  // type: 'success'
+                });
+                _that.getDataList();
+              } else {
+                _that.$message({
+                  message: "发布失败，" + response.data.message,
+                  type: "error"
+                });
+                _that.getDataList();
+              }
+            })
+            .catch(() => {});
+        })
+        .catch(() => {});
     },
     unrelease(index, row) {
-      this.$confirm('确认撤销该记录吗?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        var _that = this;
-        var url = this.url + '/unrelease/' + row.id;
-        stateUpdate(url).then(function(response) {
-          if (response.data.flag === true) {
-            // _that.listLoading = false;
-            _that.$message({
-              message: '撤销成功'
-              // type: 'success'
-            });
-            _that.getDataList();
-          } else {
-            _that.$message({
-              message: '撤销失败，' + response.data.message,
-              type: 'error'
-            });
-            _that.getDataList();
-          }
-        }).catch(() => {
-        });
-      }).catch(() => {
-
-      });
+      this.$confirm("确认撤销该记录吗?", "提示", {
+        type: "warning"
+      })
+        .then(() => {
+          var _that = this;
+          var url = this.url + "/unrelease/" + row.id;
+          stateUpdate(url)
+            .then(function(response) {
+              if (response.data.flag === true) {
+                // _that.listLoading = false;
+                _that.$message({
+                  message: "撤销成功"
+                  // type: 'success'
+                });
+                _that.getDataList();
+              } else {
+                _that.$message({
+                  message: "撤销失败，" + response.data.message,
+                  type: "error"
+                });
+                _that.getDataList();
+              }
+            })
+            .catch(() => {});
+        })
+        .catch(() => {});
     },
     top(index, row) {
-      this.$confirm('确认置顶该记录吗?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        var _that = this;
-        var url = this.url + '/top/' + row.id;
-        stateUpdate(url)
-          .then(function(response) {
-            if (response.data.flag === true) {
-            // _that.listLoading = false;
-            _that.$message({
-              message: '置顶成功'
-              // type: 'success'
-            });
-            _that.getDataList();
-          } else {
-            _that.$message({
-              message: '置顶失败，' + response.data.message,
-              type: 'error'
-            });
-            _that.getDataList();
-          }
-          }).catch(() => {
-          });
-      }).catch(() => {
-
-      });
+      this.$confirm("确认置顶该记录吗?", "提示", {
+        type: "warning"
+      })
+        .then(() => {
+          var _that = this;
+          var url = this.url + "/top/" + row.id;
+          stateUpdate(url)
+            .then(function(response) {
+              if (response.data.flag === true) {
+                // _that.listLoading = false;
+                _that.$message({
+                  message: "置顶成功"
+                  // type: 'success'
+                });
+                _that.getDataList();
+              } else {
+                _that.$message({
+                  message: "置顶失败，" + response.data.message,
+                  type: "error"
+                });
+                _that.getDataList();
+              }
+            })
+            .catch(() => {});
+        })
+        .catch(() => {});
     },
     canceltop(index, row) {
-      this.$confirm('确认取消置顶记录吗?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        var _that = this;
-        var url = this.url + '/canceltop/' + row.id;
-        stateUpdate(url)
-          .then(function(response) {
-            if (response.data.flag === true) {
-            // _that.listLoading = false;
-            _that.$message({
-              message: '取消成功'
-              // type: 'success'
-            });
-            _that.getDataList();
-          } else {
-            _that.$message({
-              message: '取消失败，' + response.data.message,
-              type: 'error'
-            });
-            _that.getDataList();
-          }
-          }).catch(() => {
-          });
-      }).catch(() => {
-
-      });
+      this.$confirm("确认取消置顶记录吗?", "提示", {
+        type: "warning"
+      })
+        .then(() => {
+          var _that = this;
+          var url = this.url + "/canceltop/" + row.id;
+          stateUpdate(url)
+            .then(function(response) {
+              if (response.data.flag === true) {
+                // _that.listLoading = false;
+                _that.$message({
+                  message: "取消成功"
+                  // type: 'success'
+                });
+                _that.getDataList();
+              } else {
+                _that.$message({
+                  message: "取消失败，" + response.data.message,
+                  type: "error"
+                });
+                _that.getDataList();
+              }
+            })
+            .catch(() => {});
+        })
+        .catch(() => {});
     },
     getDataList() {
       this.listLoading = true;
       var _that = this;
-      var url = this.url + '?num=' + this.pageNum + '&size=' + this.pageSize + '&purpose=' + this.purpose;
+      var url =
+        this.url +
+        "?num=" +
+        this.pageNum +
+        "&size=" +
+        this.pageSize +
+        "&purpose=" +
+        this.purpose;
       getListData(url)
         .then(function(response) {
           _that.total = response.data.total;
           _that.tableData = response.data.data;
           _that.listLoading = false;
-        }).catch(() => {
-        });
-
+        })
+        .catch(() => {});
     }
   },
   mounted() {
     this.getDataList();
   }
-}
+};
 </script>
 
 

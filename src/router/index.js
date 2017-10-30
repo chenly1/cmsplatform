@@ -20,6 +20,8 @@ import ue from '@/views/editor.vue'
 import videoUpload from '@/components/videoUpload/videoUpload.vue'
 // 视频管理
 import videoMangement from '@/views/video/mangement.vue'
+import videoSearch from '@/views/video/search.vue'
+import videoCreate from '@/views/video/create.vue'
 
 Vue.use(Router)
 
@@ -65,19 +67,19 @@ export default new Router({
             { path: '/article/edit/:rowid', component: articleEdit, name: '文章管理_编辑' }
           ]
         },
-        // {
-        //   path: '/video/mangement',
-        //   component: videoMangement,
-        //   name: '视频管理',
-        //   redirect: '/video/search',
-        //   children: [
-        //     { path: '/video/search', component: articleSearch, name: '视频管理' },
-        //     { path: '/video/create', component: articleEdit, name: '视频上传' }
-        //   ]
-        // },
-        // {
-        //   path: '/article/videoUpload', component: videoUpload, name: '视频上传'
-        // },
+        {
+           path: '/video/mangement',
+           component: videoMangement,
+           name: '视频管理',
+           redirect: '/video/search',
+           children: [
+             { path: '/video/search', component: videoSearch, name: '视频管理' },
+             { path: '/video/create', component: videoCreate, name: '视频上传' }
+           ]
+        },
+        {
+           path: '/article/videoUpload', component: videoUpload, name: '视频上传'
+        },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true}
       ]
     },
