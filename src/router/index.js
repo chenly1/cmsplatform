@@ -77,9 +77,9 @@ export default new Router({
              { path: '/video/create', component: videoCreate, name: '视频上传' }
            ]
         },
-        {
-           path: '/article/videoUpload', component: videoUpload, name: '视频上传'
-        },
+        // {
+        //    path: '/article/videoUpload', component: videoUpload, name: '视频上传'
+        // },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true}
       ]
     },
