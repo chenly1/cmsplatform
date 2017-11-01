@@ -15,9 +15,15 @@
         <el-table :data="datas" highlight-current-row v-loading="listLoading" style="width: 100%;">
             <el-table-column type="index" style="width: 20%;">
             </el-table-column>
-            <el-table-column prop="videoName" label="视频名称" style="width: 50%;">
-                <template scope="scope">                  
+            <el-table-column prop="videoName" label="视频名称" style="width: 30%;">
+                <template scope="scope">  
+                    <img :src="scope.row.cover" style=" height:100px;padding-top:5px;" alt="">                
                     <span>{{scope.row.videoName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="url" label="连接地址" style="width: 40%;">
+                <template scope="scope">                  
+                    <span>{{scope.row.url}}</span>
                 </template>
             </el-table-column>
             <!-- <el-table-column prop="imageUrl" label="略缩图" min-width="150">
@@ -31,7 +37,7 @@
                     <span v-else-if="scope.row.logoff===1">未启用</span>
                 </template>
             </el-table-column>-->
-            <el-table-column label="操作" style="width: 30%;">
+            <el-table-column label="操作" style="width: 10%;">
                 <template scope="scope">
                     <el-button type="danger" size="small" icon="close" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                 </template>

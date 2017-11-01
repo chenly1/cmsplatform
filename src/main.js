@@ -14,7 +14,7 @@ import 'font-awesome/css/font-awesome.min.css' // Font Awesome icon图标库
 import '../static/UE/ueditor.config.js'
 import '../static/UE/ueditor.all.js'
 import '../static/UE/lang/zh-cn/zh-cn.js'
-import '../static/UE/ueditor.parse.min.js'
+import '../static/UE/ueditor.parse.js'
 
 import '../static/CryptoJS/rollups/sha1.js'
 import '../static/CryptoJS/components/sha1-min.js'

@@ -17584,6 +17584,7 @@ UE.plugins['autofloat'] = function() {
  */
 
 UE.plugins['video'] = function (){
+    debugger;
     var me =this;
 
     /**
@@ -17603,9 +17604,13 @@ UE.plugins['video'] = function (){
                     ' src="' + me.options.UEDITOR_HOME_URL+'themes/default/images/spacer.gif" style="background:url('+me.options.UEDITOR_HOME_URL+'themes/default/images/videologo.gif) no-repeat center center; border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
                 break;
             case 'embed':
-                str = '<embed type="application/x-shockwave-flash" class="' + classname + '" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
-                    ' src="' +  utils.html(url) + '" width="' + width  + '" height="' + height  + '"'  + (align ? ' style="float:' + align + '"': '') +
-                    ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
+                // str = '<img  width="' + width  + '" height="' + height+ '" _url="' + utils.html(url)  + '" class="edui-upload-video  vjs-default-skin" src="/static/UE/themes/default/images/spacer.gif" style="background:url(/static/UE/themes/default/images/videologo.gif) no-repeat center center; border:1px solid gray;">';
+                str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="video-js" ' + (align ? ' style="float:' + align + '"': '') +
+                ' controls preload="none" width="' + width + '" height="' + height + '" data-setup="{}">' +
+                '<source src="' + url + '" /></video>';
+                // str = '<embed type="application/x-shockwave-flash" class="' + classname + '" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+                //     ' src="' +  utils.html(url) + '" width="' + width  + '" height="' + height  + '"'  + (align ? ' style="float:' + align + '"': '') +
+                //     ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
                 break;
             case 'video':
                 var ext = url.substr(url.lastIndexOf('.') + 1);
@@ -23453,6 +23458,7 @@ UE.commands['insertparagraph'] = {
 //};
 
 UE.plugin.register('webapp', function (){
+    debugger;
     var me = this;
     function createInsertStr(obj,toEmbed){
         return  !toEmbed ?

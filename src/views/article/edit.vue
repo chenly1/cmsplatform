@@ -99,7 +99,9 @@ export default {
       defaultMsg: '',
       config: {
         toolbars: [
-          [ 'undo', //撤销
+          [ 
+            'source', //源代码
+            'undo', //撤销
             'redo', //重做
             'bold', //加粗
             'indent', //首行缩进
