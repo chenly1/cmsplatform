@@ -100,7 +100,7 @@ export default {
       config: {
         toolbars: [
           [ 
-            'source', //源代码
+            //'source', //源代码
             'undo', //撤销
             'redo', //重做
             'bold', //加粗
@@ -163,7 +163,7 @@ export default {
             'rowspacingtop', //段前距
             'rowspacingbottom', //段后距
             'pagebreak', //分页
-            'insertframe', //插入Iframe
+            //'insertframe', //插入Iframe
             'imagenone', //默认
             'imageleft', //左浮动
             'imageright', //右浮动
