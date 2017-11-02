@@ -1,4 +1,5 @@
 <template>
+<div>
 <el-upload
   class="upload-demo"
   action="https://jsonplaceholder.typicode.com/posts/"
@@ -11,6 +12,11 @@
   <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
   <el-progress style = "width :800px" :text-inside="true" :stroke-width="18" :percentage="per" ></el-progress>
 </el-upload>
+<div>
+  <el-button style = "margin: 10px;float:left;" size="small" type="primary" @click="cancelClick" >返回</el-button>
+</div>
+</div>
+
 </template>
 <script>
 import handeLoadFile from "../../components/videoUpload/handelLoadFile";
@@ -22,6 +28,20 @@ export default {
     };
   },
   methods: {
+    // 退出事件
+    cancelClick() {
+      this.$confirm('确认返回吗？', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          message: "返回成功!"
+          // type: 'success'
+        });
+        this.$router.push('/video/search');
+      }).catch(() => {
+
+      });
+    },
     httpRequest(vuefile) {
       let file = vuefile.file;
       let videoName = file.name;
