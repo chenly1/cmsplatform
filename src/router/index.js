@@ -4,6 +4,12 @@ import Hello from '@/views/Hello'
 import Home from '@/views/Home'
 import NotFound from '@/views/404.vue'
 
+// 用户管理
+import UserSearch from '@/views/user/search.vue'
+import UserMangement from '@/views/user/mangement.vue'
+// 儿童管理
+import ChildrenSearch from '@/views/children/search.vue'
+import ChildrenMangement from '@/views/children/mangement.vue'
 // 模版消息
 import ModelTable from '@/views/nav1/ModelTable.vue'
 import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
@@ -41,11 +47,39 @@ export default new Router({
     {
       path: '/',
       component: Home,
+      name: '用户管理',
+      iconCls: 'fa fa-user', // 图标样式class
+      children: [
+        {
+          path: '/user/mangement',
+          component: UserMangement,
+          redirect: '/user/search',
+          name: '用户列表',
+          children: [
+            { path: '/user/search', component: UserSearch, name: '用户列表' }
+          ]
+        },
+        {
+          path: '/children/mangement',
+          component: ChildrenMangement,
+          redirect: '/children/search',
+          name: '儿童列表',
+          children: [
+            { path: '/children/search', component: ChildrenSearch, name: '儿童列表' }
+          ]
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: Home,
       name: '内容管理',
       iconCls: 'fa fa-th-large', // 图标样式class
       children: [
-        { path: '/modelTable', component: ModelTable, name: '模版消息', hidden: true},
+        { path: '/modelTable', component: ModelTable, name: '模版消息'},
         { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑', hidden: true},
+        { path: '/material', component: Material, name: '素材管理', hidden: true },
+        { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true},
         {
           path: '/carouselMap/mangement',
           component: CarouselMapMangement,
@@ -56,7 +90,6 @@ export default new Router({
             { path: '/carouselMap/edit', component: CarouselMapEdit, name: '轮播图管理_编辑' }
           ]
         },
-        { path: '/material', component: Material, name: '素材管理', hidden: true },
         {
           path: '/article/mangement',
           component: articleMangment,
@@ -80,7 +113,6 @@ export default new Router({
         // {
         //    path: '/article/videoUpload', component: videoUpload, name: '视频上传'
         // },
-        { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true}
       ]
     },
     {

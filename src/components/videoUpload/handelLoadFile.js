@@ -96,8 +96,11 @@ async function handeLoadFile(file, videoName, progress) {
         params.screenshot = 1
         params.watermark = 1
         params.transcode = 1
+        // 初始化
         videoInit(params).then(async function (result) {
+            debugger;
             if (result.data.code != 2000) {
+                debugger;
                 throw new Error(result)
             }
             for (let item of list) {
@@ -107,7 +110,9 @@ async function handeLoadFile(file, videoName, progress) {
                 formData.append('dataSize', item.file.size);
                 formData.append('dataSha', item.sha1);
                 formData.append('file', item.file);
+                // 上传分片
                 await videoUpload(formData).then(function (result) {
+                    debugger;
                     if (result.data.code != 2000) {
                         throw new Error(result)
                     }
@@ -119,7 +124,9 @@ async function handeLoadFile(file, videoName, progress) {
                     }
                 })
             }
+            // 完成上传
             videoFinish({ 'fileSha': sha1 }).then(function (result) {
+                debugger;
                 if (result.data.code == 2000) {
                     resolve(result.data)
                 }

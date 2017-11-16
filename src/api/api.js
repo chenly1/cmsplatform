@@ -41,10 +41,12 @@ export const deleteData = (url) => {
     return axios.delete(url)
 }
 
+// 初始化
 export const videoInit = (params)=>{
     return axios.post(`/manager/video/init`,params)
 }
 
+// 上传分片
 export const videoUpload = (params)=>{
     var instance = axios.create({
         headers: {'Content-Type': 'multipart/form-data'}
@@ -52,7 +54,7 @@ export const videoUpload = (params)=>{
     return instance.post(`/manager/video/upload`,params)
 }
 
-
+// 完成上传
 export const videoFinish = (params)=>{
     return axios.post(`/manager/video/finish`,params)
 }
