@@ -23458,7 +23458,7 @@ UE.commands['insertparagraph'] = {
 //};
 
 UE.plugin.register('webapp', function (){
-    debugger;
+    // debugger;
     var me = this;
     function createInsertStr(obj,toEmbed){
         return  !toEmbed ?

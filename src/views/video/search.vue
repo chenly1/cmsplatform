@@ -83,7 +83,7 @@ export default {
       getListData(
         "/manager/video?num=" + this.pageNum + "&size=" + this.pageSize
       ).then(function(response) {
-        debugger;
+        // debugger;
         _that.total = response.data.total;
         _that.datas = response.data.data;
         _that.listLoading = false;
@@ -103,7 +103,7 @@ export default {
     },
     //删除
     handleDel(index, row) {
-      debugger;
+      // debugger;
       this.$confirm("确认删除该条视频吗?", "提示", {
         type: "warning"
       }).then(() => {
@@ -111,7 +111,7 @@ export default {
           var url = "/manager/video/" + row.id;
           deleteData(url, row)
             .then(function(response) {
-              debugger;
+              // debugger;
               if (response.data.flag === true) {
                 _that.$message({
                   message: "删除成功"

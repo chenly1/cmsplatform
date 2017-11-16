@@ -55,7 +55,7 @@ export default {
   },
   mounted: function() {
     getArticles().then(response => {
-      debugger;
+      // debugger;
       this.articles = response.data.body
       // this.articles = response.data["subjects"] 也可以
     }).catch(() => {

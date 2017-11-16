@@ -194,7 +194,7 @@ export default {
                         });
                         // this.$refs['addForm'].resetFields(); // 重置form
                         this.addFormVisible = false;
-                        debugger;
+                        // debugger;
                         this.$refs.ue.clear(); // 调用子组件方法
                         this.getListData();
                         // });
@@ -220,7 +220,7 @@ export default {
             this.editFormVisible = true;
             this.editForm.pid = pid;
             this.editForm.name = name;
-            debugger;
+            // debugger;
             // this.$refs.ue.setUEContent(content); // 调用子组件方法
             this.editdefaultMsg = content;
         },

@@ -272,11 +272,11 @@ export default {
       });
     },
     onSubmit() {
-      debugger;
+      // debugger;
       var _that = this;
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          debugger;
+          // debugger;
           if (_that.$refs.ue.getUEContent() == "") {
             _that.$refs.ue.getUEfocus();
             _that.$message({
@@ -291,7 +291,7 @@ export default {
               if (_that.$route.params.rowid == 0) {
                 submit(_that.getDataUrl, para)
                   .then(function(res) {
-                    debugger;
+                    // debugger;
                     if (res.data.flag === true) {
                       _that.$message({
                         message: '提交成功',

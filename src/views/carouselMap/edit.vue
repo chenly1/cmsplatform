@@ -125,7 +125,7 @@ export default {
                             if (para.logoffCheck == true) formData.append('logoff', 2);
                             else formData.append('logoff', 1);
                             var url = '/manager/banner';
-                            debugger;
+                            // debugger;
                             submit(url, formData).then(function(response) {
                                 if (response.data.flag === true) {
                                     // _that.listLoading = false;
@@ -149,7 +149,7 @@ export default {
                             if (para.logoffCheck == true) para.logoff = 2;
                             else para.logoff = 1;
                             var url = '/manager/banner/' + para.id;
-                            debugger;
+                            // debugger;
                             update(url, para).then(function(response) {
                                 if (response.data.flag === true) {
                                     // _that.listLoading = false;

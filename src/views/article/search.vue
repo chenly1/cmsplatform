@@ -95,7 +95,7 @@ export default {
       this.$router.push({ path: "/article/edit/" + row.id });
     },
     handleDelete(index, row) {
-      debugger;
+      // debugger;
       this.$confirm("确认删除该记录吗?", "提示", {
         type: "warning"
       })
@@ -104,7 +104,7 @@ export default {
           var url = this.url + "/" + row.id;
           deleteData(url, row)
             .then(function(response) {
-              debugger;
+              // debugger;
               if (response.data.flag === true) {
                 // _that.listLoading = false;
                 _that.$message({
