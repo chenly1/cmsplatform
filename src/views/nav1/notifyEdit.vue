@@ -79,7 +79,7 @@ export default {
                             type: 'success'
                         });
                     }).then(() => {
-                        this.$router.push('/modelTable');
+                        this.$router.push('/template/search');
                     }).catch(() => {
 
                     });
@@ -94,7 +94,7 @@ export default {
                     type: 'success'
                 });
             }).then(() => {
-                this.$router.push('/modelTable');
+                this.$router.push('/template/search');
             }).catch(() => {
 
             });

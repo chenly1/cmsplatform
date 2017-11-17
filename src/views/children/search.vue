@@ -5,7 +5,7 @@
             <el-form :inline="true" :model="filters">
                 <el-col :span="4">
                     <el-form-item>
-                        <el-input v-model="filters.childrenName" placeholder="儿童姓名"></el-input>
+                        <el-input v-model="filters.BRXM" placeholder="儿童姓名"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="4">
@@ -20,24 +20,30 @@
                     </el-select>
                 </el-col>
                 <el-col :span="4">
+                    <el-select v-model="filters.orderBy" placeholder="排序">
+                        <el-option v-for="item in orderBy" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="4">
                     <el-button v-on:click="getListData" icon="search">查询</el-button>
                 </el-col>
             </el-form>
         </el-col>
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column type="index" width="45">
             </el-table-column>
-            <el-table-column label="儿童姓名" prop="childrenName" sortable min-width="90">
+            <el-table-column label="儿童姓名" prop="BRXM" sortable min-width="90">
             </el-table-column>
             <el-table-column label="儿童卡号" prop="cardNumber" sortable min-width="100">
             </el-table-column>
             <el-table-column label="类型" prop="typeName" sortable>
             </el-table-column>
-            <el-table-column label="注册用户" prop="phoneNumber" sortable min-width="100">
+            <el-table-column label="注册用户" prop="mobilePhone" sortable min-width="100">
             </el-table-column>
-            <el-table-column label="注册日期" prop="date" sortable min-width="100">
+            <el-table-column label="注册日期" prop="created" sortable min-width="100">
             </el-table-column>
             <el-table-column label="描述" prop="desc">
             </el-table-column>
@@ -50,7 +56,8 @@
 
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
-            <el-pagination layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange" :current-page="page.pageNum" :page-size="page.pageSize" :total="page.total" style="float:right;">
+            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量操作</el-button>
+            <el-pagination layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange" :current-page="page.pageNum" :page-size="page.pageCount" :total="page.total" style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -61,16 +68,19 @@
 export default {
     data() {
         return {
+            listLoading: false,
+            sels: [],// 列表选中列
             filters: {
-                phoneNumber: '',
+                mobilePhone: '',
                 type: '',
-                childrenName: '',
-                cardNumber: ''
+                BRXM: '',
+                cardNumber: '',
+                orderBy:'created desc'
             },
             forbidden: false,
             page: {
                 total: 0,
-                pageSize: 10,
+                pageCount: 10,
                 pageNum: 1
             },
             options: [
@@ -83,26 +93,47 @@ export default {
                     label: "会员"
                 }
             ],
+            orderBy: [
+                {
+                    value: "created desc",
+                    label: "注册时间倒序"
+                },
+                {
+                    value: "created asc",
+                    label: "注册时间顺序"
+
+                },
+                {
+                    value: "CSNY desc",
+                    label: "出生日期倒序"
+
+                },
+                {
+                    value: "CSNY asc",
+                    label: "出生日期顺序"
+
+                }
+            ],
             tableData: [{
-                phoneNumber: '13500000001',
-                date: '2017-10-01',
-                childrenName: '何青哲',
+                mobilePhone: '13500000001',
+                created: '2017-10-01',
+                BRXM: '何青哲',
                 cardNumber: '0000000001',
                 type: 'member',
                 typeName: '会员',
                 desc: '111',
             }, {
-                phoneNumber: '13500000002',
-                date: '2017-10-01',
-                childrenName: '李永欣',
+                mobilePhone: '13500000002',
+                created: '2017-10-01',
+                BRXM: '李永欣',
                 cardNumber: '0000000004',
                 type: 'consumer',
                 typeName: '普通用户',
                 desc: '112',
             }, {
-                phoneNumber: '13500000003',
-                date: '2017-10-01',
-                childrenName: '艾云尼',
+                mobilePhone: '13500000003',
+                created: '2017-10-01',
+                BRXM: '艾云尼',
                 cardNumber: '0000000005',
                 type: 'consumer',
                 typeName: '普通用户',
@@ -113,7 +144,21 @@ export default {
     methods: {
         // 获取table列表数据
         getListData() {
-            console.log(this.filters);
+            this.listLoading = true;
+            var that_ = this;
+            var param_search = 'pageNum=' + this.page.pageNum 
+            + '&pageCount=' + this.page.pageCount
+            + '&BRXM='+this.query.BRXM
+            + '&orderBy='+this.query.orderBy;
+            // debugger;
+            // findUser(param_search).then(function(response) {
+            //     // debugger;
+            //     that_.tableData = response.data.tableData;
+            //     that_.page.total = response.data.total;
+            //     that_.listLoading = false;
+            // }).catch(function(error) {
+            //     console.log(error);
+            // });
         },
         // 是否绑定儿童
         changeOnOff() {
@@ -121,7 +166,7 @@ export default {
                 // 开启重复提醒功能，给表单验证添加相应规则，并添加红色星号。
                 this.forbidden = true;
                 this.filters.cardNumber = '';
-                this.filters.childrenName = '';
+                this.filters.BRXM = '';
             } else {
                 // 关闭重复提醒功能，将表单验证中的相应规则，替换为空，并移除红色星号。不能删除相关规则，否则无法重新验证了，残留表单验证信息。
                 this.forbidden = false;
@@ -129,8 +174,33 @@ export default {
         },
         // 分页
         handleCurrentChange(val) {
-            this.pageNum = val;
+            this.page.pageNum = val;
             this.getListData();
+        },
+        // 批量选择
+        selsChange: function(sels) {
+            this.sels = sels;
+        },
+        // 批量操作事件
+        batchRemove: function() {
+            console.log(this.sels);
+            // var ids = this.sels.map(item => item.pid).toString();
+            // this.$confirm('确认删除选中记录吗？', '提示', {
+            //     type: 'warning'
+            // }).then(() => {
+            //     this.listLoading = true;
+            //     let para = { ids: ids };
+            //     // batchRemoveUser(para).then((res) => {
+            //     //     this.listLoading = false;
+            //     this.$message({
+            //         message: '删除成功',
+            //         type: 'success'
+            //     });
+            //     this.getListData();
+            //     // });
+            // }).catch(() => {
+
+            // });
         },
     },
     mounted() {
@@ -140,9 +210,9 @@ export default {
 </script>
 
 <style>
-.toolbar .el-button {
+.toolbar .el-select {
     /* border: 1px solid red; */
-    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 0;
 }
 </style>

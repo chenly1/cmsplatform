@@ -10,9 +10,11 @@ import UserMangement from '@/views/user/mangement.vue'
 // 儿童管理
 import ChildrenSearch from '@/views/children/search.vue'
 import ChildrenMangement from '@/views/children/mangement.vue'
-// 模版消息
-import ModelTable from '@/views/nav1/ModelTable.vue'
-import ModelTableEdit from '@/views/nav1/ModelTableEdit.vue'
+// 模版管理
+import TemplateSearch from '@/views/template/search.vue'
+import TemplateNotifyEdit from '@/views/template/notifyEdit.vue'
+import TemplateMessageEdit from '@/views/template/messageEdit.vue'
+import TemplateMangement from '@/views/template/mangement.vue'
 // 轮播图管理
 import CarouselMapSearch from '@/views/carouselMap/search.vue'
 import CarouselMapEdit from '@/views/carouselMap/edit.vue'
@@ -76,10 +78,19 @@ export default new Router({
       name: '内容管理',
       iconCls: 'fa fa-th-large', // 图标样式class
       children: [
-        { path: '/modelTable', component: ModelTable, name: '模版消息'},
-        { path: '/modelTableEdit', component: ModelTableEdit, name: '模版消息_编辑', hidden: true},
         { path: '/material', component: Material, name: '素材管理', hidden: true },
         { path: '/editor', component: ue, name: 'editor', class: 'fa-plug', hidden: true},
+        {
+          path: '/template/mangement',
+          component: TemplateMangement,
+          redirect: '/template/search',
+          name: '模版管理',
+          children: [
+            { path: '/template/search', component: TemplateSearch, name: '模版管理' },
+            { path: '/template/notifyEdit', component: TemplateNotifyEdit, name: '通知模版_编辑' },
+            { path: '/template/messageEdit', component: TemplateMessageEdit, name: '消息模版_编辑' }
+          ]
+        },
         {
           path: '/carouselMap/mangement',
           component: CarouselMapMangement,
