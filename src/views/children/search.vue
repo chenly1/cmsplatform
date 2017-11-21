@@ -2,62 +2,104 @@
     <section>
         <!--工具条-->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
-                <el-col :span="4">
-                    <el-form-item>
-                        <el-input v-model="filters.BRXM" placeholder="儿童姓名"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="4">
-                    <el-form-item>
-                        <el-input v-model="filters.cardNumber" :disabled="forbidden" placeholder="儿童卡号"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="4">
-                    <el-select v-model="filters.type" placeholder="类型" clearable>
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="4">
-                    <el-select v-model="filters.orderBy" placeholder="排序">
-                        <el-option v-for="item in orderBy" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="4">
+            <el-form :inline="true" :model="query">
+                <el-row>
+                    <el-col :span="3">
+                        <el-select v-model="query.BRXZ" placeholder="建档类型" clearable>
+                            <el-option v-for="item in BRXZ" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-select v-model="query.isBind" placeholder="绑定用户" clearable>
+                            <el-option v-for="item in isBind" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-select v-model="query.criteria" placeholder="查询条件" @change="display()">
+                            <el-option v-for="item in criteria" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <template v-if='displayVal'>
+                        <el-col :span="3">
+                            <el-form-item>
+                                <el-input v-model="query.parameter" placeholder=""></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </template>
+                    <template v-else>
+                        <el-col :span="9" style="margin-right: -15px;">
+                            <el-form-item class="monthClass" style="margin-right: -10px;">
+                                <el-select v-model="date.startMonth" placeholder="" filterable clearable>
+                                    <el-option v-for="item in monthList" :key="item" :label="item" :value="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="月" class="monthClass" style="margin-right: -5px;">
+                            </el-form-item>
+                            <el-form-item label="" class="dayClass" style="margin-right: -10px;">
+                                <el-select v-model="date.startDay" placeholder="" filterable clearable>
+                                    <el-option v-for="item in dayList" :key="item" :label="item" :value="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="日  -" class="monthClass" style="margin-right: -5px;">
+                            </el-form-item>
+                            <el-form-item label="" class="monthClass" style="margin-right: -10px;">
+                                <el-select v-model="date.endMonth" placeholder="" filterable clearable>
+                                    <el-option v-for="item in monthList" :key="item" :label="item" :value="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="月" class="monthClass" style="margin-right: -5px;">
+                            </el-form-item>
+                            <el-form-item label="" class="dayClass" style="margin-right: -10px;">
+                                <el-select v-model="date.endDay" placeholder="" filterable clearable>
+                                    <el-option v-for="item in dayList" :key="item" :label="item" :value="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="日" class="monthClass" style="margin-right: 0px;">
+                            </el-form-item>
+                        </el-col>
+                    </template>
+                    <el-col :span="4">
+                        <el-select v-model="query.orderBy" placeholder="排序">
+                            <el-option v-for="item in orderBy" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-col>
                     <el-button v-on:click="getListData" icon="search">查询</el-button>
-                </el-col>
+                </el-row>
             </el-form>
         </el-col>
         <el-table :data="tableData" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%">
-            <el-table-column type="selection" width="55">
+            <el-table-column type="selection" width="45">
             </el-table-column>
-            <el-table-column type="index" width="45">
+            <el-table-column type="index" width="60">
             </el-table-column>
-            <el-table-column label="儿童姓名" prop="BRXM" sortable min-width="90">
+            <el-table-column label="儿童卡号" prop="JZKH" sortable min-width="80">
             </el-table-column>
-            <el-table-column label="儿童卡号" prop="cardNumber" sortable min-width="100">
+            <el-table-column label="儿童姓名" prop="BRXM" sortable min-width="80">
             </el-table-column>
-            <el-table-column label="类型" prop="typeName" sortable>
+            <el-table-column label="出生日期" prop="CSNY" sortable>
+            </el-table-column>
+            <el-table-column label="建档类型" prop="XZMC" sortable>
+            </el-table-column>
+            <el-table-column label="建档日期" prop="JDSJ" sortable min-width="100">
             </el-table-column>
             <el-table-column label="注册用户" prop="mobilePhone" sortable min-width="100">
             </el-table-column>
             <el-table-column label="注册日期" prop="created" sortable min-width="100">
-            </el-table-column>
-            <el-table-column label="描述" prop="desc">
-            </el-table-column>
-            <el-table-column label="操作" width="150">
-                <template scope="scope">
-                    <el-button size="small" icon="edit">编辑</el-button>
-                </template>
             </el-table-column>
         </el-table>
 
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
             <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量操作</el-button>
-            <el-pagination layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange" :current-page="page.pageNum" :page-size="page.pageCount" :total="page.total" style="float:right;">
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page="page.pageNum" :page-size="page.pageCount" :page-sizes="[10, 20, 50, 100]" :total="page.total" style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -65,80 +107,131 @@
 </template>
 
 <script>
+import { findEmp } from '@/api/cros'
+
 export default {
     data() {
         return {
-            listLoading: false,
+            listLoading: false, // 加载动画
+            displayVal: true,// 查询输入框显示
             sels: [],// 列表选中列
-            filters: {
-                mobilePhone: '',
-                type: '',
-                BRXM: '',
-                cardNumber: '',
-                orderBy:'created desc'
+            query: {
+                criteria: 'BRXM',//查询条件
+                parameter: '',// 查询参数
+                timeFrame: '', // 时间范围
+                isBind: '', // 是否绑定注册用户
+                orderBy: '4',// 排序
+                BRXZ: '' // 儿童类型
             },
-            forbidden: false,
+            date: {
+                startMonth: '',
+                startDay: '',
+                endMonth: '',
+                endDay: '',
+            },
             page: {
                 total: 0,
                 pageCount: 10,
                 pageNum: 1
             },
-            options: [
+            criteria: [
                 {
-                    value: "consumer",
-                    label: "普通用户"
+                    value: "BRXM",
+                    label: "儿童姓名"
                 },
                 {
-                    value: "member",
-                    label: "会员"
+                    value: "JZKH",
+                    label: "儿童卡号"
+                },
+                {
+                    value: "birthday",
+                    label: "生日范围"
                 }
             ],
-            orderBy: [
+            BRXZ: [
                 {
-                    value: "created desc",
-                    label: "注册时间倒序"
+                    value: "1",
+                    label: "会员"
                 },
                 {
-                    value: "created asc",
-                    label: "注册时间顺序"
+                    value: "2",
+                    label: "普通"
+                },
+                {
+                    value: "3",
+                    label: "员工家属"
+                }
+            ],
+            isBind: [
+                {
+                    value: "0",
+                    label: "未绑定"
+                },
+                {
+                    value: "1",
+                    label: "已绑定"
+                }
+            ],
+            monthList: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+            dayList: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+            orderBy: [
+                {
+                    value: "4",
+                    label: "建档时间倒序"
 
                 },
                 {
-                    value: "CSNY desc",
+                    value: "5",
+                    label: "建档日期顺序"
+
+                },
+                {
+                    value: "2",
                     label: "出生日期倒序"
 
                 },
                 {
-                    value: "CSNY asc",
+                    value: "3",
                     label: "出生日期顺序"
+
+                },
+                {
+                    value: "0",
+                    label: "注册时间倒序"
+                },
+                {
+                    value: "1",
+                    label: "注册时间顺序"
 
                 }
             ],
-            tableData: [{
-                mobilePhone: '13500000001',
-                created: '2017-10-01',
-                BRXM: '何青哲',
-                cardNumber: '0000000001',
-                type: 'member',
-                typeName: '会员',
-                desc: '111',
-            }, {
-                mobilePhone: '13500000002',
-                created: '2017-10-01',
-                BRXM: '李永欣',
-                cardNumber: '0000000004',
-                type: 'consumer',
-                typeName: '普通用户',
-                desc: '112',
-            }, {
-                mobilePhone: '13500000003',
-                created: '2017-10-01',
-                BRXM: '艾云尼',
-                cardNumber: '0000000005',
-                type: 'consumer',
-                typeName: '普通用户',
-                desc: '113',
-            }]
+            tableData: [],
+            tableData2: [
+                {
+                    mobilePhone: '13500000001',
+                    created: '2017-10-01',
+                    BRXM: '何青哲',
+                    JZKH: '0000000001',
+                    type: 'member',
+                    XZMC: '会员',
+                    CSNY: '111',
+                }, {
+                    mobilePhone: '13500000002',
+                    created: '2017-10-01',
+                    BRXM: '李永欣',
+                    JZKH: '0000000004',
+                    type: 'consumer',
+                    XZMC: '普通用户',
+                    CSNY: '112',
+                }, {
+                    mobilePhone: '13500000003',
+                    created: '2017-10-01',
+                    BRXM: '艾云尼',
+                    JZKH: '0000000005',
+                    type: 'consumer',
+                    XZMC: '普通用户',
+                    CSNY: '113',
+                }]
         }
     },
     methods: {
@@ -146,36 +239,65 @@ export default {
         getListData() {
             this.listLoading = true;
             var that_ = this;
-            var param_search = 'pageNum=' + this.page.pageNum 
-            + '&pageCount=' + this.page.pageCount
-            + '&BRXM='+this.query.BRXM
-            + '&orderBy='+this.query.orderBy;
-            // debugger;
-            // findUser(param_search).then(function(response) {
-            //     // debugger;
-            //     that_.tableData = response.data.tableData;
-            //     that_.page.total = response.data.total;
-            //     that_.listLoading = false;
-            // }).catch(function(error) {
-            //     console.log(error);
-            // });
-        },
-        // 是否绑定儿童
-        changeOnOff() {
-            if (this.filters.type === false) {
-                // 开启重复提醒功能，给表单验证添加相应规则，并添加红色星号。
-                this.forbidden = true;
-                this.filters.cardNumber = '';
-                this.filters.BRXM = '';
+            var param_search;
+            var startDate='';
+            var endDate='';
+            if (this.query.criteria == 'birthday') {
+                if (this.date.startMonth != '' && this.date.startDay != '') {
+                    startDate = this.date.startMonth + '-' + this.date.startDay;
+                }
+                if (this.date.endMonth != '' && this.date.endDay != '') {
+                    endDate = this.date.endMonth + '-' + this.date.endDay;
+                }
+                param_search = 'pageNum=' + this.page.pageNum
+                    + '&pageCount=' + this.page.pageCount
+                    + '&startDate=' + startDate
+                    + '&endDate=' + endDate
+                    + '&BRXZ=' + this.query.BRXZ
+                    + '&isBind=' + this.query.isBind
+                    + '&orderBy=' + this.query.orderBy;
             } else {
-                // 关闭重复提醒功能，将表单验证中的相应规则，替换为空，并移除红色星号。不能删除相关规则，否则无法重新验证了，残留表单验证信息。
-                this.forbidden = false;
+                param_search = 'pageNum=' + this.page.pageNum
+                    + '&pageCount=' + this.page.pageCount
+                    + '&' + this.query.criteria
+                    + '=' + this.query.parameter
+                    + '&BRXZ=' + this.query.BRXZ
+                    + '&isBind=' + this.query.isBind
+                    + '&orderBy=' + this.query.orderBy;
             }
+            // debugger;
+            findEmp(param_search).then(function(response) {
+                // debugger;
+                that_.tableData = response.data.tableData;
+                that_.page.total = response.data.total;
+                that_.listLoading = false;
+            }).catch(function(error) {
+                console.log(error);
+            });
         },
         // 分页
         handleCurrentChange(val) {
             this.page.pageNum = val;
             this.getListData();
+        },
+        // 页码大小
+        handleSizeChange(val) {
+            this.page.pageCount = val;
+            this.getListData();
+        },
+        // 显示
+        display() {
+            // debugger;
+            if (this.query.criteria == 'birthday') {
+                this.displayVal = false;
+                this.query.parameter = '';
+            } else {
+                this.displayVal = true;
+                this.date.startMonth = '';
+                this.date.startDay = '';
+                this.date.endMonth = '';
+                this.date.endDay = '';
+            }
         },
         // 批量选择
         selsChange: function(sels) {
@@ -209,10 +331,27 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .toolbar .el-select {
     /* border: 1px solid red; */
     margin-right: 10px;
     margin-bottom: 0;
+}
+
+.toolbar .demonstration {
+    border: 1px solid red;
+    margin-left: 5px;
+    height: 36px;
+    text-align: center;
+    font-size: 15px;
+    color: #808080;
+}
+
+.monthClass .el-select {
+    width: 62px;
+}
+
+.dayClass .el-select {
+    width: 62px;
 }
 </style>

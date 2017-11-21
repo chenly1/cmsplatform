@@ -4,18 +4,20 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="query">
                 <el-col :span="4">
-                    <el-form-item>
-                        <el-input v-model="query.mobilePhone" placeholder="注册用户"></el-input>
-                    </el-form-item>
+                    <el-select v-model="query.isBind" placeholder="是否绑定儿童" clearable>
+                        <el-option v-for="item in isBind" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-col>
-                <el-col :span="4">
-                    <el-form-item>
-                        <el-input v-model="query.BRXM" placeholder="儿童姓名"></el-input>
-                    </el-form-item>
+                <el-col :span="3">
+                    <el-select v-model="query.criteria" placeholder="查询条件">
+                        <el-option v-for="item in criteria" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item>
-                        <el-input v-model="query.JZKH" placeholder="儿童卡号"></el-input>
+                        <el-input v-model="query.parameter" placeholder=""></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="4">
@@ -30,7 +32,7 @@
             </el-form>
         </el-col>
         <el-table :data="tableData" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%">
-            <el-table-column type="selection" width="55">
+            <el-table-column type="selection" width="45">
             </el-table-column>
             <el-table-column type="expand">
                 <template scope="props">
@@ -59,23 +61,30 @@
             </el-table-column>
             <el-table-column label="注册日期" prop="created" sortable>
             </el-table-column>
-            <el-table-column label="是否绑定儿童">
+            <el-table-column label="绑定儿童数量">
                 <template scope="props">
-                    <template v-if='props.row.children.length>0'>已绑定</template>
+                    <template v-if='props.row.children.length>0'>{{props.row.children.length}}</template>
                     <template v-else>未绑定</template>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="150">
+            <!-- <el-table-column label="操作" width="150">
                 <template scope="scope">
                     <el-button size="small" icon="edit">编辑</el-button>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
 
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
             <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量操作</el-button>
-            <el-pagination layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange" :current-page="page.pageNum" :page-size="page.pageCount" :total="page.total" style="float:right;">
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" 
+            @current-change="handleCurrentChange" 
+            @size-change="handleSizeChange"
+            :current-page="page.pageNum" 
+            :page-size="page.pageCount" 
+            :page-sizes="[10, 20, 50, 100]" 
+            :total="page.total" 
+            style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -88,27 +97,54 @@ import { findUser } from '@/api/cros'
 export default {
     data() {
         return {
-            listLoading: false,
+            listLoading: false, // 加载动画
             sels: [],// 列表选中列
             query: {
-                mobilePhone: '',
-                BRXM: '',
-                JZKH: '',
-                orderBy: '1'
+                criteria:'mobilePhone',//查询条件
+                parameter:'',// 查询参数
+                mobilePhone: '',//注册用户
+                BRXM: '', // 儿童姓名
+                JZKH: '', // 儿童卡号
+                isBind: '', // 是否绑定儿童
+                orderBy: '0'// 排序
             },
             forbidden: false,
             page: {
                 total: 0,
-                pageCount: 5,
+                pageCount: 10,
                 pageNum: 1
             },
-            orderBy: [
+            criteria:[
+                {
+                    value: "mobilePhone",
+                    label: "注册用户"
+                },
+                {
+                    value: "BRXM",
+                    label: "儿童姓名"
+                },
+                {
+                    value: "JZKH",
+                    label: "儿童卡号"
+                }
+            ],
+            isBind: [
+                {
+                    value: "0",
+                    label: "未绑定"
+                },
                 {
                     value: "1",
+                    label: "已绑定"
+                }
+            ],
+            orderBy: [
+                {
+                    value: "0",
                     label: "注册时间倒序"
                 },
                 {
-                    value: "0",
+                    value: "1",
                     label: "注册时间顺序"
                 }
             ],
@@ -156,40 +192,33 @@ export default {
         // 获取table列表数据
         getListData() {
             // debugger;
-            this.listLoading = true;
+            this.listLoading = true; // 加载动画
             var that_ = this;
             var param_search = 'pageNum=' + this.page.pageNum
                 + '&pageCount=' + this.page.pageCount
-                + '&BRXM=' + this.query.BRXM
-                + '&JZKH=' + this.query.JZKH
-                + '&mobilePhone=' + this.query.mobilePhone
+                + '&' + this.query.criteria
+                + '=' + this.query.parameter
+                + '&isBind=' + this.query.isBind
                 + '&orderBy=' + this.query.orderBy;
             // debugger;
             findUser(param_search).then(function(response) {
                 // debugger;
                 that_.tableData = response.data.tableData;
                 that_.page.total = response.data.total;
-                that_.listLoading = false;
+                that_.listLoading = false; // 加载动画
             }).catch(function(error) {
                 console.log(error);
             });
-            // that_.listLoading = false;
+            // that_.listLoading = false; // 加载动画
         },
-        // 是否绑定儿童
-        // changeOnOff() {
-        //     if (this.query.children === false) {
-        //         // 开启重复提醒功能，给表单验证添加相应规则，并添加红色星号。
-        //         this.forbidden = true;
-        //         this.query.JZKH = '';
-        //         this.query.BRXM = '';
-        //     } else {
-        //         // 关闭重复提醒功能，将表单验证中的相应规则，替换为空，并移除红色星号。不能删除相关规则，否则无法重新验证了，残留表单验证信息。
-        //         this.forbidden = false;
-        //     }
-        // },
         // 分页
         handleCurrentChange(val) {
             this.page.pageNum = val;
+            this.getListData();
+        },
+        // 页码大小
+        handleSizeChange(val){
+            this.page.pageCount = val;
             this.getListData();
         },
         // 批量选择
@@ -198,24 +227,7 @@ export default {
         },
         // 批量操作事件
         batchRemove: function() {
-            console.log(this.sels);
-            // var ids = this.sels.map(item => item.pid).toString();
-            // this.$confirm('确认删除选中记录吗？', '提示', {
-            //     type: 'warning'
-            // }).then(() => {
-            //     this.listLoading = true;
-            //     let para = { ids: ids };
-            //     // batchRemoveUser(para).then((res) => {
-            //     //     this.listLoading = false;
-            //     this.$message({
-            //         message: '删除成功',
-            //         type: 'success'
-            //     });
-            //     this.getListData();
-            //     // });
-            // }).catch(() => {
-
-            // });
+            // console.log(this.sels);
         },
     },
     mounted() {

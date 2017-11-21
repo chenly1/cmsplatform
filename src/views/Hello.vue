@@ -7,17 +7,17 @@
       </div>
     </el-col>
     <el-col :span="12" class="number" style="">
-      <div class="text" style="">
+      <div class="text" style="" @click="toPith('user')">
         <span>注册人数</span>
         <i class="fa fa-angle-right"></i>
         <!-- <el-button type="text" @click="userManagement">注册人数
-          <i class="fa fa-angle-right"></i>
-        </el-button> -->
+              <i class="fa fa-angle-right"></i>
+            </el-button> -->
         <p>{{accountCount}}</p>
       </div>
     </el-col>
     <el-col :span="12" class="number" style="">
-      <div class="text" style="">
+      <div class="text" style="" @click="toPith('children')">
         <span>绑定儿童数</span>
         <i class="fa fa-angle-right"></i>
         <p>{{memeberCount}}</p>
@@ -47,6 +47,15 @@ export default {
         _that.accountCount = response.data.data.accountCount;
       }).catch(() => {
       });
+    },
+    toPith(pathType) {
+      // debugger;
+      if (pathType == 'user') {
+        this.$router.push('/user/search');
+      } else if (pathType == 'children') {
+        this.$router.push('/children/search');
+      }
+
     }
   },
   mounted() {
@@ -87,5 +96,9 @@ export default {
 
 .number p {
   font-size: 80px;
+}
+.text{
+  /* border:1px solid red; */
+  cursor:pointer;
 }
 </style>

@@ -9,8 +9,8 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="4">
-                    <el-select v-model="query.type" placeholder="类型" clearable>
-                        <el-option v-for="item in type" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-model="query.triggerType" placeholder="触发方式" clearable>
+                        <el-option v-for="item in triggerType" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -18,10 +18,7 @@
                     <el-button v-on:click="getListData" icon="search">查询</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="info" @click="handleAdd('notify')">新增通知模版</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="warning" @click="handleAdd('message')">新增消息模版</el-button>
+                    <el-button type="primary" icon="plus" @click="handleAdd('notify')">新增</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -33,15 +30,16 @@
             </el-table-column>
             <el-table-column prop="name" label="主题" min-width="130" sortable>
             </el-table-column>
-            <el-table-column prop="typeName" label="类型" width="100" sortable>
+            <el-table-column prop="triggerName" label="触发方式" width="130" sortable>
             </el-table-column>
-            <el-table-column prop="title" label="标题" min-width="150" sortable>
+            <el-table-column prop="clockedTime" label="定时时间" width="120" sortable>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" width="120" sortable>
+            <el-table-column prop="isExecute" label="是否执行" width="120" sortable>
             </el-table-column>
             <el-table-column label="操作" width="250">
                 <template scope="scope">
-                    <el-button icon="edit" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+                    <el-button v-if="scope.row.isExecute==='否'" icon="edit" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+                    <el-button v-if="scope.row.isExecute==='否'" icon="delete" type="danger" size="small" @click="handleDel( scope.row)">删除</el-button>
                     <!-- <el-button type="info" size="small" @click="previewEvent( scope.row)">详细</el-button>
                         <el-button v-if="!scope.row.releaseTime" type="danger" size="small" @click="handleDel( scope.row)">删除</el-button>
                         <el-button v-if="!scope.row.releaseTime" type="success" size="small" @click="releaseEvent( scope.row)">发布</el-button>
@@ -69,7 +67,7 @@ export default {
         return {
             query: {
                 name: '',
-                type:''
+                triggerType:''
             },
             page: {
                 total: 0,// 总数
@@ -78,34 +76,36 @@ export default {
             },
             listLoading: false,
             sels: [],// 列表选中列
-            type:[
+            triggerType:[
                 {
-                    value: "notify",
-                    label: "通知"
+                    value: "immediate",
+                    label: "立即"
                 },
                 {
-                    value: "message",
-                    label: "消息"
+                    value: "clocked",
+                    label: "定时"
                 }
             ],
             datas: [
                 {
                     id: '',
                     name: '生日通知',
-                    typeValue: 'notify',
-                    typeName: "通知",
+                    triggerType: 'immediate',
+                    triggerName: "立即",
                     title: '您有一个生日消息！',
                     content: '生日快乐！',
-                    createTime: '2017-11-01'
+                    clockedTime: '',
+                    isExecute: '是'
                 },
                 {
                     id: '',
                     name: '生日消息',
-                    typeValue: 'message',
-                    typeName: "消息",
+                    triggerType: 'clocked',
+                    triggerName: "定时",
                     title: 'HappyBirthday',
                     content: '生日快乐！',
-                    createTime: '2017-11-01'
+                    clockedTime: '2017-12-01',
+                    isExecute: '否'
                 }
             ]
 
@@ -139,11 +139,8 @@ export default {
         },
         // 新增界面
         handleAdd: function(typeValue) {
-            if (typeValue == 'notify') {
-                this.$router.push({ path: '/template/notifyEdit', query: { type: 'add' } });
-            } else if (typeValue == 'message') {
-                this.$router.push({ path: '/template/messageEdit', query: { type: 'add' } });
-            }
+            this.$router.push({ path: '/news/edit', query: { type: 'add' } });
+            
         },
         // 编辑界面
         handleEdit(row) {
@@ -158,11 +155,8 @@ export default {
             // var queryValue = row;
             queryValue.type = 'edit';
             // debugger;
-            if (row.typeValue == 'notify') {
-                this.$router.push({ path: '/template/notifyEdit', query: queryValue });
-            } else if (row.typeValue == 'message') {
-                this.$router.push({ path: '/template/messageEdit', query: queryValue });
-            }
+            this.$router.push({ path: '/template/messageEdit', query: queryValue });
+            
         },
         // 删除
         handleDel: function(index, row) {

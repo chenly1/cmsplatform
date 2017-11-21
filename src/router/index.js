@@ -15,6 +15,10 @@ import TemplateSearch from '@/views/template/search.vue'
 import TemplateNotifyEdit from '@/views/template/notifyEdit.vue'
 import TemplateMessageEdit from '@/views/template/messageEdit.vue'
 import TemplateMangement from '@/views/template/mangement.vue'
+// 消息管理
+import NewsSearch from '@/views/news/search.vue'
+import NewsEdit from '@/views/news/edit.vue'
+import NewsMangement from '@/views/news/mangement.vue'
 // 轮播图管理
 import CarouselMapSearch from '@/views/carouselMap/search.vue'
 import CarouselMapEdit from '@/views/carouselMap/edit.vue'
@@ -89,6 +93,16 @@ export default new Router({
             { path: '/template/search', component: TemplateSearch, name: '模版管理' },
             { path: '/template/notifyEdit', component: TemplateNotifyEdit, name: '通知模版_编辑' },
             { path: '/template/messageEdit', component: TemplateMessageEdit, name: '消息模版_编辑' }
+          ]
+        },
+        {
+          path: '/news/mangement',
+          component: NewsMangement,
+          redirect: '/news/search',
+          name: '消息管理',
+          children: [
+            { path: '/news/search', component: NewsSearch, name: '消息管理' },
+            { path: '/news/edit', component: NewsEdit, name: '消息管理_编辑' },
           ]
         },
         {

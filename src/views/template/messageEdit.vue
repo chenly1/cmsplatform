@@ -27,18 +27,18 @@ export default {
                 typeValue: this.$route.query.typeValue || '',
                 typeName: this.$route.query.typeName || '',
                 title: this.$route.query.title || '',
-                content: this.$route.query.content || '',
-                createTime: this.$route.query.createTime || ''
+                content: this.$route.query.content || ''
             },
             rules: {
                 name: [
                     { required: true, message: '请输入主题', trigger: 'blur' }, 
                 ],
                 title:[
-                    { max: 10, message: "最长不超过10个字", trigger: 'blur' }
+                    { max: 15, message: "最长不超过15个字", trigger: 'blur' }
                 ],
                 content: [
-                    { required: true, message: '请填写内容', trigger: 'blur' }
+                    { required: true, message: '请填写内容', trigger: 'blur' },
+                    { max: 100, message: "最长不超过100个字", trigger: 'blur' }
                 ]
             }
         };

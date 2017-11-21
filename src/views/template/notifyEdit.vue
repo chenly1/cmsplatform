@@ -2,13 +2,13 @@
     <section class="form-section">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="主题" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
+                <el-input placeholder="必填" v-model="ruleForm.name"></el-input>
             </el-form-item>
             <el-form-item label="标题" prop="title">
                 <el-input v-model="ruleForm.title"></el-input>
             </el-form-item>
             <el-form-item label="内容" prop="content">
-                <el-input type="textarea" name="content"  v-model="ruleForm.content" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
+                <el-input placeholder="必填" type="textarea" name="content"  v-model="ruleForm.content" :autosize="{ minRows: 5, maxRows: 8}"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -34,24 +34,18 @@ export default {
                 name: [
                     { required: true, message: '请输入主题', trigger: 'blur' }
                 ],
+                title:[
+                    { max: 10, message: "最长不超过10个字", trigger: 'blur' }
+                ],
                 content: [
-                    { required: true, message: '请填写内容', trigger: 'blur' }
+                    { required: true, message: '请填写内容', trigger: 'blur' },
+                    { max: 50, message: "最长不超过50个字", trigger: 'blur' }
                 ]
             }
         };
     },
     methods: {
-        handleCheckedChange(event) {          
-            var _that = this;
-            var source = _that.ruleForm.source;
-            if (event.target.checked) {
-                source += event.target.value;
-            }
-            else {
-                source = source.replace(event.target.value, '');
-            }
-            _that.ruleForm.source = source;
-        },
+        // 提交事件
         submitForm(formName) {
             // debugger;
             this.$refs[formName].validate((valid) => {
@@ -72,7 +66,9 @@ export default {
                     return false;
                 }
             });
-        }, cancelClick() {
+        },
+        // 返回事件 
+        cancelClick() {
             this.$confirm('确认退出编辑吗？', '提示', {}).then(() => {
                 this.$message({
                     message: "返回成功!",
