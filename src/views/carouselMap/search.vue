@@ -16,27 +16,27 @@
             <el-table-column type="index" width="60">
             </el-table-column>
             <el-table-column prop="title" label="主题" width="130" sortable>
-                <template scope="scope">
+                <template slot-scope="scope">
                     <a :href="scope.row.link" target=_blank>
                         <span>{{scope.row.title}}</span>
                     </a>
                 </template>
             </el-table-column>
             <el-table-column prop="imageUrl" label="略缩图" min-width="150">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <img :src="scope.row.imageUrl" style=" height:100px;padding-top:5px;" alt="">
                 </template>
             </el-table-column>
             <el-table-column prop="sort" label="显示顺序" width="120" sortable>
             </el-table-column>
             <el-table-column prop="logoff" label="状态" width="120" sortable>
-                <template scope="scope">
+                <template slot-scope="scope">
                     <span v-if="scope.row.logoff===2">已启用</span>
                     <span v-else-if="scope.row.logoff===1">未启用</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="200">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button v-if="scope.row.logoff===1" size="small" icon="edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button v-if="scope.row.logoff===1" type="success" size="small" icon="check" @click="releaseEvent(scope.$index, scope.row)">启用</el-button>
                     <el-button v-if="scope.row.logoff!==1" type="danger" size="small" icon="close" @click="withdrawalEvent(scope.$index, scope.row)">停用</el-button>

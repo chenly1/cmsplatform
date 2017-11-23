@@ -16,29 +16,32 @@
             <el-table-column type="index" style="width: 20%;">
             </el-table-column>
             <el-table-column prop="videoName" label="视频名称" style="width: 30%;">
-                <template scope="scope">  
+                <template slot-scope="scope">  
                     <img :src="scope.row.cover" style=" height:100px;padding-top:5px;" alt="">                
                     <span>{{scope.row.videoName}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="url" label="连接地址" style="width: 40%;">
-                <template scope="scope">                  
-                    <span>{{scope.row.url}}</span>
+                <template slot-scope="scope">                  
+                    <!-- <span>{{scope.row.url}}</span> -->
+                <a :href="scope.row.url">
+                  <span>{{scope.row.url}}</span>
+                </a>
                 </template>
             </el-table-column>
             <!-- <el-table-column prop="imageUrl" label="略缩图" min-width="150">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <img :src="scope.row.imageUrl" style=" height:100px;padding-top:5px;" alt="">
                 </template>
             </el-table-column> 
             <el-table-column prop="logoff" label="状态" width="120" sortable>
-                <template scope="scope">
+                <template slot-scope="scope">
                     <span v-if="scope.row.logoff===2">已启用</span>
                     <span v-else-if="scope.row.logoff===1">未启用</span>
                 </template>
             </el-table-column>-->
             <el-table-column label="操作" style="width: 10%;">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="danger" size="small" icon="close" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -140,17 +143,17 @@ export default {
 <style scoped>
 a:link {
   font-size: 15px;
-  color: #000000;
-  text-decoration: none;
-}
-a:visited {
-  font-size: 15px;
   color: #399999;
   text-decoration: none;
 }
 a:hover {
-  font-size: 15px;
+  font-size: 16px;
   color: #71c6ef;
   text-decoration: underline;
+}
+a:visited {
+  font-size: 10px;
+  color: #399999;
+  text-decoration: none;
 }
 </style>

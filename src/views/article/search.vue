@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-col :span="24" class="toolbar" style="padding-bottom: 10px;">
-      <el-select v-model="purpose" placeholder="用途">
+      <el-select v-model="purpose" placeholder="用途" clearable>
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
@@ -12,7 +12,7 @@
       <el-table-column type="index" width="60">
       </el-table-column>
       <el-table-column label="标题" min-width="260" prop="title" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
           <template v-if="scope.row.logoff===2">
             <a :href="'/api/article/show/' +scope.row.id" target=_blank>
               <span>{{scope.row.title}}</span>
@@ -26,7 +26,7 @@
         </template>
       </el-table-column>
       <el-table-column label="原创" width="130" prop="original" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
           <span v-if="scope.row.original===1">是</span>
           <span v-else>否</span>
         </template>
@@ -34,7 +34,7 @@
       <el-table-column label="发布时间" width="150" prop="releaseTime" sortable>
       </el-table-column>
       <el-table-column label="操作" width="400">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button v-if="scope.row.logoff===1" size="small" icon="edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button v-if="scope.row.logoff===1" size="small" icon="check" type="success" @click="release(scope.$index, scope.row)">发布</el-button>
           <el-button v-if="scope.row.logoff===1" size="small" icon="delete" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -75,7 +75,7 @@ export default {
       pageSizes: [10, 20, 50, 100],
       listLoading: false,
       url: "/manager/article",
-      purpose: "edu"
+      purpose: ""
     };
   },
 
@@ -270,15 +270,16 @@ a:link {
   text-decoration: none;
 }
 
+a:hover {
+  font-size: 16px;
+  color: #71c6ef;
+  text-decoration: underline;
+}
+
 a:visited {
   font-size: 14px;
   color: #399999;
   text-decoration: none;
 }
 
-a:hover {
-  font-size: 14px;
-  color: #71c6ef;
-  text-decoration: underline;
-}
 </style>

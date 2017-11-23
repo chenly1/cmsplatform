@@ -18,21 +18,23 @@
     </section>
 </template>
 <script>
+import { update, getListData, submit } from '../../api/api'
+
 export default {
     data() {
         return {
+            getDataUrl: '/manager/messagetemplate/',
             ruleForm: {
-                id: this.$route.query.id || '',
-                name: this.$route.query.name || '',
-                typeValue: this.$route.query.typeValue || '',
-                typeName: this.$route.query.typeName || '',
-                title: this.$route.query.title || '',
-                content: this.$route.query.content || '',
-                createTime: this.$route.query.createTime || ''
+                type: this.$route.query.type || '',
+                id: '',
+                name: '',
+                title: '',
+                content: ''
             },
             rules: {
                 name: [
-                    { required: true, message: '请输入主题', trigger: 'blur' }
+                    { required: true, message: '请输入主题', trigger: 'blur' },
+                    { max: 50, message: "最长不超过50个字", trigger: 'blur' }
                 ],
                 title:[
                     { max: 10, message: "最长不超过10个字", trigger: 'blur' }
@@ -45,30 +47,78 @@ export default {
         };
     },
     methods: {
-        // 提交事件
+        // 查询
+        getListData() {
+            this.listLoading = true;
+            var _that = this;
+            var url = this.getDataUrl + this.$route.query.rowid;
+            // debugger;
+            getListData(url).then(function(response) {
+                // debugger;
+                _that.ruleForm.id = response.data.data.id;// 数据
+                _that.ruleForm.title = response.data.data.title;// 数据
+                _that.ruleForm.name = response.data.data.name;// 数据
+                _that.ruleForm.content = response.data.data.content;// 数据
+                _that.listLoading = false;
+            }).catch(() => { });
+        },
+        // 提交
         submitForm(formName) {
             // debugger;
+            var _that = this;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.$confirm('确认提交吗？', '提示', {}).then(() => {
                         let para = Object.assign({}, this.ruleForm);
-                        console.log(para);
-                        this.$message({
-                            message: "提交成功，请在控制台查看json!！",
-                            type: 'success'
-                        });
-                    }).then(() => {
-                        this.$router.push('/template/search');
+                        if (this.$route.query.pageType == 'add') {
+                            // debugger;
+                            submit(_that.getDataUrl, para).then(function(res) {
+                                // debugger;
+                                if (res.data.flag === true) {
+                                    _that.$message({
+                                        message: '提交成功',
+                                        // type: 'success'
+                                    });
+                                    _that.$router.push('/template/search');
+                                } else {
+                                    _that.$message({
+                                        showClose: true,
+                                        duration: 0,
+                                        message: '提交失败，' + res.data.message,
+                                        type: 'error'
+                                    });
+                                }
+                            }).catch(() => {
+                            });
+                        } else if (this.$route.query.pageType == 'edit') {
+                            // debugger;
+                            let url = _that.getDataUrl + para.id;
+                            update(url, para).then(function(res) {
+                                // debugger;
+                                if (res.data.flag === true) {
+                                    _that.$message({
+                                        message: '提交成功',
+                                        // type: 'success'
+                                    });
+                                    _that.$router.push('/template/search');
+                                } else {
+                                    _that.$message({
+                                        showClose: true,
+                                        duration: 0,
+                                        message: '提交失败，' + res.data.message,
+                                        type: 'error'
+                                    });
+                                }
+                            }).catch(() => {
+                            });
+                        }
                     }).catch(() => {
-
                     });
                 } else {
                     return false;
                 }
             });
-        },
-        // 返回事件 
-        cancelClick() {
+        }, cancelClick() {
             this.$confirm('确认退出编辑吗？', '提示', {}).then(() => {
                 this.$message({
                     message: "返回成功!",
@@ -82,11 +132,15 @@ export default {
         }
     },
     mounted() {
-            console.log(this.$route.query);
+        // console.log(this.$route.query);
+        // debugger;
+        if (this.$route.query.pageType == 'edit') {
+            this.getListData();
+        }
     }
 }
 </script>
-<style>
+<style scope>
 .form-section {
     padding: 10px;
     width: 500px;

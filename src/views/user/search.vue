@@ -35,7 +35,7 @@
             <el-table-column type="selection" width="45">
             </el-table-column>
             <el-table-column type="expand">
-                <template scope="props">
+                <template slot-scope="props">
                     <el-form v-if="props.row.children.length>0" label-position="left" inline class="demo-table-expand">
                         <template v-for="(firstValue,firstKey) in props.row.children">
                             <el-form-item label="儿童名称">
@@ -62,13 +62,13 @@
             <el-table-column label="注册日期" prop="created" sortable>
             </el-table-column>
             <el-table-column label="绑定儿童数量">
-                <template scope="props">
+                <template slot-scope="props">
                     <template v-if='props.row.children.length>0'>{{props.row.children.length}}</template>
                     <template v-else>未绑定</template>
                 </template>
             </el-table-column>
             <!-- <el-table-column label="操作" width="150">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button size="small" icon="edit">编辑</el-button>
                 </template>
             </el-table-column> -->
@@ -227,7 +227,7 @@ export default {
         },
         // 批量操作事件
         batchRemove: function() {
-            // console.log(this.sels);
+            console.log(this.sels);
         },
     },
     mounted() {
@@ -235,6 +235,8 @@ export default {
     }
 }
 </script>
+<style scope>
+</style>
 
 <style>
 .demo-table-expand {

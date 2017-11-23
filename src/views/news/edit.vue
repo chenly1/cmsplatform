@@ -9,12 +9,12 @@
             </el-form-item>
             <!-- <el-col :span="24"> -->
                 <el-form-item label="是否推送">
-                    <el-checkbox v-model="ruleForm.isCheck"></el-checkbox>
+                    <el-checkbox v-model="ruleForm.isCheck" @change="changeAgree"></el-checkbox>
                 </el-form-item>
             <!-- </el-col> -->
             <!-- <el-col :span="6"> -->
                 <el-form-item label="推送通知内容是否一致">
-                    <el-checkbox v-model="ruleForm.agree" @change="changeOnOff"></el-checkbox>
+                    <el-checkbox v-model="ruleForm.agree" @change="changeOnOff" :disabled='agreeValidate'></el-checkbox>
                 </el-form-item>
             <!-- </el-col> -->
             <el-form-item label="通知模版" prop="message" :required="reqMessage">
@@ -49,6 +49,7 @@ export default {
     data() {
         return {
             disabled: true,
+            agreeValidate:true,
             triggerValidate:true,
             reqMessage: false,
             reqTime:false,
@@ -96,6 +97,20 @@ export default {
         };
     },
     methods: {
+        // 是否推送
+        changeAgree() {
+            // debugger;
+            if (this.ruleForm.isCheck === true) {
+                // 不选择通知模版，给表单验证添加相应规则，替换为空，并移除红色星号。不能删除相关规则，否则无法重新验证了，残留表单验证信息。
+                this.agreeValidate = false;
+                this.reqMessage = false;
+            } else {
+                // 选择通知模版，表单验证中的相应规则，并添加红色星号。
+                this.agreeValidate = true;
+                this.ruleForm.agree = true;
+                this.disabled = true;
+            }
+        },
         // 是否选择通知模版
         changeOnOff() {
             // debugger;

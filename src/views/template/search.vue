@@ -3,14 +3,14 @@
         <!--工具条-->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="query">
-                <el-col :span="4">
+                <!-- <el-col :span="4">
                     <el-form-item>
                         <el-input v-model="query.name" placeholder="主题"></el-input>
                     </el-form-item>
-                </el-col>
+                </el-col> -->
                 <el-col :span="4">
                     <el-select v-model="query.type" placeholder="类型" clearable>
-                        <el-option v-for="item in type" :key="item.value" :label="item.label" :value="item.value">
+                        <el-option v-for="item in typeValue" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -26,26 +26,27 @@
             </el-form>
         </el-col>
         <!--列表-->
-        <el-table :data="datas" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="tableData" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" width="40">
             </el-table-column>
             <el-table-column type="index" width="40">
             </el-table-column>
             <el-table-column prop="name" label="主题" min-width="130" sortable>
             </el-table-column>
-            <el-table-column prop="typeName" label="类型" width="100" sortable>
+            <el-table-column prop="type" label="类型" min-width="100" sortable>
+                <template slot-scope="props">
+                    <template v-if='props.row.type=="message"'>消息</template>
+                    <template v-else>通知</template>
+                </template>
             </el-table-column>
-            <el-table-column prop="title" label="标题" min-width="150" sortable>
+            <!-- <el-table-column prop="title" label="标题" min-width="150" sortable>
             </el-table-column>
             <el-table-column prop="createTime" label="创建时间" width="120" sortable>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="操作" width="250">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button icon="edit" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-                    <!-- <el-button type="info" size="small" @click="previewEvent( scope.row)">详细</el-button>
-                        <el-button v-if="!scope.row.releaseTime" type="danger" size="small" @click="handleDel( scope.row)">删除</el-button>
-                        <el-button v-if="!scope.row.releaseTime" type="success" size="small" @click="releaseEvent( scope.row)">发布</el-button>
-                        <el-button v-if="scope.row.releaseTime" type="warning" size="small" @click="withdrawalEvent( scope.row)">撤回</el-button> -->
+                    <el-button v-if="!scope.row.releaseTime" type="danger" size="small" icon="delete" @click="handleDel(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -53,7 +54,7 @@
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
             <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-            <el-pagination layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange" :current-page="page.pageNum" :page-size="page.pageSize" :total="page.total" style="float:right;">
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page="page.pageNum" :page-size="page.pageSize" :page-sizes="[10, 20, 50, 100]" :total="page.total" style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -62,23 +63,24 @@
 
 
 <script>
-import { getPageListData } from '../../api/api'
+import { getListData, deleteData } from "../../api/api";
 
 export default {
     data() {
         return {
             query: {
-                name: '',
-                type:''
+                // name: '',
+                type: ''
             },
             page: {
                 total: 0,// 总数
                 pageSize: 10,
                 pageNum: 1
             },
-            listLoading: false,
+            listLoading: false,// 加载动画
+            url: "/manager/messagetemplate", // 连接url
             sels: [],// 列表选中列
-            type:[
+            typeValue: [
                 {
                     value: "notify",
                     label: "通知"
@@ -88,7 +90,8 @@ export default {
                     label: "消息"
                 }
             ],
-            datas: [
+            tableData: [],
+            datas2: [
                 {
                     id: '',
                     name: '生日通知',
@@ -114,74 +117,80 @@ export default {
     methods: {
         // 获取table列表数据
         getListData() {
-            let para = {
-                page: this.page,
-                title: this.query.title
+            this.listLoading = true;
+            var _that = this;
+            var url = this.url + "?num=" + this.page.pageNum + "&size=" + this.page.pageSize +
+                "&type=" + this.query.type;
+            // debugger;
+            getListData(url).then(function(response) {
+                // debugger;
+                _that.page.total = response.data.total;// 数量
+                _that.tableData = response.data.data;// 数据
+                _that.listLoading = false;
+            }).catch(() => { });
+        },
+        // 新增界面
+        handleAdd: function(typeValue) {
+            if (typeValue == 'notify') {
+                this.$router.push({ path: '/template/notifyEdit', query: { pageType: 'add', type: 'notify' } });
+            } else if (typeValue == 'message') {
+                this.$router.push({ path: '/template/messageEdit', query: { pageType: 'add', type: 'message' } });
+            }
+        },
+        // 编辑界面
+        handleEdit(row) {
+            var queryValue = {
+                rowid: row.id,
+                pageType: 'edit'
             };
-            // this.listLoading = true;
-            // getPageListData().then((res) => {
-            //     this.total = res.data.body.length; // 数量
-            //     this.datas = res.data.body; // 数据
-            // this.listLoading = false;
-            // });
-            // this.$http.get('/manager/article').then(function(response) {
-            //         //this.$set('tableData', response.data);
-            //         this.datas = response.data.data;
-            //         this.total = response.data.data.length;
-            //         this.listLoading = false;
-            // });
-
+            if (row.type == 'notify') {
+                queryValue.type = 'notify';
+                this.$router.push({ path: '/template/notifyEdit', query: queryValue });
+            } else if (row.type == 'message') {
+                queryValue.type = 'message';
+                this.$router.push({ path: '/template/messageEdit', query: queryValue });
+            }
+        },
+        // 删除
+        handleDel: function(row) {
+            var _that = this;
+            this.$confirm('确认删除该记录吗?', '提示', {
+                type: 'warning'
+            }).then(() => {
+                _that.listLoading = true;
+                var url = this.url + "/" + row.id;
+                // debugger;
+                deleteData(url).then((res) => {
+                    // debugger;
+                    if (res.data.flag === true) {
+                        _that.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                    } else {
+                        _that.$message({
+                            showClose: true,
+                            duration: 0,
+                            message: '删除失败，' + res.data.message,
+                            type: 'error'
+                        });
+                    }
+                    _that.listLoading = false;
+                    _that.getListData();
+                }).catch(() => {
+                });
+            }).catch(() => {
+            });
         },
         // 分页
         handleCurrentChange(val) {
             this.page.pageNum = val;
             this.getListData();
         },
-        // 新增界面
-        handleAdd: function(typeValue) {
-            if (typeValue == 'notify') {
-                this.$router.push({ path: '/template/notifyEdit', query: { type: 'add' } });
-            } else if (typeValue == 'message') {
-                this.$router.push({ path: '/template/messageEdit', query: { type: 'add' } });
-            }
-        },
-        // 编辑界面
-        handleEdit(row) {
-            var queryValue = {
-                id: row.id,
-                name: row.name,
-                typeValue: row.typeValue,
-                typeName: row.typeName,
-                title: row.title,
-                content: row.content
-            };
-            // var queryValue = row;
-            queryValue.type = 'edit';
-            // debugger;
-            if (row.typeValue == 'notify') {
-                this.$router.push({ path: '/template/notifyEdit', query: queryValue });
-            } else if (row.typeValue == 'message') {
-                this.$router.push({ path: '/template/messageEdit', query: queryValue });
-            }
-        },
-        // 删除
-        handleDel: function(index, row) {
-            this.$confirm('确认删除该记录吗?', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.listLoading = true;
-                let para = { id: row.pid };
-                // removeUser(para).then((res) => {
-                this.listLoading = false;
-                this.$message({
-                    message: '删除成功',
-                    type: 'success'
-                });
-                this.getListData();
-                // });
-            }).catch(() => {
-
-            });
+        // 页码大小
+        handleSizeChange(val) {
+            this.page.pageSize = val;
+            this.getListData();
         },
         // 批量选择
         selsChange: function(sels) {
@@ -206,51 +215,6 @@ export default {
             }).catch(() => {
 
             });
-        },
-        // 发布
-        releaseEvent: function(index, row) {
-            this.$confirm('确认发布该记录吗?', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.listLoading = true;
-                let para = { id: row.pid };
-                // removeUser(para).then((res) => {
-                this.listLoading = false;
-                this.$message({
-                    message: '发布成功',
-                    type: 'success'
-                });
-                this.getListData();
-                // });
-            }).catch(() => {
-
-            });
-        },
-        // 撤回
-        withdrawalEvent: function(index, row) {
-            this.$confirm('确认撤回该记录吗?', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.listLoading = true;
-                let para = { id: row.pid };
-                // removeUser(para).then((res) => {
-                this.listLoading = false;
-                this.$message({
-                    message: '撤回成功',
-                    type: 'success'
-                });
-                this.getListData();
-                // });
-            }).catch(() => {
-
-            });
-        },
-        // 预览
-        previewEvent: function(index, row) {
-            this.$message({
-                message: '页面即将跳转',
-                type: 'info'
-            });
         }
     },
     mounted() {
@@ -261,7 +225,6 @@ export default {
 
 
 <style scoped>
-
 .toolbar .el-select {
     /* border: 1px solid red; */
     margin-right: 10px;

@@ -37,7 +37,7 @@
             <el-table-column prop="isExecute" label="是否执行" width="120" sortable>
             </el-table-column>
             <el-table-column label="操作" width="250">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button v-if="scope.row.isExecute==='否'" icon="edit" size="small" @click="handleEdit(scope.row)">编辑</el-button>
                     <el-button v-if="scope.row.isExecute==='否'" icon="delete" type="danger" size="small" @click="handleDel( scope.row)">删除</el-button>
                     <!-- <el-button type="info" size="small" @click="previewEvent( scope.row)">详细</el-button>

@@ -302,7 +302,7 @@ export default {
                       _that.$message({
                         showClose: true,
                         duration: 0,
-                        message: '提交失败，' + response.data.message,
+                        message: '提交失败，' + res.data.message,
                         type: 'error'
                       });
                     }
@@ -324,7 +324,7 @@ export default {
                       _that.$message({
                         showClose: true,
                         duration: 0,
-                        message: '提交失败，' + response.data.message,
+                        message: '提交失败，' + res.data.message,
                         type: 'error'
                       });
                     }
