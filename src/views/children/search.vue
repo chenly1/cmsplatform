@@ -75,6 +75,7 @@
                 </el-row>
             </el-form>
         </el-col>
+
         <el-table :data="tableData" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%">
             <el-table-column type="selection" width="45">
             </el-table-column>
@@ -336,15 +337,6 @@ export default {
     /* border: 1px solid red; */
     margin-right: 10px;
     margin-bottom: 0;
-}
-
-.toolbar .demonstration {
-    border: 1px solid red;
-    margin-left: 5px;
-    height: 36px;
-    text-align: center;
-    font-size: 15px;
-    color: #808080;
 }
 
 .monthClass .el-select {

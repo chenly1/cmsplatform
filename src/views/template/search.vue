@@ -27,8 +27,6 @@
         </el-col>
         <!--列表-->
         <el-table :data="tableData" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-            <el-table-column type="selection" width="40">
-            </el-table-column>
             <el-table-column type="index" width="40">
             </el-table-column>
             <el-table-column prop="name" label="主题" min-width="130" sortable>
@@ -39,10 +37,6 @@
                     <template v-else>通知</template>
                 </template>
             </el-table-column>
-            <!-- <el-table-column prop="title" label="标题" min-width="150" sortable>
-            </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" width="120" sortable>
-            </el-table-column> -->
             <el-table-column label="操作" width="250">
                 <template slot-scope="scope">
                     <el-button icon="edit" size="small" @click="handleEdit(scope.row)">编辑</el-button>
@@ -53,7 +47,6 @@
 
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
             <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page="page.pageNum" :page-size="page.pageSize" :page-sizes="[10, 20, 50, 100]" :total="page.total" style="float:right;">
             </el-pagination>
         </el-col>

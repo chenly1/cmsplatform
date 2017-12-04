@@ -24,8 +24,6 @@
         </el-col>
         <!--列表-->
         <el-table :data="datas" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-            <el-table-column type="selection" width="40">
-            </el-table-column>
             <el-table-column type="index" width="40">
             </el-table-column>
             <el-table-column prop="name" label="主题" min-width="130" sortable>
@@ -50,7 +48,6 @@
 
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
             <el-pagination layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange" :current-page="page.pageNum" :page-size="page.pageSize" :total="page.total" style="float:right;">
             </el-pagination>
         </el-col>
