@@ -95,11 +95,13 @@
             </el-table-column>
             <el-table-column label="注册日期" prop="created" sortable min-width="100">
             </el-table-column>
+            <!-- <el-table-column label="用户ID" prop="accountId" sortable min-width="100" v-if="false">
+            </el-table-column> -->
         </el-table>
 
         <!--底部工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量操作</el-button>
+            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">发送消息</el-button>
             <el-pagination layout="total, sizes, prev, pager, next, jumper" @current-change="handleCurrentChange" @size-change="handleSizeChange" :current-page="page.pageNum" :page-size="page.pageCount" :page-sizes="[10, 20, 50, 100]" :total="page.total" style="float:right;">
             </el-pagination>
         </el-col>
@@ -238,6 +240,7 @@ export default {
     methods: {
         // 获取table列表数据
         getListData() {
+            
             this.listLoading = true;
             var that_ = this;
             var param_search;
@@ -266,9 +269,9 @@ export default {
                     + '&isBind=' + this.query.isBind
                     + '&orderBy=' + this.query.orderBy;
             }
-            // debugger;
+            // 
             findEmp(param_search).then(function(response) {
-                // debugger;
+                // 
                 that_.tableData = response.data.tableData;
                 that_.page.total = response.data.total;
                 that_.listLoading = false;
@@ -288,7 +291,7 @@ export default {
         },
         // 显示
         display() {
-            // debugger;
+            // 
             if (this.query.criteria == 'birthday') {
                 this.displayVal = false;
                 this.query.parameter = '';
@@ -306,6 +309,9 @@ export default {
         },
         // 批量操作事件
         batchRemove: function() {
+        this.$router.push({ name:'消息管理_编辑',params: {children:this.sels} })
+
+
             console.log(this.sels);
             // var ids = this.sels.map(item => item.pid).toString();
             // this.$confirm('确认删除选中记录吗？', '提示', {

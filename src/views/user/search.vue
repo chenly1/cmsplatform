@@ -227,7 +227,8 @@ export default {
         },
         // 批量操作事件
         batchRemove: function() {
-            console.log(this.sels);
+        //   this.$router.push({ path: '/news/edit?type=add',query:this.sels })
+            // console.log(this.sels);
         },
     },
     mounted() {
